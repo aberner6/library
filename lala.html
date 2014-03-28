@@ -53,7 +53,7 @@ var svg = d3.select("body").append("svg")
 
 // var angles = []
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
-console.log(cData);
+// console.log(cData);
 var counters = [0,0,146,106,33,14,2,0,0,0];
 var jumps;
 var angles;
@@ -73,6 +73,9 @@ for (j = 0; j<q.length; j++){
 // console.log(angles)
 // console.log(angles[q.length]);
 }
+console.log(cData[0].codeName[0]);
+console.log(cData[0].codeName[1]);
+console.log(cData[0].codeName);
     // float angle = angles[q.length];
     // float radius = radius_levels[q.length];
     // c.pos.x = width*0.5+radius*cos(angle);
@@ -92,9 +95,72 @@ var inCircle = svg.selectAll("circle")
 	.attr("r", function(d){
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
-	.attr("fill","none")
+	.attr("fill", function(d){
+		return "rgba("+d.loc*20+",100,100,.5)";
+	})
 	.attr("stroke","lightgray")
 
+
+
+
+
+var inLine = svg.selectAll("line")
+	.data(cData)
+	.enter().append("line")
+	.attr("class", "inLine")
+	.attr("x1", function(d,i){
+    	return width*0.5+d.radiusIs*Math.cos(d.angles);
+	})
+	.attr("x2", function(d){ 
+		if (d.lineX>0){
+		return width*0.5+d.radiusIs*Math.cos(d.angles)+q[0]; //+d.lineX;
+		}
+		else {
+		}
+	})
+	.attr("y1", function(d){
+		return height*0.5+d.radiusIs*Math.sin(d.angles);
+	})
+	.attr("y2", function(d){
+		// if (d.lineY>0){
+		return height*0.5+d.radiusIs*Math.sin(d.angles)+q[1];
+		// }
+		// else {
+		// }
+	})
+	.attr("fill", function(d){
+		// return "rgba("+d.loc*20+",100,100,.5)";
+	})
+	.attr("stroke","lightgray")
+
+// var inLine = svg.selectAll("line")
+// 	.data(cData)
+// 	.enter().append("line")
+// 	.attr("class", "inLine")
+// 	.attr("x1", function(d,i){
+//     	return width*0.5+d.radiusIs*Math.cos(d.angles);
+// 	})
+// 	.attr("x2", function(d){ 
+// 		if (d.lineX>0){
+// 		return width*0.5+d.radiusIs*Math.cos(d.angles)+1; //+d.lineX;
+// 		}
+// 		else {
+// 		}
+// 	})
+// 	.attr("y1", function(d){
+// 		return height*0.5+d.radiusIs*Math.sin(d.angles);
+// 	})
+// 	.attr("y2", function(d){
+// 		if (d.lineY>0){
+// 		return height*0.5+d.radiusIs*Math.sin(d.angles)+1; //+d.lineY;
+// 		}
+// 		else {
+// 		}
+// 	})
+// 	.attr("fill", function(d){
+// 		// return "rgba("+d.loc*20+",100,100,.5)";
+// 	})
+// 	.attr("stroke","lightgray")
 })
 
 
@@ -107,7 +173,7 @@ var inCircle = svg.selectAll("circle")
 
 
 d3.tsv("subjects.tsv", function(error, data) {
-console.log(data);
+// console.log(data);
 var jump = Math.PI*2/data.length;
 var angle = 0;
 
@@ -129,7 +195,7 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 	})
 	.attr("fill", function(d){
 		return "rgba("+d.loc*20+",100,100,.5)";
-})
+	})
 $('.surroundingCircles').tipsy({ 
         gravity: 'nw', 
         html: true, 
