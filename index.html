@@ -114,13 +114,46 @@ console.log(r[2][3])
 // 		}
 // 	}); //this will be the height of that number to make sure i have it
 
-////DOESN'T WORK
+var calcX=[];
+var calcY=[];
+// console.log(q)
+		// console.log(q[0].length);
+////this works
+var inCircle = svg.selectAll("circle")
+	.data(cData)
+	.enter().append("circle")
+	.attr("class", "inCircle")
+	.attr("cx", function(d,i){
+// console.log(thisThing.x)
+	calcX.push(width*0.5+d.radiusIs*2*Math.cos(d.angles));
+     	return width*0.5+d.radiusIs*2*Math.cos(d.angles);
+		// console.log(d.codeName);
+	})
+	.attr("cy", function(d){ 
+	calcY.push(height*0.5+d.radiusIs*2*Math.sin(d.angles));
+		return height*0.5+d.radiusIs*2*Math.sin(d.angles);
+	})
+	.attr("r", function(d){
+		return Math.log(d.freq+2.0)*freqscale/2;
+	})
+	.attr("fill", function(d){
+		return "rgba(20,100,100,.5)";
+	});
+
+////WORKS
+// var g = svg.selectAll("g")
+//     .data(r)
+//     .enter()
+//     .append("g")
+//     .attr("transform", function(d,i){
+//     	return "translate(" + (10) + "," + (10+i*20) + ")";
+// 	})
 var g = svg.selectAll("g")
     .data(r)
     .enter()
     .append("g")
     .attr("transform", function(d,i){
-    	return "translate(" + (10) + "," + (10+i*20) + ")";
+    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
 	})
 var newThing=[];
 g.selectAll("rect")
@@ -128,18 +161,10 @@ g.selectAll("rect")
     		console.log(d);
     	return d; 
     })
- //    .data(function(d,i) { 
- //    		console.log(d)
- //    	for (j=0; j<d.length; j++){
- //    				console.log(d[j])
-	// 		return d[j]; 
-	// 	}
-	// 	// console.log(d)
-	// })
     .enter()
     .append("rect")
     .attr("x", function(d,i){
-    	console.log(d.length)
+    	// console.log(d.length)
     	return i*10; //works!! AND D IS THE ACTUAL NUMBER IN THERE!!!
 
     	// for (j=0; j<d.length; j++){
@@ -163,29 +188,6 @@ g.selectAll("rect")
 
 
 
-
-
-// console.log(q)
-		// console.log(q[0].length);
-//this works
-// var inCircle = svg.selectAll("circle")
-// 	.data(cData)
-// 	.enter().append("circle")
-// 	.attr("class", "inCircle")
-// 	.attr("cx", function(d,i){
-// // console.log(thisThing.x)
-//      return width*0.5+d.radiusIs*2*Math.cos(d.angles);
-		// console.log(d.codeName);
-// 	})
-// 	.attr("cy", function(d){ 
-// 		return height*0.5+d.radiusIs*2*Math.sin(d.angles);
-// 	})
-// 	.attr("r", function(d){
-// 		return Math.log(d.freq+2.0)*freqscale/2;
-// 	})
-// 	.attr("fill", function(d){
-// 		return "rgba(20,100,100,.5)";
-// 	});
 
 
 
