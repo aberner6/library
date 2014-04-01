@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+<link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
+	</head>
+<script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
+<script type="text/javascript" src="js/lib/d3.v3.js"></script>
+	<script src="js/lib/vector.js"></script>
+<body>
+<script type = "text/javascript">
+var freqscale = 5; //size of circles
+var  MAX_LEVELS = 10; //number larger than number of levels of circles
+var radius_levels = [0, 0, 240, 180, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
+var subradius = 250; 
+var MIN_LINE = 3.0; //length of the little ones
+var TEXT_PAD_X = 5;
+var TEXT_PAD_Y = 2;
+var LEGEND_X_MARGIN = 20;
+var LEGEND_SCALE = 0.003;
+
+//  Make an array of Subjects
+var subjects;
+//  Make an array of Connections
+var connections;
+
+var bcolor;
+var subtext;
+var hsubtext;
+var concolor;
+var hconcolor;
+var legendconcolor;
+  bcolor = "rgba(0, 0, 0, 255)";
+  concolor = "rgba(210, 210, 210, 50)";
+  hconcolor = "rgba(210, 210, 210, 100)";
+  legendconcolor = "rgba(210, 210, 210, 75)";
+  subtext = "rgba(150, 150, 150, 255)";
+  hsubtext = "rgba(210, 210, 210, 255)";
+
+var margin = {top: 20, right: 20, bottom: 30, left: 50},
+    width = 1280 - margin.left - margin.right,
+    height = 750 - margin.top - margin.bottom;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height*2 + margin.top + margin.bottom);
+        // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+
+
+var rScale = d3.scale.linear()
+  .domain([-7, 7]) 
+  .range([-180, 180]);
+
+
+// var angles = []
+d3.tsv("connectionfreqcodes.txt", function(error, cData) {
+// console.log(cData);
+var counters = [0,0,146,106,33,14,2,0,0,0];
+var jumps;
+var angles;
+var q = [];	
+var temp = [];
+var thisThing;
+var r = [];
+// var subIx;
+for (i = 0; i < MAX_LEVELS;i++) {
+    jumps = Math.PI*2/parseFloat(counters[i]);  
+}
+for (i = 0; i < cData.length;i++) {
+	q.push(cData[i].codeName);
+	// var q = new Array();
+	////kinda
+// 	temp = (cData[i].codeName).split(",");
+// 	for (i in temp ) {
+//     temp[i] = parseInt(temp[i], 10); // Explicitly include base as per Álvaro's comment
+// }
+////kinda
+	// console.log(q)
+	angles=cData[i].angles;
+}
+for (i=0; i<q.length; i++){
+	r.push(q[i].split(","));
+		// console.log(r.length);
+}
+// for (t=0; t<q[1].length; q++){
+// var c=q[2].split(",")
+console.log(r[2].length);
+// }
+console.log(q[2])
+console.log(r[2][3])
+////getting somewhere
+// var thisRect = svg.selectAll("rect")
+// 	.data(r)
+// 	.enter().append("rect")
+// 	.attr("class", "thisRect")
+// 	.attr("x", function(d,i){
+// 		for (j=0; j<d.length; j++){
+// 			return j*10+50;
+// 			console.log(j);
+// 		}
+// 		// console.log (d[i]);
+// 		// console.log(i);
+// 		// return i*10; //this will be just separating values out per row
+// 	})
+// 	.attr("y", function(d,i){ 
+// 		return i*10; //this will be whether we are on a new line or not
+// 	})
+// 	.attr("width",10)
+// 	.attr("height", function(d,i){
+// 		for (j=0; j<d.length; j++){
+// 			return d[j];
+// 		}
+// 	}); //this will be the height of that number to make sure i have it
+
+////DOESN'T WORK
+var g = svg.selectAll("g")
+    .data(r)
+    .enter()
+    .append("g")
+    .attr("transform", function(d,i){
+    	return "translate(" + (10) + "," + (10+i*20) + ")";
+	})
+
+g.selectAll("rect")
+    .data(function(d,i){ 
+    		console.log(d);
+    	return d; 
+    })
+ //    .data(function(d,i) { 
+ //    		console.log(d)
+ //    	for (j=0; j<d.length; j++){
+ //    				console.log(d[j])
+	// 		return d[j]; 
+	// 	}
+	// 	// console.log(d)
+	// })
+    .enter()
+    .append("rect")
+    .attr("x", function(d,i){
+    	console.log(d.length)
+    	// for (j=0; j<d.length; j++){
+			return d*10;
+			// .length*10; 
+		// }
+	// return d*10;
+	})
+	.attr("y", function(d,i){
+		return 0;
+	})
+	.attr("width", 5)
+	.attr("height", function(d){ return 5; }); //not d
+
+
+
+
+
+
+
+
+
+
+// console.log(q)
+		// console.log(q[0].length);
+//this works
+// var inCircle = svg.selectAll("circle")
+// 	.data(cData)
+// 	.enter().append("circle")
+// 	.attr("class", "inCircle")
+// 	.attr("cx", function(d,i){
+// // console.log(thisThing.x)
+//      return width*0.5+d.radiusIs*2*Math.cos(d.angles);
+		// console.log(d.codeName);
+// 	})
+// 	.attr("cy", function(d){ 
+// 		return height*0.5+d.radiusIs*2*Math.sin(d.angles);
+// 	})
+// 	.attr("r", function(d){
+// 		return Math.log(d.freq+2.0)*freqscale/2;
+// 	})
+// 	.attr("fill", function(d){
+// 		return "rgba(20,100,100,.5)";
+// 	});
+
+
+
+
+
+
+////DOESN'T WORK
+// var g = svg.selectAll("g")
+//     .data(temp)
+//     .enter()
+//     .append("g")
+//   // .append("svg:g")
+//     .attr("transform", "translate(" + (100) + "," + (100) + ")");
+
+// g.selectAll("rect")
+//     .data(function(d) { return d; })
+//     .enter()
+//     .append("rect")
+//     .attr("x", function(d,i){
+//     	// console.log(d)
+// 	return parseInt(d)*50;
+// })
+// .attr("y", 20)
+// .attr("width", 10)
+// .attr("height",10);
+
+
+
+
+
+
+
+
+
+////doesn't work
+// console.log(cData.length)
+// var inRect = svg.selectAll("rect")
+// 	.data(q)
+// 	// .selectAll("inLine")
+// 	// .data(function(d,i){ return d; })
+// 	.enter().append("rect")
+// 	.attr("class", "inLine")
+// 	.attr("x", function(d,i){
+// 		console.log(i)
+// 		return i*10;
+// 		// console.log(d.length);
+// 		// console.log(q);
+// // for (j=0; j<cData["q"]; j++){
+// // console.log(cData["q"]);
+// // 			// return j*100;
+// // }
+// 	})
+// 	.attr("y", function(d,i){ 
+// 		return height/4;
+// 	})
+// 	.attr("width",1)
+// 	.attr("height",5)
+// 	.attr("fill", function(d){
+// 	})
+// 	.attr("stroke","lightgray");
+
+
+
+
+
+//// doesnt work
+	// .attr("x", function(d,i){
+	// 	// console.log(q)
+	// 	// return 1;
+	// 	// console.log(cData[0].q)
+	// 	for (k=0; k<cData.length; k++){
+	// 	for (j=0;j<q[cData[k].q]; j++){
+	// 	console.log(q[cData[k].q])
+	// 	// console.log(q[j]);
+	// 	return 40+q[j]*2+cData[0].q; //q[i]?			
+	// 	}
+	// }
+
+
+
+
+
+
+
+//FIGURE OUT HOW TO DRAW HOWEVER MANY LINES AS Q IS - SO 4 LINES IF Q IS 4
+// var inRect = svg.selectAll("rect")
+// 	.data(cData)
+// 	.enter().append("rect")
+// 	.attr("class", "inLine")
+// 	.attr("x", function(d,i){
+// 		return 20;
+//     	// return width*0.5+d.radiusIs*2*Math.cos(d.angles)+q[i]*5;
+// 	})
+// 	.attr("y", function(d,i){ 
+// 		return height*0.5+d.radiusIs*2*Math.sin(d.angles); 
+// 	})
+// 	.attr("width",1)
+// 	.attr("height",5)
+// 	.attr("fill", function(d){
+// 		// return "rgba(20,100,100,.5)";
+// 	})
+//   .attr("transform", function(d,i){
+//   	// console.log(d.q)
+//     return "rotate("+(rScale(parseInt(d.q)))+","+width*0.5+d.radiusIs*2*Math.cos(d.angles)+", "+height*0.5+d.radiusIs*2*Math.sin(d.angles)+")"
+//     })
+// 	.attr("stroke","lightgray")
+
+function ObjectLength( object ) {
+    var length = 0;
+    for( var key in object ) {
+        if( object.hasOwnProperty(key) ) {
+            ++length;
+        }
+    }
+    return length;
+};
+// var inLine = svg.selectAll("line")
+// 	.data(cData)
+// 	.enter().append("line")
+// 	.attr("class", "inLine")
+// 	.attr("x1", function(d,i){
+//     	return width*0.5+d.radiusIs*Math.cos(d.angles);
+// 	})
+// 	.attr("x2", function(d){ 
+// 		if (d.lineX>0){
+// 		return width*0.5+d.radiusIs*Math.cos(d.angles)+1; //+d.lineX;
+// 		}
+// 		else {
+// 		}
+// 	})
+// 	.attr("y1", function(d){
+// 		return height*0.5+d.radiusIs*Math.sin(d.angles);
+// 	})
+// 	.attr("y2", function(d){
+// 		if (d.lineY>0){
+// 		return height*0.5+d.radiusIs*Math.sin(d.angles)+1; //+d.lineY;
+// 		}
+// 		else {
+// 		}
+// 	})
+// 	.attr("fill", function(d){
+// 		// return "rgba("+d.loc*20+",100,100,.5)";
+// 	})
+// 	.attr("stroke","lightgray")
+})
+
+
+
+
+
+
+
+
+
+//this works great
+// d3.tsv("subjects.tsv", function(error, data) {
+// // console.log(data);
+// var jump = Math.PI*2/data.length;
+// var angle = 0;
+
+// var surroundingCircles = svg.selectAll("surroundingCircles")
+// 	.data(data)
+// 	.enter().append("circle")
+// 	.attr("class", "surroundingCircles")
+// 	.attr("cx", function(d,i){
+//   		// return i*50;
+//      return width*0.5+subradius*1.3*Math.cos(jump*(d.loc - 1));
+// 	})
+// 	.attr("cy", function(d,i){   
+// 		// return height/2;
+//      return height*0.5+subradius*1.3*Math.sin(jump*(d.loc - 1));
+
+// 	})
+// 	.attr("r", function(d){ 
+// 		return Math.log(d.freq+2.0)*freqscale/2;
+// 	})
+// 	.attr("fill", function(d){
+// 		return "rgba("+d.loc*20+",100,100,.5)";
+// 	})
+// $('.surroundingCircles').tipsy({ 
+//         gravity: 'nw', 
+//         html: true, 
+//         //fade: true,
+//         title: function() {
+//           var d = this.__data__;
+//           // console
+//           return d.subject+" ("+d.freq+")";
+//           // var intit = parseInt(d.score);
+//           // return (intit)+" pts";
+//         }
+// });
+// })
+
+</script>
+</body>
+</html>
