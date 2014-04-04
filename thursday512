@@ -61,8 +61,7 @@ var rScale = d3.scale.linear()
 
 var freqIs=[];
 
-function runInnerCircles(){
-
+// var angles = []
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
 // console.log(cData);
 var counters = [0,0,146,106,33,14,2,0,0,0];
@@ -79,6 +78,14 @@ for (i = 0; i < MAX_LEVELS;i++) {
 }
 for (i = 0; i < cData.length;i++) {
 	q.push(cData[i].codeName);
+	// var q = new Array();
+	////kinda
+// 	temp = (cData[i].codeName).split(",");
+// 	for (i in temp ) {
+//     temp[i] = parseInt(temp[i], 10); // Explicitly include base as per Álvaro's comment
+// }
+////kinda
+	// console.log(q)
 	angles.push(cData[i].angles);
 	radiusIs.push(cData[i].radiusIs);
 }
@@ -92,8 +99,30 @@ console.log(r[2].length);
 // }
 console.log(q[2])
 console.log(r[2][3])
-
-console.log(subjX[300]+"does this exist? no - only 20 subjects"); //no because there are only 20 subjects
+////getting somewhere
+// var thisRect = svg.selectAll("rect")
+// 	.data(r)
+// 	.enter().append("rect")
+// 	.attr("class", "thisRect")
+// 	.attr("x", function(d,i){
+// 		for (j=0; j<d.length; j++){
+// 			return j*10+50;
+// 			console.log(j);
+// 		}
+// 		// console.log (d[i]);
+// 		// console.log(i);
+// 		// return i*10; //this will be just separating values out per row
+// 	})
+// 	.attr("y", function(d,i){ 
+// 		return i*10; //this will be whether we are on a new line or not
+// 	})
+// 	.attr("width",10)
+// 	.attr("height", function(d,i){
+// 		for (j=0; j<d.length; j++){
+// 			return d[j];
+// 		}
+// 	}); //this will be the height of that number to make sure i have it
+console.log(subjX[300]+"does this exist?"); //no because there are only 20 subjects
 for (i=2; i<subjX.length; i++){
 	// console.log(i-1); //these are the codenames
 }
@@ -101,25 +130,20 @@ console.log(subjX.length+"thisis subjx length");
 console.log(subjText[9]);
 var calcX=[];
 var calcY=[];
-
-// var text = svg.selectAll("text")
-// 	.data(subjX)
-// 	.enter().append("text")
-// 	.attr("x", function(d,i){ 
-// 		return subjX[i]; 
-// 	})
-// 	.attr("y", function(d,i){ 
-// 		return subjY[i];
-// 	})
-// 	.text(function(d,i) { 
-// 		// console.log(subjText[i])
-// 		return subjText[i]; 
-// 	})
-// 	.attr("fill","black");
-
-
-
-
+var text = svg.selectAll("text")
+	.data(subjX)
+	.enter().append("text")
+	.attr("x", function(d,i){ 
+		return subjX[i]; 
+	})
+	.attr("y", function(d,i){ 
+		return subjY[i];
+	})
+	.text(function(d,i) { 
+		// console.log(subjText[i])
+		return subjText[i]; 
+	})
+	.attr("fill","black");
 
 // console.log(q)
 		// console.log(q[0].length);
@@ -130,20 +154,18 @@ var inCircle = svg.selectAll("circle")
 	.enter().append("circle")
 	.attr("class", "inCircle")
 	.attr("cx", function(d,i){
-		subjY.push(Math.round(d.subjY))
-		subjX.push(Math.round(d.subjX))
-		// calcX.push(parseInt(d.xIs));
-		// return parseInt(d.xIs);
-		calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
-     	return width*0.5+d.radiusIs*Math.cos(d.angles);
+		calcX.push(parseInt(d.xIs));
+		return parseInt(d.xIs);
+	// calcX.push(width*0.5+d.radiusIs*2*Math.cos(d.angles));
+ //     	return width*0.5+d.radiusIs*2*Math.cos(d.angles);
 		// console.log(d.codeName);
 	})
 	.attr("cy", function(d){ 
-		// calcY.push(parseInt(d.yIs));
-		// console.log(d.yIs);
-		// return parseInt(d.yIs);
-	calcY.push(height*0.5+d.radiusIs*Math.sin(d.angles));
-		return height*0.5+d.radiusIs*Math.sin(d.angles);
+		calcY.push(parseInt(d.yIs));
+		console.log(d.yIs);
+		return parseInt(d.yIs);
+	// calcY.push(height*0.5+d.radiusIs*2*Math.sin(d.angles));
+	// 	return height*0.5+d.radiusIs*2*Math.sin(d.angles);
 	})
 	.attr("r", function(d){
 	// console.log(width*0.5+d.radiusIs*2*Math.cos(d.angles));
@@ -156,7 +178,15 @@ var inCircle = svg.selectAll("circle")
 
 console.log(calcX.length+"calc x is the problem - <r?");
 console.log(r.length);
-
+////WORKS
+// var g = svg.selectAll("g")
+//     .data(r)
+//     .enter()
+//     .append("g")
+//     .attr("transform", function(d,i){
+//     	return "translate(" + (10) + "," + (10+i*20) + ")";
+// 	})
+////NEXT NEED TO FIGURE OUT ANGLE OF ROTATION PER LINE
 var g = svg.selectAll("g")
     .data(r)
     .enter()
@@ -196,31 +226,33 @@ g.selectAll("line")
 	.attr("y1", function(d,i){
 		return 0;
 	})
+
 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
-// 	var len = Math.sqrt(normal.x * normal.x + normal.y * normal.y)
-// normal.x /= len;
-// normal.y /= len;
 	.attr("x2", function(d,i){
-		// console.log(d+" is the data "+d[i]+" but this is what d at i gets")
+// console.log(i);
 		for (b=2; b<calcX.length+1; b++){
-				if (d==b){
-					if (isNaN(subjX[b])){
-						console.log(subjX[b]+"is nan "+d+"d "+b+"b")
-					 }
-					return (subjX[b])/50;
+			// for (j=0; j<i; j++){
+				if (d[i]==b){
+					// if (cData[i].)
+					return (subjX[b])/20;
+					// console.log(i);
+				// }
 			}
 		}
 	})
 	.attr("y2", function(d,i){
 		for (b=2; b<calcX.length+1; b++){
-				if (d==b){
-					return (subjY[b])/50;
+			// for (j=0; j<i; j++){
+				if (d[i]==b){
+					return (subjY[b])/20;
+					// console.log(i);
 				}
-			}
+			// }
+		}
 	})
 	.attr("stroke","lightgray");
 });
-}
+
 
 
 // ////works ok
@@ -240,7 +272,7 @@ g.selectAll("line")
 // 	.attr("height",5)
 
 
-function runOuterCircles(){
+
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
 d3.tsv("subjects.tsv", function(error, data) {
@@ -257,27 +289,24 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
   		// return i*50;
   		// console.log(Math.cos(jump*(d.loc - 1)));
   	// subjCode.push(d.code);
-  	// subjX.push(width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1)));	
+  	subjX.push(width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1)));	
   	subjText.push(d.subject);
-     return width*0.5+subradius*1.2*Math.cos(jump*(d.loc - 1));
+     return width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1));
 	})
 	.attr("cy", function(d,i){   
 		// return height/2;
-	// subjY.push(height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1)));
-     return height*0.5+subradius*1.2*Math.sin(jump*(d.loc - 1));
+	subjY.push(height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1)));
+     return height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1));
+
 	})
 	.attr("r", function(d){ 
 	freqIs.push(d.freq);
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
-	.attr("fill", function(d,i){
-		// console.log(subjY[i]);
+	.attr("fill", function(d){
 		return "rgba("+d.loc*20+",100,100,.5)";
 	})
-// console.log(subjY);	
-// if (subjX.length>299){
-	// runInnerCircles();
-// }
+
 // var surroundingLines = svg.selectAll("line")
 // 	.data(data)
 // 	.enter().append("line")
@@ -310,16 +339,9 @@ $('.surroundingCircles').tipsy({
           // return (intit)+" pts";
         }
 });
-})
-}
 runInnerCircles();
+})
 
-runOuterCircles();
-// runInnerCircles();
-// setTimeout(function () { 
-//     runOuterCircles();
-//     }
-// , 4000); 
 
 </script>
 </body>
