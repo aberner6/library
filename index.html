@@ -91,6 +91,12 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 	.attr("fill", function(d,i){
 		return "rgba("+d.loc*20+",100,100,.5)";
 	})
+	.on("mouseover", function(d){
+		runLines(d.subjCode)
+	})
+	.on("mouseout", function(d){
+		removeLines();
+	});
 
 var text = svg.selectAll("text")
 	.data(data)
@@ -106,26 +112,26 @@ var text = svg.selectAll("text")
 	})
 	.attr("fill","black");
 
-var surroundingLines = svg.selectAll("surroundingLines")
-	.data(data)
-	.enter().append("line")
-	.attr("class", "surroundingLines")
-	.attr("x1", function(d,i){
-  		// return i*50;
-  		// console.log(Math.cos(jump*(d.loc - 1)));
-  	// subjX.push(width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1)));	
-     // return width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1));
-		return subjX[i]; 
-	})
-	.attr("y1", function(d,i){   
-		// return height/2;
-	// subjY.push(height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1)));
-     // return height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1));
-		return subjY[i]; 
-	})
-	.attr("x2", width/2)
-	.attr("y2", height/2)
-	.attr("stroke","black");
+// var surroundingLines = svg.selectAll("surroundingLines")
+// 	.data(data)
+// 	.enter().append("line")
+// 	.attr("class", "surroundingLines")
+// 	.attr("x1", function(d,i){
+//   		// return i*50;
+//   		// console.log(Math.cos(jump*(d.loc - 1)));
+//   	// subjX.push(width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1)));	
+//      // return width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1));
+// 		return subjX[i]; 
+// 	})
+// 	.attr("y1", function(d,i){   
+// 		// return height/2;
+// 	// subjY.push(height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1)));
+//      // return height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1));
+// 		return subjY[i]; 
+// 	})
+// 	.attr("x2", width/2)
+// 	.attr("y2", height/2)
+// 	.attr("stroke","black");
 
 $('.surroundingCircles').tipsy({ 
         gravity: 'nw', 
@@ -138,21 +144,23 @@ $('.surroundingCircles').tipsy({
 });
 })
 }
+
+var angles = [];
 var r = [];
 var calcX=[];
 var calcY=[];
 var codeSubj=[];
+var radiusIs = [];
+var allCodes = [];	
+var temp = [];
+var thisThing;
+var codesLengths = [];
 
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
 var counters = [0,0,146,106,33,14,2,0,0,0];
 var jumps;
-var angles = [];
-var radiusIs = [];
-var q = [];	
-var temp = [];
-var thisThing;
 
 for (i = 0; i < MAX_LEVELS;i++) {
     jumps = Math.PI*2/parseFloat(counters[i]);  
@@ -160,38 +168,18 @@ for (i = 0; i < MAX_LEVELS;i++) {
 for (i = 0; i < cData.length;i++) {
 calcX.push(cData[i].xIs);
 calcY.push(cData[i].yIs);
-	q.push(cData[i].codeName);
+	allCodes.push(cData[i].codeName);
 	angles.push(cData[i].angles);
 	radiusIs.push(cData[i].radiusIs);
+	codesLengths.push(cData[i].q);
 }
 for (i=0; i<20; i++){
 	codeSubj.push(cData[i].codeSubj);
 }
-for (i=0; i<q.length; i++){
-	// r.push(q[i].split(","));
-	r.push(q[i].split(","));
-
-		// console.log(r.length);
+for (i=0; i<allCodes.length; i++){
+	r.push(allCodes[i].split(","));
 }
-// var c=q[2].split(",")
-console.log(r[2].length);
-// }
-console.log(q[2])
-console.log(r[2][3]+"r at 2 at 3")
 
-console.log(subjX[300]+"does this exist? no - only 20 subjects"); //no because there are only 20 subjects
-for (i=2; i<subjX.length; i++){
-	// console.log(i-1); //these are the codenames
-}
-console.log(subjX.length+"thisis subjx length");
-console.log(subjText[9]);
-// var calcX=[];
-// var calcY=[];
-// console.log(q)
-		// console.log(q[0].length);
-////this works
-
-console.log(cData.length+"cdata length")
 var inCircle = svg.selectAll("circle")
 	.data(cData)
 	.enter().append("circle")
@@ -200,7 +188,6 @@ var inCircle = svg.selectAll("circle")
 		subjY.push(Math.round(d.subjY));
 		subjX.push(Math.round(d.subjX));
 		subjLoc.push(d.loc);
-		// subjCode.push(d.subjCode);
 		subjTextInside.push(d.subject);
 		// calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
      	return width*0.5+d.radiusIs*Math.cos(d.angles);
@@ -216,34 +203,60 @@ var inCircle = svg.selectAll("circle")
 		return "rgba(20,100,100,.5)";
 	});
 
-console.log(calcX.length+"calc x is the problem - <r?");
-console.log(r.length);
-console.log(codeSubj)
+// var thisNum = 1;
+// var g = svg.selectAll("line")
+//     .data(r)
+//     .enter()
+//     .append("line")
+//     .attr("transform", function(d,i){
+//     	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+// 	})
+//     .attr("class", function(d,i){
+//     	 return d;
+//     })
+// 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
+// // 	var len = Math.sqrt(normal.x * normal.x + normal.y * normal.y)
+// // normal.x /= len;
+// // normal.y /= len;
+// 	.attr("x1",0)
+// 	.attr("y1",0)
+// 	.attr("x2",	function(d,i){
+// 		for (j=0; j<allCodes[i].length; j++){
+// 			if (thisNum==d[j]){
+// 				return subjX[thisNum]-calcX[i];
+// 			}		
+// 		}
+// 	})
+// 	.attr("y2",function(d,i){
+// 		for (j=0; j<allCodes[i].length; j++){
+// 			if (thisNum==d[j]){
+// 				return subjY[thisNum]-calcY[i];
+// 			}		
+// 		}
+// 	})
+// 	.attr("stroke","pink")
+// 	.attr("stroke-width",1);
+})
+}
 
+runInnerCircles();
 
-var g = svg.selectAll("g")
+runOuterCircles();
+// runLines(1);
+function removeLines(){
+	svg.selectAll("line").remove();
+}
+function runLines(passSubjNum){
+var thisNum = passSubjNum-1;
+var g = svg.selectAll("line")
     .data(r)
     .enter()
-    .append("g")
-    .attr("transform", function(d,i){
-    	return "translate(" + (calcX[0]) + "," + (calcY[0]) + ")";
-	});
-var newThing=[];
-
-var whichSpot;
-var newMark;
-console.log(r);
-g.selectAll("line")
-    .data(function(d,i){ 
-    	// console.log(i);
-    	return d[0]; 
-    })
-    .enter()
     .append("line")
+    .attr("transform", function(d,i){
+    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+	})
     .attr("class", function(d,i){
-    	    	// console.log(i);
-
-    	return d[0];
+    	 return d;
     })
 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
 // 	var len = Math.sqrt(normal.x * normal.x + normal.y * normal.y)
@@ -252,79 +265,22 @@ g.selectAll("line")
 	.attr("x1",0)
 	.attr("y1",0)
 	.attr("x2",	function(d,i){
-		for (j=0; j<25; j++){
-			if (d==codeSubj[j]){
-				newMark = d;
-				whichSpot = subjLoc[newMark];
-			}
+		for (j=0; j<allCodes[i].length; j++){
+			if (thisNum==d[j]){
+				return subjX[thisNum]-calcX[i];
+			}		
 		}
-				for (k=0; k<r.length; k++){
-						var newNum= (subjX[0]-calcX[0]);
-						// if (newNum<0){
-						// 	return newNum*-1;
-						// }
-						// else {
-							return newNum;
-						// }
-					}
-			})
+	})
 	.attr("y2",function(d,i){
-		for (j=0; j<25; j++){
-			if (d==codeSubj[j]){
-				var newMark = d;
-				var whichSpot = subjLoc[newMark];
-				for (k=0; k<r.length; k++){
-						var newNum= (subjY[0]-calcY[0]);
-							return newNum;
-						}
-					}
-				}
+		for (j=0; j<allCodes[i].length; j++){
+			if (thisNum==d[j]){
+				return subjY[thisNum]-calcY[i];
+			}		
+		}
 	})
 	.attr("stroke","pink")
 	.attr("stroke-width",1);
-				console.log(whichSpot.length);
-				console.log(subjLoc[newMark]+"location");
-});
 }
-
-
-// ////works ok
-// g.selectAll("rect")
-//     .data(function(d,i){ 
-//     	return d; 
-//     })
-//     .enter()
-//     .append("rect")
-//     .attr("x", function(d,i){
-//     	return i*5;
-// 	})
-// 	.attr("y", function(d,i){
-// 		return 0;
-// 	})
-// 	.attr("width", 1)
-// 	.attr("height",5)
-
-////BEAUTIFUL BUT no direction
-// g.selectAll("rect")
-//     .data(function(d,i){ 
-//     	return d; 
-//     })
-//     .enter()
-//     .append("rect")
-//     .attr("x", function(d,i){
-//     	return i*4;
-//     })
-//     .attr("y", function(d){
-//     	return 0;
-//     })
-//     .attr("width", 1)
-//     .attr("height",5)
-//     .attr("stroke","lightgray");
-runInnerCircles();
-
-runOuterCircles();
-    	// console.log(r[0]+"d at i "+0+" i");
-
 
 </script>
 </body>
