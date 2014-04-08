@@ -76,10 +76,12 @@ sData.push(data);
 var surroundingCircles = svg.selectAll("surroundingCircles")
 	.data(data)
 	.enter().append("circle")
-	.attr("class", "surroundingCircles")
+	.attr("class", function(d,i){
+		 subjCode.push(d.subjCode);
+		return "surroundingCircles";
+	})
 	.attr("cx", function(d,i){
 		return subjX[i];
-  	// subjCode.push(d.subjCode);
 	})
 	.attr("cy", function(d,i){   
 		return subjY[i]; 
@@ -92,7 +94,8 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 		return "rgba("+d.loc*20+",100,100,.5)";
 	})
 	.on("mouseover", function(d){
-		runLines(d.subjCode)
+		// runLines(d.subjCode)
+		runLines();
 	})
 	.on("mouseout", function(d){
 		removeLines();
@@ -246,8 +249,10 @@ runOuterCircles();
 function removeLines(){
 	svg.selectAll("line").remove();
 }
-function runLines(passSubjNum){
-var thisNum = passSubjNum-1;
+function runLines(){
+// function runLines(passSubjNum){
+// var thisNum = passSubjNum-1;
+
 var g = svg.selectAll("line")
     .data(r)
     .enter()
@@ -266,16 +271,36 @@ var g = svg.selectAll("line")
 	.attr("y1",0)
 	.attr("x2",	function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
-			if (thisNum==d[j]){
-				return subjX[thisNum]-calcX[i];
+			for (k=0; k<subjCode.length; k++){
+			if (k==d[j]){
+				return subjX[k]-calcX[i];
 			}		
 		}
+		}
 	})
+	////THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
+	// .attr("x2",function(d,i){
+	// 	for (j=0; j<allCodes[i].length; j++){
+	// 		if (thisNum==d[j]){
+	// 			return subjX[thisNum]-calcX[i];
+	// 		}		
+	// 	}
+	// })
+
+	// .attr("y2",function(d,i){
+	// 	for (j=0; j<allCodes[i].length; j++){
+	// 		if (thisNum==d[j]){
+	// 			return subjY[thisNum]-calcY[i];
+	// 		}		
+	// 	}
+	// })
 	.attr("y2",function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
-			if (thisNum==d[j]){
-				return subjY[thisNum]-calcY[i];
+			for (k=0; k<subjCode.length; k++){
+			if (k==d[j]){
+				return subjY[k]-calcY[i];
 			}		
+		}
 		}
 	})
 	.attr("stroke","pink")
