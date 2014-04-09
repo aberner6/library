@@ -6,7 +6,7 @@
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
 <script type="text/javascript" src="js/lib/d3.v3.js"></script>
-	<script src="js/lib/vector.js"></script>
+<script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <body>
 <script type = "text/javascript">
 var freqscale = 5; //size of circles
@@ -62,7 +62,7 @@ var rScale = d3.scale.linear()
   .range([-180, 180]);
 
 var freqIs=[];
-
+var item;
 
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
@@ -94,12 +94,19 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 		return "rgba("+d.loc*20+",100,100,.5)";
 	})
 	.on("mouseover", function(d){
-		// runLines(d.subjCode)
-		runLines();
+		item = d.subjCode;
 	})
 	.on("mouseout", function(d){
 		removeLines();
 	});
+$('.surroundingCircles').hoverIntent({
+    over: function(){
+		runLines(item);
+    },
+    out: function(){
+		removeLines();
+    }
+  })
 
 var text = svg.selectAll("text")
 	.data(data)
@@ -205,54 +212,27 @@ var inCircle = svg.selectAll("circle")
 	.attr("fill", function(d){
 		return "rgba(20,100,100,.5)";
 	});
-
-// var thisNum = 1;
-// var g = svg.selectAll("line")
-//     .data(r)
-//     .enter()
-//     .append("line")
-//     .attr("transform", function(d,i){
-//     	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
-// 	})
-//     .attr("class", function(d,i){
-//     	 return d;
-//     })
-// 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
-// // 	var len = Math.sqrt(normal.x * normal.x + normal.y * normal.y)
-// // normal.x /= len;
-// // normal.y /= len;
-// 	.attr("x1",0)
-// 	.attr("y1",0)
-// 	.attr("x2",	function(d,i){
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (thisNum==d[j]){
-// 				return subjX[thisNum]-calcX[i];
-// 			}		
-// 		}
-// 	})
-// 	.attr("y2",function(d,i){
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (thisNum==d[j]){
-// 				return subjY[thisNum]-calcY[i];
-// 			}		
-// 		}
-// 	})
-// 	.attr("stroke","pink")
-// 	.attr("stroke-width",1);
 })
 }
 
 runInnerCircles();
-
 runOuterCircles();
 // runLines(1);
 function removeLines(){
 	svg.selectAll("line").remove();
 }
-function runLines(){
-// function runLines(passSubjNum){
-// var thisNum = passSubjNum-1;
 
+// function runLines(){
+// 	var normX = d3.scale.linear()
+// 	.domain([-width, width])
+// 	.range([5,10]);
+
+// var normY = d3.scale.linear()
+// 	.domain([-height, height])
+// 	.range([5,10]);
+
+function runLines(passSubjNum){
+var thisNum = passSubjNum-1;
 var g = svg.selectAll("line")
     .data(r)
     .enter()
@@ -264,45 +244,42 @@ var g = svg.selectAll("line")
     	 return d;
     })
 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
-// 	var len = Math.sqrt(normal.x * normal.x + normal.y * normal.y)
-// normal.x /= len;
-// normal.y /= len;
 	.attr("x1",0)
 	.attr("y1",0)
-	.attr("x2",	function(d,i){
+	// .attr("x2",	function(d,i){
+	// 	for (j=0; j<allCodes[i].length; j++){
+	// 		for (k=0; k<subjCode.length; k++){
+	// 		if (k==d[j]){
+	// 			return (subjX[k]-calcX[i]);
+	// 		}		
+	// 	}
+	// 	}
+	// })
+	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
+	.attr("x2",function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
-			for (k=0; k<subjCode.length; k++){
-			if (k==d[j]){
-				return subjX[k]-calcX[i];
+			if (thisNum==d[j]){
+				return subjX[thisNum]-calcX[i];
 			}		
 		}
-		}
 	})
-	////THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
-	// .attr("x2",function(d,i){
-	// 	for (j=0; j<allCodes[i].length; j++){
-	// 		if (thisNum==d[j]){
-	// 			return subjX[thisNum]-calcX[i];
-	// 		}		
-	// 	}
-	// })
 
-	// .attr("y2",function(d,i){
-	// 	for (j=0; j<allCodes[i].length; j++){
-	// 		if (thisNum==d[j]){
-	// 			return subjY[thisNum]-calcY[i];
-	// 		}		
-	// 	}
-	// })
 	.attr("y2",function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
-			for (k=0; k<subjCode.length; k++){
-			if (k==d[j]){
-				return subjY[k]-calcY[i];
+			if (thisNum==d[j]){
+				return subjY[thisNum]-calcY[i];
 			}		
 		}
-		}
 	})
+	// .attr("y2",function(d,i){
+	// 	for (j=0; j<allCodes[i].length; j++){
+	// 		for (k=0; k<subjCode.length; k++){
+	// 		if (k==d[j]){
+	// 			return (subjY[k]-calcY[i]);
+	// 		}		
+	// 	}
+	// 	}
+	// })
 	.attr("stroke","pink")
 	.attr("stroke-width",1);
 }
