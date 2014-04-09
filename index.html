@@ -165,6 +165,7 @@ var allCodes = [];
 var temp = [];
 var thisThing;
 var codesLengths = [];
+var whatRadius = [];
 
 function runInnerCircles(){
 
@@ -176,8 +177,8 @@ for (i = 0; i < MAX_LEVELS;i++) {
     jumps = Math.PI*2/parseFloat(counters[i]);  
 }
 for (i = 0; i < cData.length;i++) {
-calcX.push(cData[i].xIs);
-calcY.push(cData[i].yIs);
+// calcX.push(cData[i].xIs);
+// calcY.push(cData[i].yIs);
 	allCodes.push(cData[i].codeName);
 	angles.push(cData[i].angles);
 	radiusIs.push(cData[i].radiusIs);
@@ -199,19 +200,28 @@ var inCircle = svg.selectAll("circle")
 		subjX.push(Math.round(d.subjX));
 		subjLoc.push(d.loc);
 		subjTextInside.push(d.subject);
-		// calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
+
+		// return d.xIs;
+		calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
      	return width*0.5+d.radiusIs*Math.cos(d.angles);
 	})
 	.attr("cy", function(d){ 
-		// calcY.push(height*0.5+d.radiusIs*Math.sin(d.angles));
+		calcY.push(height*0.5+d.radiusIs*Math.sin(d.angles));
 		return height*0.5+d.radiusIs*Math.sin(d.angles);
 	})
 	.attr("r", function(d){
+		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
 	.attr("fill", function(d){
 		return "rgba(20,100,100,.5)";
-	});
+	})
+	.on("mouseover", function(d,i){
+		console.log(d.codeName+"d.codeName from mouse");
+		console.log(i+"index from mouse")
+		runLinesOut(d.codeName, i);
+	})
+	.on("mouseout", function(d){ removeLines() });
 })
 }
 
@@ -222,7 +232,14 @@ function removeLines(){
 	svg.selectAll("line").remove();
 }
 
-// function runLines(){
+// function runLines(passSubjNum){
+// console.log(passSubjNum+"passed");
+// // var thisNum = passSubjNum-1;
+// 	// r.push(allCodes[i].split(","));
+// passIt = passSubjNum.split(",");
+
+// var thisNum = passIt[0]-1;
+// console.log(passIt[0]+"thisNum");
 // 	var normX = d3.scale.linear()
 // 	.domain([-width, width])
 // 	.range([5,10]);
@@ -231,8 +248,15 @@ function removeLines(){
 // 	.domain([-height, height])
 // 	.range([5,10]);
 
+
+
+
+
+
 function runLines(passSubjNum){
+console.log(passSubjNum+"passed");
 var thisNum = passSubjNum-1;
+
 var g = svg.selectAll("line")
     .data(r)
     .enter()
@@ -283,6 +307,76 @@ var g = svg.selectAll("line")
 	.attr("stroke","pink")
 	.attr("stroke-width",1);
 }
+function runLinesOut(arrayOfSubjs, index){
+var thisIs = [];
+console.log(arrayOfSubjs);
+	// for (i=0; i<arrayOfSubjs; i++){
+	thisIs = arrayOfSubjs.split(",");
+	// }
+var thisCircle = index;
+console.log(thisCircle+"variable for index");
+console.log(thisIs[0]+"thisIs")
+var justOne = thisIs[0];
+
+var g = svg.selectAll("line")
+    .data(r)
+    .enter()
+    .append("line")
+    .attr("transform", function(d,i){
+    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+	})
+    .attr("class", function(d,i){
+    	 return d;
+    })
+    .attr("x1", 0)
+    .attr("x2", 0)
+	// .attr("x1",function(d,i){ if (i==thisCircle){ return -whatRadius[thisCircle] }})
+	// .attr("y1",function(d,i){ if (i==thisCircle){ return -whatRadius[thisCircle]/4 }})
+	// .attr("x2",	function(d,i){
+	// 	for (j=0; j<allCodes[i].length; j++){
+	// 		for (k=0; k<subjCode.length; k++){
+	// 		if (k==d[j]){
+	// 			return (subjX[k]-calcX[i]);
+	// 		}		
+	// 	}
+	// 	}
+	// })
+	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
+	.attr("x2",function(d,i){
+		if (i==thisCircle){
+						return subjX[justOne-1]-calcX[thisCircle];			
+		}
+		// 	for (k=0; k<subjCode.length; k++){
+		// 		for (b=0; b<arrayOfSubjs; b++){
+		// 			if (k==arrayOfSubjs[b])
+		// 				return subjX[justOne]-calcX[thisCircle];
+		// 	// for (b=0; b<arrayOfSubjs; b++){
+		// 				// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
+		// 	}
+		// }
+	})
+	.attr("y2",function(d,i){
+			// for (k=0; k<subjCode.length; k++){
+				// for (b=0; b<arrayOfSubjs; b++){
+					// if (k==arrayOfSubjs[b])
+							if (i==thisCircle){
+						return subjY[justOne-1]-calcY[thisCircle];
+					}
+			// for (b=0; b<arrayOfSubjs; b++){
+						// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
+		// 	}
+		// }
+		// for (j=0; j<allCodes[i].length; j++){
+		// 	if (thisNum==d[j]){
+		// 		return subjY[thisNum]-calcY[i];
+		// 	}		
+		// }
+	})
+	.attr("stroke","pink")
+	.attr("stroke-width",1);
+}
+
+
 
 </script>
 </body>
