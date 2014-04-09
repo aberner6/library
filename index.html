@@ -344,8 +344,15 @@ var g = svg.selectAll("line")
 	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
 	.attr("x2",function(d,i){
 		if (i==thisCircle){
-						return subjX[justOne-1]-calcX[thisCircle];			
+			for (b=0; b<thisIs.length; b++){
+			for (k=0; k<subjCode.length; k++){
+				if (k==thisIs[b]){
+				// if (subjCode==thisIs[b]){
+					return subjX[k-1]-calcX[thisCircle];									
+				}
+			}
 		}
+	}
 		// 	for (k=0; k<subjCode.length; k++){
 		// 		for (b=0; b<arrayOfSubjs; b++){
 		// 			if (k==arrayOfSubjs[b])
@@ -359,9 +366,29 @@ var g = svg.selectAll("line")
 			// for (k=0; k<subjCode.length; k++){
 				// for (b=0; b<arrayOfSubjs; b++){
 					// if (k==arrayOfSubjs[b])
-							if (i==thisCircle){
-						return subjY[justOne-1]-calcY[thisCircle];
-					}
+
+
+		if (i==thisCircle){
+			for (b=0; b<thisIs.length; b++){
+				console.log(thisIs[b]+"thisisatb");
+			for (k=0; k<subjCode.length; k++){
+				if (k==thisIs[b]){
+					return subjY[k-1]-calcY[thisCircle];									
+				}
+			}
+			}
+		}
+
+					//////WORKS
+					// 		if (i==thisCircle){
+					// 	return subjY[justOne-1]-calcY[thisCircle];
+					// }
+										//////WORKS
+
+
+
+
+
 			// for (b=0; b<arrayOfSubjs; b++){
 						// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
 		// 	}
