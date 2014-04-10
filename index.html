@@ -3,6 +3,11 @@
 <head>
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
+	<style>
+	body{
+		font-family: "Geosanslight";
+	}
+	</style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
 <script type="text/javascript" src="js/lib/d3.v3.js"></script>
@@ -56,6 +61,7 @@ var subjCode = [];
 var subjTextInside = [];
 var subjLoc = [];
 
+// var color = d3.scale.category20c();
 
 var rScale = d3.scale.linear()
   .domain([-7, 7]) 
@@ -68,7 +74,6 @@ function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
 d3.tsv("subjects.tsv", function(error, data) {
-// console.log(data);
 var jump = Math.PI*2/data.length;
 var angle = 0;
 sData.push(data);
@@ -91,7 +96,21 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
 	.attr("fill", function(d,i){
-		return "rgba("+d.loc*20+",100,100,.5)";
+		if (d.subjCode<5){
+			return "teal";
+		}
+		if (d.subjCode>=5&&d.subjCode<10){
+			return "lightgreen";
+		}
+		if (d.subjCode>=10&&d.subjCode<15){
+			return "lightblue";
+		}
+		if (d.subjCode>=15&&d.subjCode<21){
+			return "blue";
+		}
+    // return "rgb(0, " + (d.subjCode * 10) + ", " + (d.subjCode * 30) + ")";
+		// return "hsl("+subjCode[i]*5+",1,1)";
+		// return color(d.subjCode);
 	})
 	.on("mouseover", function(d){
 		item = d.subjCode;
@@ -112,7 +131,7 @@ var text = svg.selectAll("text")
 	.data(data)
 	.enter().append("text")
 	.attr("x", function(d,i){ 
-		return subjX[i]; 
+		return subjX[i]-40; 
 	})
 	.attr("y", function(d,i){ 
 		return subjY[i];
@@ -350,7 +369,7 @@ var g = svg.selectAll("line")
 			for (k=0; k<subjCode.length; k++){
 			// for (k=0; k<5; k++){
 				if (k==d){
-					return subjX[k]-calcX[thisCircle];
+					return subjX[k-1]-calcX[thisCircle];
 					// grabIt.push(k);
 				}
 			}
@@ -367,7 +386,7 @@ var g = svg.selectAll("line")
 	.attr("y2",function(d,i){
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
-					return subjY[k]-calcY[thisCircle];
+					return subjY[k-1]-calcY[thisCircle];
 				}
 			}
 		})
