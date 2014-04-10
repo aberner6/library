@@ -307,31 +307,32 @@ var g = svg.selectAll("line")
 	.attr("stroke","pink")
 	.attr("stroke-width",1);
 }
-function runLinesOut(arrayOfSubjs, index){
 var thisIs = [];
-console.log(arrayOfSubjs);
-	// for (i=0; i<arrayOfSubjs; i++){
-	thisIs = arrayOfSubjs.split(",");
-	// }
+
+function runLinesOut(arrayOfSubjs, index){
+console.log(arrayOfSubjs+"hi");
+
+thisIs = arrayOfSubjs.split(",");
+	for (i=0; i<thisIs.length; i++){
+		console.log(i+"ARRAY")
+	}
 var thisCircle = index;
 console.log(thisCircle+"variable for index");
 console.log(thisIs[0]+"thisIs")
 var justOne = thisIs[0];
-
+var grabIt = [];
 var g = svg.selectAll("line")
-    .data(r)
+    .data(thisIs)
     .enter()
     .append("line")
     .attr("transform", function(d,i){
-    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+    	return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
     .attr("class", function(d,i){
     	 return d;
     })
     .attr("x1", 0)
     .attr("x2", 0)
-	// .attr("x1",function(d,i){ if (i==thisCircle){ return -whatRadius[thisCircle] }})
-	// .attr("y1",function(d,i){ if (i==thisCircle){ return -whatRadius[thisCircle]/4 }})
 	// .attr("x2",	function(d,i){
 	// 	for (j=0; j<allCodes[i].length; j++){
 	// 		for (k=0; k<subjCode.length; k++){
@@ -343,51 +344,63 @@ var g = svg.selectAll("line")
 	// })
 	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
 	.attr("x2",function(d,i){
-		if (i==thisCircle){
-			for (b=0; b<thisIs.length; b++){
+		console.log(d);
+		// for (b=0; b<thisIs.length; b++){
+				// console.log(thisIs[b]+" b inside x2");
 			for (k=0; k<subjCode.length; k++){
-				if (k==thisIs[b]){
-				// if (subjCode==thisIs[b]){
-					return subjX[k-1]-calcX[thisCircle];									
+			// for (k=0; k<5; k++){
+				if (k==d){
+					return subjX[k]-calcX[thisCircle];
+					// grabIt.push(k);
 				}
 			}
-		}
-	}
+		
+			// for (j=0; j<grabIt.length; j++){
+			// 	if (i==thisCircle){
+			// 		return subjX[grabIt[j]]-calcX[thisCircle];
+			// 	}
+			// }
+	})
+	//NEED TO FIGURE OUT A WAY TO DRAW ADDITIONAL LINES 
+	//FOR ALL THE ELEMNTS IN THE ARRAY
+	//INSTEAD OF JUST THE INDEX NUMBER WE ARE IN
+	.attr("y2",function(d,i){
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					return subjY[k]-calcY[thisCircle];
+				}
+			}
+		})
+		
+
+		// for (b=0; b<thisIs.length; b++){
+		// if (i==thisCircle){
+		// 		// console.log(b+" b "+thisIs[b]+"thisisatb "+thisIs.length+"thisislength");
+		// 	// for (k=0; k<5; k++){
 		// 	for (k=0; k<subjCode.length; k++){
-		// 		for (b=0; b<arrayOfSubjs; b++){
-		// 			if (k==arrayOfSubjs[b])
-		// 				return subjX[justOne]-calcX[thisCircle];
-		// 	// for (b=0; b<arrayOfSubjs; b++){
-		// 				// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
+
+		// 		if (k==thisIs[b]){
+		// 			return subjY[k]-calcY[thisCircle];									
+		// 		}
+		// 	}
 		// 	}
 		// }
-	})
-	.attr("y2",function(d,i){
-			// for (k=0; k<subjCode.length; k++){
-				// for (b=0; b<arrayOfSubjs; b++){
-					// if (k==arrayOfSubjs[b])
 
-
-		if (i==thisCircle){
-			for (b=0; b<thisIs.length; b++){
-				console.log(thisIs[b]+"thisisatb");
-			for (k=0; k<subjCode.length; k++){
-				if (k==thisIs[b]){
-					return subjY[k-1]-calcY[thisCircle];									
-				}
-			}
-			}
-		}
+	// 		for (j=0; j<grabIt.length; j++){
+	// 			if (i==thisCircle){
+	// 				return subjY[grabIt[j]]-calcY[thisCircle];
+	// 			}
+	// 		}
+	// })
+	.attr("stroke","pink")
+	.attr("stroke-width",1);
+}
 
 					//////WORKS
 					// 		if (i==thisCircle){
 					// 	return subjY[justOne-1]-calcY[thisCircle];
 					// }
 										//////WORKS
-
-
-
-
 
 			// for (b=0; b<arrayOfSubjs; b++){
 						// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
@@ -398,12 +411,6 @@ var g = svg.selectAll("line")
 		// 		return subjY[thisNum]-calcY[i];
 		// 	}		
 		// }
-	})
-	.attr("stroke","pink")
-	.attr("stroke-width",1);
-}
-
-
 
 </script>
 </body>
