@@ -96,22 +96,23 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
 	.attr("fill", function(d,i){
-		if (d.subjCode<5){
+		if (d.loc<=5){
 			return "teal";
 		}
-		if (d.subjCode>=5&&d.subjCode<10){
+		if (d.loc>5&&d.loc<=10){
 			return "lightgreen";
 		}
-		if (d.subjCode>=10&&d.subjCode<15){
+		if (d.loc>10&&d.loc<=15){
 			return "lightblue";
 		}
-		if (d.subjCode>=15&&d.subjCode<21){
+		if (d.loc>15&&d.loc<21){
 			return "blue";
 		}
     // return "rgb(0, " + (d.subjCode * 10) + ", " + (d.subjCode * 30) + ")";
 		// return "hsl("+subjCode[i]*5+",1,1)";
 		// return color(d.subjCode);
 	})
+	// .attr("opacity",.5)
 	.on("mouseover", function(d){
 		item = d.subjCode;
 	})
@@ -232,9 +233,11 @@ var inCircle = svg.selectAll("circle")
 		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
-	.attr("fill", function(d){
-		return "rgba(20,100,100,.5)";
-	})
+	.attr("fill", "grey")
+	.attr("opacity",.3)
+	// function(d){
+		// return "rgba(20,100,100,.5)";
+	// })
 	.on("mouseover", function(d,i){
 		console.log(d.codeName+"d.codeName from mouse");
 		console.log(i+"index from mouse")
@@ -323,8 +326,8 @@ var g = svg.selectAll("line")
 	// 	}
 	// 	}
 	// })
-	.attr("stroke","pink")
-	.attr("stroke-width",1);
+	.attr("stroke","black")
+	.attr("stroke-width",.5);
 }
 var thisIs = [];
 
@@ -411,8 +414,8 @@ var g = svg.selectAll("line")
 	// 			}
 	// 		}
 	// })
-	.attr("stroke","pink")
-	.attr("stroke-width",1);
+	.attr("stroke","black")
+	.attr("stroke-width",.5);
 }
 
 					//////WORKS
