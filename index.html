@@ -122,6 +122,7 @@ var surroundingCircles = svg.selectAll("surroundingCircles")
 $('.surroundingCircles').hoverIntent({
     over: function(){
 		runLines(item);
+	// persistLines();
     },
     out: function(){
 		removeLines();
@@ -141,27 +142,6 @@ var text = svg.selectAll("text")
 		return d.subjCode+"code "+d.loc+"loc"; 
 	})
 	.attr("fill","black");
-
-// var surroundingLines = svg.selectAll("surroundingLines")
-// 	.data(data)
-// 	.enter().append("line")
-// 	.attr("class", "surroundingLines")
-// 	.attr("x1", function(d,i){
-//   		// return i*50;
-//   		// console.log(Math.cos(jump*(d.loc - 1)));
-//   	// subjX.push(width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1)));	
-//      // return width*0.5+subradius*2.3*Math.cos(jump*(d.loc - 1));
-// 		return subjX[i]; 
-// 	})
-// 	.attr("y1", function(d,i){   
-// 		// return height/2;
-// 	// subjY.push(height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1)));
-//      // return height*0.5+subradius*2.3*Math.sin(jump*(d.loc - 1));
-// 		return subjY[i]; 
-// 	})
-// 	.attr("x2", width/2)
-// 	.attr("y2", height/2)
-// 	.attr("stroke","black");
 
 $('.surroundingCircles').tipsy({ 
         gravity: 'nw', 
@@ -249,59 +229,107 @@ var inCircle = svg.selectAll("circle")
 
 runInnerCircles();
 runOuterCircles();
-// runLines(1);
-function removeLines(){
-	svg.selectAll("line").remove();
-}
-
-// function runLines(passSubjNum){
-// console.log(passSubjNum+"passed");
-// // var thisNum = passSubjNum-1;
-// 	// r.push(allCodes[i].split(","));
-// passIt = passSubjNum.split(",");
-
-// var thisNum = passIt[0]-1;
-// console.log(passIt[0]+"thisNum");
-// 	var normX = d3.scale.linear()
-// 	.domain([-width, width])
-// 	.range([5,10]);
-
-// var normY = d3.scale.linear()
-// 	.domain([-height, height])
-// 	.range([5,10]);
 
 
-
-
-
-
-function runLines(passSubjNum){
-console.log(passSubjNum+"passed");
-var thisNum = passSubjNum-1;
-
-var g = svg.selectAll("line")
+function persistLines(){
+var otherLines = svg.selectAll("otherLines")
     .data(r)
     .enter()
     .append("line")
     .attr("transform", function(d,i){
     	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
 	})
-    .attr("class", function(d,i){
-    	 return d;
-    })
+    .attr("class", "persist")
 	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
 	.attr("x1",0)
 	.attr("y1",0)
-	// .attr("x2",	function(d,i){
-	// 	for (j=0; j<allCodes[i].length; j++){
-	// 		for (k=0; k<subjCode.length; k++){
-	// 		if (k==d[j]){
-	// 			return (subjX[k]-calcX[i]);
-	// 		}		
-	// 	}
-	// 	}
-	// })
-	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
+	.attr("x2",	function(d,i){
+		for (j=0; j<allCodes[i].length; j++){
+			for (k=0; k<subjCode.length; k++){
+			if (k==d[j]-1){
+				return (subjX[k]-calcX[i]);
+			}		
+		}
+		}
+	})
+	.attr("y2",function(d,i){
+		for (j=0; j<allCodes[i].length; j++){
+			for (k=0; k<subjCode.length; k++){
+			if (k==d[j]-1){
+				return (subjY[k]-calcY[i]);
+			}		
+		}
+		}
+	})
+	.attr("stroke",function(d,i){
+		var whichLoc;
+		for (j=0; j<allCodes[i].length; j++){
+			for (k=0; k<subjCode.length; k++){
+			if (k==d[j]-1){
+				whichLoc = subjLoc[k];
+				if (whichLoc<=6){
+					return "teal";
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					return "lightgreen";
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					return "lightblue";
+				}
+				if (whichLoc>15&&whichLoc<21){
+					return "blue";
+				}		
+			}		
+		}
+	}
+	})
+	.attr("stroke-opacity", .07)
+	.attr("stroke-width",.2);
+}
+function removeLines(){
+	// svg.selectAll(".linesOut, .linesIn") //could be just .remove()
+	svg.selectAll(".linesIn") //could be just .remove()
+	.transition()
+	.attr("stroke-opacity",.07)
+	.attr("stroke-width",.2);
+
+	svg.selectAll(".linesOut") //could be just .remove()
+	.transition()
+	// .attr("x2", 3)
+	// .attr("y2",3);
+	.attr("x2",function(d,i){
+		console.log("removing"+d);
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					return (subjX[k-1]-calcX[thisCircle])/40;
+				}
+			}
+	})
+	.attr("y2",function(d,i){
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					return (subjY[k-1]-calcY[thisCircle])/40;
+				}
+			}
+		})
+		.attr("stroke-width",.5);
+}
+
+
+function runLines(passSubjNum){
+console.log(passSubjNum+"passed");
+var thisNum = passSubjNum-1;
+
+var linesInG = svg.selectAll("linesIn")
+    .data(r)
+    .enter()
+    .append("line")
+    .attr("transform", function(d,i){
+    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+	})
+    .attr("class", "linesIn")
+	.attr("x1",0)
+	.attr("y1",0)
 	.attr("x2",function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
 			if (thisNum==d[j]-1){
@@ -309,7 +337,6 @@ var g = svg.selectAll("line")
 			}		
 		}
 	})
-
 	.attr("y2",function(d,i){
 		for (j=0; j<allCodes[i].length; j++){
 			if (thisNum==d[j]-1){
@@ -317,75 +344,59 @@ var g = svg.selectAll("line")
 			}		
 		}
 	})
-	// .attr("y2",function(d,i){
-	// 	for (j=0; j<allCodes[i].length; j++){
-	// 		for (k=0; k<subjCode.length; k++){
-	// 		if (k==d[j]){
-	// 			return (subjY[k]-calcY[i]);
-	// 		}		
-	// 	}
-	// 	}
-	// })
-	.attr("stroke","black")
-	.attr("stroke-width",.5);
+	.attr("stroke",function(d,i){
+		var whichLoc;
+		for (j=0; j<allCodes[i].length; j++){
+			if (thisNum==d[j]-1){
+				whichLoc = subjLoc[thisNum];
+				// return subjY[thisNum]-calcY[i];
+				if (whichLoc<=6){
+					return "teal";
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					return "lightgreen";
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					return "lightblue";
+				}
+				if (whichLoc>15&&whichLoc<21){
+					return "blue";
+				}		
+			}		
+		}
+	})
+	.attr("stroke-opacity",1)
+	.attr("stroke-width",2);
+// persistLines();
 }
 var thisIs = [];
-
+var thisCircle;
 function runLinesOut(arrayOfSubjs, index){
-console.log(arrayOfSubjs+"hi");
-
 thisIs = arrayOfSubjs.split(",");
 	for (i=0; i<thisIs.length; i++){
 		console.log(i+"ARRAY")
 	}
-var thisCircle = index;
-console.log(thisCircle+"variable for index");
-console.log(thisIs[0]+"thisIs")
+thisCircle = index;
 var justOne = thisIs[0];
 var grabIt = [];
-var g = svg.selectAll("line")
+var newG = svg.selectAll("linesOut")
     .data(thisIs)
     .enter()
     .append("line")
     .attr("transform", function(d,i){
     	return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
-    .attr("class", function(d,i){
-    	 return d;
-    })
+    .attr("class", "linesOut")
     .attr("x1", 0)
-    .attr("x2", 0)
-	// .attr("x2",	function(d,i){
-	// 	for (j=0; j<allCodes[i].length; j++){
-	// 		for (k=0; k<subjCode.length; k++){
-	// 		if (k==d[j]){
-	// 			return (subjX[k]-calcX[i]);
-	// 		}		
-	// 	}
-	// 	}
-	// })
-	//THIS JUST IDENTIFIES ONE SUBJECT - WORKS WITH THE MOUSEOVER AND PASS ONE NUMBER
+    // .attr("x2", 0)
 	.attr("x2",function(d,i){
 		console.log(d);
-		// for (b=0; b<thisIs.length; b++){
-				// console.log(thisIs[b]+" b inside x2");
 			for (k=0; k<subjCode.length; k++){
-			// for (k=0; k<5; k++){
 				if (k==d){
 					return subjX[k-1]-calcX[thisCircle];
-					// grabIt.push(k);
 				}
 			}
-		
-			// for (j=0; j<grabIt.length; j++){
-			// 	if (i==thisCircle){
-			// 		return subjX[grabIt[j]]-calcX[thisCircle];
-			// 	}
-			// }
 	})
-	//NEED TO FIGURE OUT A WAY TO DRAW ADDITIONAL LINES 
-	//FOR ALL THE ELEMNTS IN THE ARRAY
-	//INSTEAD OF JUST THE INDEX NUMBER WE ARE IN
 	.attr("y2",function(d,i){
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
@@ -393,47 +404,30 @@ var g = svg.selectAll("line")
 				}
 			}
 		})
-		
-
-		// for (b=0; b<thisIs.length; b++){
-		// if (i==thisCircle){
-		// 		// console.log(b+" b "+thisIs[b]+"thisisatb "+thisIs.length+"thisislength");
-		// 	// for (k=0; k<5; k++){
-		// 	for (k=0; k<subjCode.length; k++){
-
-		// 		if (k==thisIs[b]){
-		// 			return subjY[k]-calcY[thisCircle];									
-		// 		}
-		// 	}
-		// 	}
-		// }
-
-	// 		for (j=0; j<grabIt.length; j++){
-	// 			if (i==thisCircle){
-	// 				return subjY[grabIt[j]]-calcY[thisCircle];
-	// 			}
-	// 		}
-	// })
-	.attr("stroke","black")
-	.attr("stroke-width",.5);
+	.attr("stroke",function(d,i){
+		var whichLoc;
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+				whichLoc = subjLoc[k-1];
+					// return subjY[k-1]-calcY[thisCircle];
+				if (whichLoc<=6){
+					return "teal";
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					return "lightgreen";
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					return "lightblue";
+				}
+				if (whichLoc>15&&whichLoc<21){
+					return "blue";
+				}	
+			}	
+		}
+	})
+	.attr("stroke-opacity", 1)
+	.attr("stroke-width",2);
 }
-
-					//////WORKS
-					// 		if (i==thisCircle){
-					// 	return subjY[justOne-1]-calcY[thisCircle];
-					// }
-										//////WORKS
-
-			// for (b=0; b<arrayOfSubjs; b++){
-						// return subjX[arrayOfSubjs[b]]-calcX[thisCircle];
-		// 	}
-		// }
-		// for (j=0; j<allCodes[i].length; j++){
-		// 	if (thisNum==d[j]){
-		// 		return subjY[thisNum]-calcY[i];
-		// 	}		
-		// }
-
 </script>
 </body>
 </html>
