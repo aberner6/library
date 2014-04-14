@@ -14,6 +14,9 @@
 <script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <body>
 <script type = "text/javascript">
+
+//NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
+
 var freqscale = 5; //size of circles
 var  MAX_LEVELS = 10; //number larger than number of levels of circles
 var radius_levels = [0, 0, 240, 180, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
@@ -138,9 +141,9 @@ var text = svg.selectAll("text")
 	.attr("y", function(d,i){ 
 		return subjY[i];
 	})
-	.text(function(d,i) { 
-		return d.subjCode+"code "+d.loc+"loc"; 
-	})
+	// .text(function(d,i) { 
+	// 	return d.subjCode+"code "+d.loc+"loc"; 
+	// })
 	.attr("fill","black");
 
 $('.surroundingCircles').tipsy({ 
@@ -177,8 +180,6 @@ for (i = 0; i < MAX_LEVELS;i++) {
     jumps = Math.PI*2/parseFloat(counters[i]);  
 }
 for (i = 0; i < cData.length;i++) {
-// calcX.push(cData[i].xIs);
-// calcY.push(cData[i].yIs);
 	allCodes.push(cData[i].codeName);
 	angles.push(cData[i].angles);
 	radiusIs.push(cData[i].radiusIs);
@@ -200,8 +201,6 @@ var inCircle = svg.selectAll("circle")
 		subjX.push(Math.round(d.subjX));
 		subjLoc.push(d.loc);
 		subjTextInside.push(d.subject);
-
-		// return d.xIs;
 		calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
      	return width*0.5+d.radiusIs*Math.cos(d.angles);
 	})
@@ -222,11 +221,13 @@ var inCircle = svg.selectAll("circle")
 		console.log(d.codeName+"d.codeName from mouse");
 		console.log(i+"index from mouse")
 		runLinesOut(d.codeName, i);
+		books(d.codeName,i);
 	})
-	.on("mouseout", function(d){ removeLines() });
+	.on("mouseout", function(d,i){ 
+		removeOutwardLines(d.codeName, i) 
+	});
 })
 }
-
 runInnerCircles();
 runOuterCircles();
 
@@ -287,42 +288,10 @@ var otherLines = svg.selectAll("otherLines")
 	.attr("stroke-width",.2);
 }
 function removeLines(){
-// 	var thisIs = [];
-
-// thisIs = arrayOfSubjs.split(",");
-// 	for (i=0; i<thisIs.length; i++){
-// 		console.log(i+"ARRAY")
-// 	}
-// var thisCircle = index;
-	// svg.selectAll(".linesOut, .linesIn") //could be just .remove()
 	svg.selectAll(".linesIn") //could be just .remove()
 	.transition()
 	.attr("stroke-opacity",.07)
 	.attr("stroke-width",.2);
-
-	// svg.selectAll(".linesOut") //could be just .remove()
-	svg.selectAll(".linesOut") //could be just .remove()
-	.transition()
-	// .attr("x2", 3)
-	// .attr("y2",3);
-
-	//OH NO IT ADJUSTS AND CHANGES WHICH CIRCLE EVERY time
-	.attr("x2",function(d,i){
-		console.log("removing"+d);
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					return (subjX[k-1]-calcX[thisCircle])/80;
-				}
-			}
-	})
-	.attr("y2",function(d,i){
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					return (subjY[k-1]-calcY[thisCircle])/80;
-				}
-			}
-		})
-		.attr("stroke-width",.5);
 }
 
 
@@ -377,19 +346,16 @@ var linesInG = svg.selectAll("linesIn")
 	})
 	.attr("stroke-opacity",1)
 	.attr("stroke-width",2);
-// persistLines();
 }
 var thisIs = [];
 var thisCircle;
 function runLinesOut(arrayOfSubjs, index){
-// var thisIs = [];
 
 thisIs = arrayOfSubjs.split(",");
 	for (i=0; i<thisIs.length; i++){
 		console.log(i+"ARRAY")
 	}
 thisCircle = index;
-// thisCircle = index;
 var justOne = thisIs[0];
 var grabIt = [];
 var newG = svg.selectAll("linesOut")
@@ -399,9 +365,8 @@ var newG = svg.selectAll("linesOut")
     .attr("transform", function(d,i){
     	return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
-    .attr("class", "linesOut")
+    .attr("class", "hey"+thisCircle)//"linesOut")
     .attr("x1", 0)
-    // .attr("x2", 0)
 	.attr("x2",function(d,i){
 		console.log(d);
 			for (k=0; k<subjCode.length; k++){
@@ -422,7 +387,6 @@ var newG = svg.selectAll("linesOut")
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
 				whichLoc = subjLoc[k-1];
-					// return subjY[k-1]-calcY[thisCircle];
 				if (whichLoc<=6){
 					return "teal";
 				}
@@ -438,8 +402,50 @@ var newG = svg.selectAll("linesOut")
 			}	
 		}
 	})
-	.attr("stroke-opacity", 1)
-	.attr("stroke-width",2);
+	.attr("stroke-width",1);
+}
+
+function removeOutwardLines(codes, thisCirc){
+console.log(thisCirc+"thisCirc");
+		d3.selectAll(".hey"+thisCirc) //associated lines
+		.transition()
+		.attr("x2",function(d){
+			console.log("removing"+d);
+				for (k=0; k<subjCode.length; k++){
+					if (k==d){
+						return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
+					}
+				}
+		})
+		.attr("y2",function(d){
+				for (k=0; k<subjCode.length; k++){
+					if (k==d){
+						return (subjY[k-1]-calcY[thisCirc])/(300/whatRadius[thisCirc]);
+					}
+				}
+		})
+}
+// books();
+var incomingIs = [];
+var whichBooks = [];
+function books(incoming, thisCircle){
+
+d3.tsv("all_id_codes_title.txt", function(error, data) {
+console.log(data[0].code);
+
+incomingIs = incoming.split(",");
+
+console.log(incomingIs);
+console.log(data.length)
+
+			for (j=0; j<data.length; j++){
+				if (data[j].code==incomingIs){ 
+					whichBooks.push(data[j].title);
+					console.log(data[j].title);
+				}
+			}
+
+})	
 }
 </script>
 </body>
