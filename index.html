@@ -464,6 +464,12 @@ console.log(data.length)
 					// whichBooks.push(data[j].title);
 					// console.log(data[j].title);
 					updateHoverbox(data[j].title, j);
+
+	// if (theseBooks==manyBooks[indexIs]){
+		// numbers.push(manyBooks[indexIs])
+	// }
+	whichBooks.push(data[j].title);
+
 				}
 			}
 
@@ -484,18 +490,23 @@ console.log(data.length)
 
 
 
-
-var numbers = [];
-var theBooks = [];
-var indexIs = [];
+	var numbers = [];
+// var theBooks = [];
 //here we add to the hoverbox with the data from our clicking...
 var updateHoverbox = function(theseBooks, index) {
-console.log(index);
-indexIs.push(index);
-for (i=0; i<indexIs.length; i++){
-// console.log(manyBooks[indexIs[i]]);
-theBooks.push(manyBooks[indexIs[i]])
-}
+// var indexIs;
+
+console.log(numbers[0]);
+// indexIs.push(index);
+var indexIs = index;
+	if (theseBooks==manyBooks[indexIs]){
+		numbers.push(manyBooks[indexIs])
+	}
+
+// for (i=0; i<indexIs.length; i++){
+// // console.log(manyBooks[indexIs[i]]);
+// theBooks.push(manyBooks[indexIs[i]])
+// }
 // numbers = theseBooks;
 // numbers = numbers.replace('"', '\n');
 // console.log(numbers);
@@ -513,7 +524,7 @@ theBooks.push(manyBooks[indexIs[i]])
 
    hoverbox
    .selectAll("text")
-   .data(theBooks)
+   .data(whichBooks)
         .enter()
         .append("text")
         .attr("class","listBooks")
@@ -538,8 +549,8 @@ theBooks.push(manyBooks[indexIs[i]])
 //   hoverbox.classed("hidden", true);
 // };	
 function hideBooks(){
-	// hoverbox.selectAll(".listBooks").remove();
-  // hoverbox.classed("hidden", true);
+	hoverbox.selectAll(".listBooks").remove();
+  hoverbox.classed("hidden", true);
 }
 </script>
 </body>
