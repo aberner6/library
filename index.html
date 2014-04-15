@@ -7,6 +7,24 @@
 	body{
 		font-family: "Geosanslight";
 	}
+/* Hoverbox */
+#hoverbox {
+}
+#hoverbox.hidden {
+  display: none;
+}
+#hoverbox .title {
+  fill: white;
+  text-transform: uppercase;
+}
+#hoverbox .listBooks {
+  fill: white;
+  cursor: pointer;
+}
+#hoverbox rect.background {
+  fill: black;
+  opacity: 0.2;
+}
 	</style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
@@ -224,7 +242,8 @@ var inCircle = svg.selectAll("circle")
 		books(d.codeName,i);
 	})
 	.on("mouseout", function(d,i){ 
-		removeOutwardLines(d.codeName, i) 
+		removeOutwardLines(d.codeName, i);
+		hideBooks();
 	});
 })
 }
@@ -428,6 +447,7 @@ console.log(thisCirc+"thisCirc");
 // books();
 var incomingIs = [];
 var whichBooks = [];
+var manyBooks = [];
 function books(incoming, thisCircle){
 
 d3.tsv("all_id_codes_title.txt", function(error, data) {
@@ -439,13 +459,87 @@ console.log(incomingIs);
 console.log(data.length)
 
 			for (j=0; j<data.length; j++){
+							manyBooks.push(data[j].title);
 				if (data[j].code==incomingIs){ 
-					whichBooks.push(data[j].title);
-					console.log(data[j].title);
+					// whichBooks.push(data[j].title);
+					// console.log(data[j].title);
+					updateHoverbox(data[j].title, j);
 				}
 			}
 
-})	
+})
+}
+//Setup hover box
+  hoverbox = svg.append("g")
+    .attr("id", "hoverbox")
+    .attr("class", "hidden")
+    .attr("transform", "translate(4,0)");
+//make a background rectangle to put the text on
+  hoverbox.append("rect")
+    .attr("class", "background")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", 400) //change these to whatever variables you want
+    .attr("height", 100); //change these to whatever variables you want
+
+
+
+
+var numbers = [];
+var theBooks = [];
+var indexIs = [];
+//here we add to the hoverbox with the data from our clicking...
+var updateHoverbox = function(theseBooks, index) {
+console.log(index);
+indexIs.push(index);
+for (i=0; i<indexIs.length; i++){
+// console.log(manyBooks[indexIs[i]]);
+theBooks.push(manyBooks[indexIs[i]])
+}
+// numbers = theseBooks;
+// numbers = numbers.replace('"', '\n');
+// console.log(numbers);
+
+// theBooks = theseBooks;
+
+//prepare with empty slots for text
+  // hoverbox.append("text")
+  //   .attr("class", "listBooks")
+  //   .attr("x", 5)
+  //   .attr("dy", 35)
+  //   .html(numbers)
+
+
+
+   hoverbox
+   .selectAll("text")
+   .data(theBooks)
+        .enter()
+        .append("text")
+        .attr("class","listBooks")
+        .attr("x",5)
+        .attr("y", function(d,i){ 
+        	return i*20; 
+        })
+        .text(function(d){
+        	return d;
+        })
+        .on("click", function(d){
+        	console.log(d)
+        })
+
+    // hoverbox.select(".title").text(artist); //coopt the css class title and put in artist
+    // hoverbox.select(".listBooks").text(theseBooks); //coopt the css class pic and put in artwork
+    // console.log(theseBooks)
+    hoverbox.classed("hidden", false); //show the hoverbox
+};
+//you'll want something like - if you click out of the painting, or if you exit mouseover, hidehoverbox...
+// var hideHoverbox = function() {
+//   hoverbox.classed("hidden", true);
+// };	
+function hideBooks(){
+	// hoverbox.selectAll(".listBooks").remove();
+  // hoverbox.classed("hidden", true);
 }
 </script>
 </body>
