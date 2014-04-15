@@ -463,7 +463,7 @@ console.log(data.length)
 				if (data[j].code==incomingIs){ 
 					// whichBooks.push(data[j].title);
 					// console.log(data[j].title);
-					updateHoverbox(data[j].title, j);
+					updateHoverbox(data[j].title, j, data[j].id);
 
 	// if (theseBooks==manyBooks[indexIs]){
 		// numbers.push(manyBooks[indexIs])
@@ -493,10 +493,13 @@ console.log(data.length)
 	var numbers = [];
 // var theBooks = [];
 //here we add to the hoverbox with the data from our clicking...
-var updateHoverbox = function(theseBooks, index) {
+var updateHoverbox = function(theseBooks, index, whichCode) {
 // var indexIs;
 
 console.log(numbers[0]);
+console.log(index+"index");
+console.log(whichCode+"whichCode");
+
 // indexIs.push(index);
 var indexIs = index;
 	if (theseBooks==manyBooks[indexIs]){
@@ -536,7 +539,9 @@ var indexIs = index;
         	return d;
         })
         .on("click", function(d){
-        	console.log(d)
+        	console.log(d+indexIs)
+        	//108821 
+        // link("http://clio.columbia.edu/catalog/" + str(itemids.get(i)), "_new");
         })
 
     // hoverbox.select(".title").text(artist); //coopt the css class title and put in artist
@@ -549,8 +554,8 @@ var indexIs = index;
 //   hoverbox.classed("hidden", true);
 // };	
 function hideBooks(){
-	hoverbox.selectAll(".listBooks").remove();
-  hoverbox.classed("hidden", true);
+	// hoverbox.selectAll(".listBooks").remove();
+  // hoverbox.classed("hidden", true);
 }
 </script>
 </body>
