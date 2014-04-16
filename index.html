@@ -488,42 +488,24 @@ console.log(data.length)
     .attr("width", 400) //change these to whatever variables you want
     .attr("height", 100); //change these to whatever variables you want
 
+function hideBooks(){
+hoverbox.selectAll(".listBooks").remove();
+hoverbox.classed("hidden", true);
+whichBooks.length = 0;
 
-
-	var numbers = [];
-// var theBooks = [];
-//here we add to the hoverbox with the data from our clicking...
+}
+var numbers = [];
 var updateHoverbox = function(theseBooks, index, whichCode) {
-// var indexIs;
+	numbers.length = 0;
 
 console.log(numbers[0]);
 console.log(index+"index");
 console.log(whichCode+"whichCode");
 
-// indexIs.push(index);
 var indexIs = index;
 	if (theseBooks==manyBooks[indexIs]){
 		numbers.push(manyBooks[indexIs])
 	}
-
-// for (i=0; i<indexIs.length; i++){
-// // console.log(manyBooks[indexIs[i]]);
-// theBooks.push(manyBooks[indexIs[i]])
-// }
-// numbers = theseBooks;
-// numbers = numbers.replace('"', '\n');
-// console.log(numbers);
-
-// theBooks = theseBooks;
-
-//prepare with empty slots for text
-  // hoverbox.append("text")
-  //   .attr("class", "listBooks")
-  //   .attr("x", 5)
-  //   .attr("dy", 35)
-  //   .html(numbers)
-
-
 
    hoverbox
    .selectAll("text")
@@ -533,30 +515,17 @@ var indexIs = index;
         .attr("class","listBooks")
         .attr("x",5)
         .attr("y", function(d,i){ 
-        	return i*20; 
+        	return 20+i*20; 
         })
         .text(function(d){
         	return d;
         })
         .on("click", function(d){
         	console.log(d+indexIs)
-        	//108821 
         // link("http://clio.columbia.edu/catalog/" + str(itemids.get(i)), "_new");
         })
-
-    // hoverbox.select(".title").text(artist); //coopt the css class title and put in artist
-    // hoverbox.select(".listBooks").text(theseBooks); //coopt the css class pic and put in artwork
-    // console.log(theseBooks)
     hoverbox.classed("hidden", false); //show the hoverbox
 };
-//you'll want something like - if you click out of the painting, or if you exit mouseover, hidehoverbox...
-// var hideHoverbox = function() {
-//   hoverbox.classed("hidden", true);
-// };	
-function hideBooks(){
-	// hoverbox.selectAll(".listBooks").remove();
-  // hoverbox.classed("hidden", true);
-}
 </script>
 </body>
 </html>
