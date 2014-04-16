@@ -9,7 +9,7 @@
 	}
 /* Hoverbox */
 #hoverbox {
-    outline:1px solid red;
+    /*outline:1px solid grey;*/
     width:300px; 
     height:300px; 
     right: 4px; 
@@ -17,16 +17,15 @@
     position: fixed;
 }
 #hoverbox.hidden {
-  display: none;
+  /*display: none;*/
 }
 #hoverbox .title {
   fill: white;
   text-transform: uppercase;
 }
 .listBooks {
-    width:300px; 
     display: block;
-    padding:10px;
+    padding:14px;
       cursor: pointer;
 }
 #hoverbox rect.background {
@@ -496,26 +495,30 @@ console.log(thisCirc+"thisCirc");
 var incomingIs = [];
 var whichBooks = [];
 var manyBooks = [];
+var manyIds = [];
+var saveId = [];
+
 function books(incoming, thisCircle){
 
 d3.tsv("all_id_codes_title.txt", function(error, data) {
-console.log(data[0].code);
+// console.log(data[0].code);
 incomingIs = incoming.split(",");
-console.log(incomingIs);
-console.log(data.length)
+// console.log(incomingIs);
+// console.log(data.length)
 			for (j=0; j<data.length; j++){
 				manyBooks.push(data[j].title);
+				manyIds.push(data[j].id);
 				if (data[j].code==incomingIs){ 
 					updateHoverbox(data[j].title, j, data[j].id);
 					whichBooks.push(data[j].title);
+					saveId.push(data[j].id);
 				}
 			}
 })
 }
 //Setup hover box
   hoverbox = d3.select("#hoverbox")
-    .attr("class", "hidden")
-
+    .attr("class", "hidden");
 var updateHoverbox = function(theseBooks, index, whichCode) {
 console.log(theseBooks);
 console.log(index+"index");
@@ -532,17 +535,18 @@ var indexIs = index;
         	console.log(d);
         	return d; //+"<br>"
         })
-        .on("click", function(d){
-        	console.log(d+indexIs)
-        // link("http://clio.columbia.edu/catalog/" + str(itemids.get(i)), "_new");
+        .on("click", function(d,i){
+        	console.log(d+whichCode+"but which code is only one code and there are multiple books");
+        	 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
         })
     hoverbox.classed("hidden", false); //show the hoverbox
 };
 
 function hideBooks(){
-hoverbox.selectAll(".listBooks").remove();
-hoverbox.classed("hidden", true);
-whichBooks.length = 0;
+	// manyIds.length = 0;
+// hoverbox.selectAll(".listBooks").remove();
+// hoverbox.classed("hidden", true);
+// whichBooks.length = 0;
 }
 
 </script>
