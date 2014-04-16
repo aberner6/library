@@ -9,6 +9,12 @@
 	}
 /* Hoverbox */
 #hoverbox {
+    outline:1px solid red;
+    width:300px; 
+    height:300px; 
+    right: 4px; 
+    overflow:auto;
+    position: fixed;
 }
 #hoverbox.hidden {
   display: none;
@@ -17,20 +23,28 @@
   fill: white;
   text-transform: uppercase;
 }
-#hoverbox .listBooks {
-  fill: white;
-  cursor: pointer;
+.listBooks {
+    width:300px; 
+    display: block;
+    padding:10px;
+      cursor: pointer;
 }
 #hoverbox rect.background {
   fill: black;
   opacity: 0.2;
 }
-	</style>
+.outText{
+	font-size: 12px; font-family:Geosanslight; font-size:12pt; position: absolute; padding: 5px; z-index: 100000; 
+	background-color: #000; 
+    color: #FFF; max-width: 300px; padding: 5px 8px 4px 8px; text-align: center; 
+}
+</style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
 <script type="text/javascript" src="js/lib/d3.v3.js"></script>
 <script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <body>
+	<div id = "hoverbox"></div>
 <script type = "text/javascript">
 
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
@@ -390,6 +404,7 @@ var newG = svg.selectAll("linesOut")
 		console.log(d);
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
+					console.log(subjTextInside[k-1]+"subjText");
 					return subjX[k-1]-calcX[thisCircle];
 				}
 			}
@@ -422,9 +437,42 @@ var newG = svg.selectAll("linesOut")
 		}
 	})
 	.attr("stroke-width",1);
-}
 
+var outToText = svg.selectAll("outText") //not outText
+    .data(thisIs)
+    .enter()
+	.append("text")
+	.attr("class","outText")
+	// .attr("class","outText")
+	.attr("x", function(d,i){ 
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					console.log(subjTextInside[k-1]+"subjText");
+					return subjX[k-1];
+				}
+			}
+		})
+	.attr("y", function(d,i){ 
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					// console.log(subjTextInside[k-1]+"subjText");
+					return subjY[k-1];
+				}
+			}
+		})
+	.text(function(d,i){ 
+			for (k=0; k<subjCode.length; k++){
+				if (k==d){
+					// console.log(subjTextInside[k-1]+"subjText");
+					return subjTextInside[k-1]+" "+freqIs[k-1];
+				}
+			}
+		})
+	.attr("fill","black");
+}
 function removeOutwardLines(codes, thisCirc){
+	var outToText = svg.selectAll("outText") //not outText
+d3.selectAll(".outText").remove();
 console.log(thisCirc+"thisCirc");
 		d3.selectAll(".hey"+thisCirc) //associated lines
 		.transition()
@@ -444,7 +492,7 @@ console.log(thisCirc+"thisCirc");
 				}
 		})
 }
-// books();
+
 var incomingIs = [];
 var whichBooks = [];
 var manyBooks = [];
@@ -465,17 +513,8 @@ console.log(data.length)
 })
 }
 //Setup hover box
-  hoverbox = svg.append("g")
-    .attr("id", "hoverbox")
+  hoverbox = d3.select("#hoverbox")
     .attr("class", "hidden")
-    .attr("transform", "translate(4,0)");
-//make a background rectangle to put the text on
-  hoverbox.append("rect")
-    .attr("class", "background")
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", 400) //change these to whatever variables you want
-    .attr("height", 100); //change these to whatever variables you want
 
 var updateHoverbox = function(theseBooks, index, whichCode) {
 console.log(theseBooks);
@@ -483,20 +522,15 @@ console.log(index+"index");
 console.log(whichCode+"whichCode");
 
 var indexIs = index;
-
-   hoverbox
-   .selectAll("text")
+   d3.select('#hoverbox')
+   .selectAll(".listBooks")
    .data(whichBooks)
         .enter()
-        .append("text")
+        .append("p")
         .attr("class","listBooks")
-        .attr("x",5)
-        .attr("y", function(d,i){ 
-        	return 5+(i+1)*10; 
-        })
-        .text(function(d){
+        .html(function(d){
         	console.log(d);
-        	return d;
+        	return d; //+"<br>"
         })
         .on("click", function(d){
         	console.log(d+indexIs)
@@ -504,11 +538,13 @@ var indexIs = index;
         })
     hoverbox.classed("hidden", false); //show the hoverbox
 };
+
 function hideBooks(){
 hoverbox.selectAll(".listBooks").remove();
 hoverbox.classed("hidden", true);
 whichBooks.length = 0;
 }
+
 </script>
 </body>
 </html>
