@@ -452,27 +452,16 @@ function books(incoming, thisCircle){
 
 d3.tsv("all_id_codes_title.txt", function(error, data) {
 console.log(data[0].code);
-
 incomingIs = incoming.split(",");
-
 console.log(incomingIs);
 console.log(data.length)
-
 			for (j=0; j<data.length; j++){
-							manyBooks.push(data[j].title);
+				manyBooks.push(data[j].title);
 				if (data[j].code==incomingIs){ 
-					// whichBooks.push(data[j].title);
-					// console.log(data[j].title);
 					updateHoverbox(data[j].title, j, data[j].id);
-
-	// if (theseBooks==manyBooks[indexIs]){
-		// numbers.push(manyBooks[indexIs])
-	// }
-	whichBooks.push(data[j].title);
-
+					whichBooks.push(data[j].title);
 				}
 			}
-
 })
 }
 //Setup hover box
@@ -488,24 +477,12 @@ console.log(data.length)
     .attr("width", 400) //change these to whatever variables you want
     .attr("height", 100); //change these to whatever variables you want
 
-function hideBooks(){
-hoverbox.selectAll(".listBooks").remove();
-hoverbox.classed("hidden", true);
-whichBooks.length = 0;
-
-}
-var numbers = [];
 var updateHoverbox = function(theseBooks, index, whichCode) {
-	numbers.length = 0;
-
-console.log(numbers[0]);
+console.log(theseBooks);
 console.log(index+"index");
 console.log(whichCode+"whichCode");
 
 var indexIs = index;
-	if (theseBooks==manyBooks[indexIs]){
-		numbers.push(manyBooks[indexIs])
-	}
 
    hoverbox
    .selectAll("text")
@@ -515,9 +492,10 @@ var indexIs = index;
         .attr("class","listBooks")
         .attr("x",5)
         .attr("y", function(d,i){ 
-        	return 20+i*20; 
+        	return 5+(i+1)*10; 
         })
         .text(function(d){
+        	console.log(d);
         	return d;
         })
         .on("click", function(d){
@@ -526,6 +504,11 @@ var indexIs = index;
         })
     hoverbox.classed("hidden", false); //show the hoverbox
 };
+function hideBooks(){
+hoverbox.selectAll(".listBooks").remove();
+hoverbox.classed("hidden", true);
+whichBooks.length = 0;
+}
 </script>
 </body>
 </html>
