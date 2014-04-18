@@ -104,7 +104,6 @@ var rScale = d3.scale.linear()
 
 var freqIs=[];
 var item;
-var tigReggib = 0;
 
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
@@ -202,7 +201,7 @@ var temp = [];
 var thisThing;
 var codesLengths = [];
 var whatRadius = [];
-
+var cDataCodeName = [];
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
@@ -224,13 +223,13 @@ for (i=0; i<20; i++){
 for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
 }
-// var tigReggib = 0;
 
-var inCircle = svg.selectAll("inCircle")
+var inCircle = svg.selectAll("circle")
 	.data(cData)
 	.enter().append("circle")
 	.attr("class", "inCircle")
 	.attr("cx", function(d,i){
+		cDataCodeName.push(d.codeName);
 		subjY.push(Math.round(d.subjY));
 		subjX.push(Math.round(d.subjX));
 		subjLoc.push(d.loc);
@@ -242,34 +241,32 @@ var inCircle = svg.selectAll("inCircle")
 		calcY.push(height*0.5+d.radiusIs*Math.sin(d.angles));
 		return height*0.5+d.radiusIs*Math.sin(d.angles);
 	})
-	.attr("r", function(d){
+	.attr("r", function(d,i){
+		// console.log(i+"inside circles - "+d.codeName+"codename");
+	// .on("mouseout", function(d,i){ 
+		// removeOutwardLines(d.codeName, i);
+	// });
+
 		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
 	.attr("fill", "grey")
-	.attr("opacity",.3)
-	// function(d){
-		// return "rgba(20,100,100,.5)";
+	.attr("opacity",.3);
+	// .on("mouseover", function(d,i){
+	// 	console.log(d.codeName+"d.codeName from mouse");
+	// 	console.log(i+"index from mouse")
+	// 	runLinesOut(d.codeName, i);
+	// 	books(d.codeName,i);
 	// })
-	.on("mouseover", function(d,i){
-		// d3.selectAll(".inCircle")
-		console.log(d.codeName+"d.codeName from mouse");
-		console.log(i+"index from mouse")
-		// books(d.codeName,i);
-	})
-	.on("mouseout", function(d,i){ 
-		removeOutwardLines(d.codeName, i);
-		// hideBooks();
-	});
-setInterval(function(){ 
-	tigReggib++; 
-	runLinesOut(cData[tigReggib].codeName, tigReggib);
-	},3000);
+	// .on("mouseout", function(d,i){ 
+	// 	removeOutwardLines(d.codeName, i);
+	// 	hideBooks();
+	// });
+		runLinesOut();
 })
 }
 runInnerCircles();
 runOuterCircles();
-
 
 function persistLines(){
 var otherLines = svg.selectAll("otherLines")
@@ -387,46 +384,69 @@ var linesInG = svg.selectAll("linesIn")
 	.attr("stroke-width",2);
 }
 var thisIs = [];
-var thisCircle;
-function runLinesOut(arrayOfSubjs, index){
+var thisCircle = [];
+var howLong = [];
+var cDataSplit = [];
 
-thisIs = arrayOfSubjs.split(",");
-	for (i=0; i<thisIs.length; i++){
-		console.log(i+"ARRAY")
+function runLinesOut(){
+	for (j=0; j<cDataCodeName.length; j++){
+		cDataSplit.push(cDataCodeName[j].split(","));
 	}
-thisCircle = index;
-var justOne = thisIs[0];
-var grabIt = [];
+
+
+	for (j=0; j<cDataSplit.length; j++){
+		howLong.push(cDataSplit[j].length);
+	}
+// thisIs = arrayOfSubjs;
+// thisCircle = index;
+// var justOne = thisIs[0];
+// var grabIt = [];
+// for (j=0; j<cDataCodeName.length; j++){
+// 	for (i=0; i<howLong[j].length; i++){
+// 		console.log(cDataCodeName[i][j])
+// 	}
+// }
 var newG = svg.selectAll("linesOut")
-    .data(thisIs)
+    .data(cDataSplit)
+    	// for (i=0; i<cDataCodeName.length; i++){ 
+    		// return cDataSplit; 
+    	// } 
+    // })
     .enter()
     .append("line")
     .attr("transform", function(d,i){
-    	return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
+    	// console.log(d)
+    	// for (j=0; j<cDataSplit.length; j++){
+    	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";    		
+    	// }
 	})
     .attr("class", "hey"+thisCircle)//"linesOut")
     .attr("x1", 0)
+    .attr("y1",0)
 	.attr("x2",function(d,i){
-		console.log(d);
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					console.log(subjTextInside[k-1]+"subjText");
-					return subjX[k-1]-calcX[thisCircle];
-				}
+	   	// for (j=0; j<cDataSplit.length; j++){
+			for (h=0; h<howLong[i]; h++){
+				// return 5;
+				return (subjX[d[h]-1]-calcX[i]);///(300/whatRadius[i]);					
 			}
+		// }
 	})
 	.attr("y2",function(d,i){
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					return subjY[k-1]-calcY[thisCircle];
-				}
+		   	// for (j=0; j<cDataSplit.length; j++){
+			for (h=0; h<howLong[i]; h++){
+				// return 5;
+				// console.log(howLong[j]+"howlong"+4+"i"+h+"h");
+				// console.log(subjY[d[h]-1]);
+				return (subjY[d[h]-1]-calcY[i]); //(300/whatRadius[i]);					
 			}
-		})
+		// }
+	})
 	.attr("stroke",function(d,i){
 		var whichLoc;
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-				whichLoc = subjLoc[k-1];
+		// return "pink";
+		// for (j=0; j<cDataSplit.length; j++){
+			for (h=0; h<howLong[i]; h++){
+				whichLoc = subjLoc[d[h]-1];
 				if (whichLoc<=6){
 					return "teal";
 				}
@@ -440,9 +460,10 @@ var newG = svg.selectAll("linesOut")
 					return "blue";
 				}	
 			}	
-		}
+		// }
 	})
-	.attr("stroke-width",1);
+	.attr("stroke-width",1)
+	.attr("stroke-opacity", .3)
 
 var outToText = svg.selectAll("outText") //not outText
     .data(thisIs)
@@ -453,7 +474,7 @@ var outToText = svg.selectAll("outText") //not outText
 	.attr("x", function(d,i){ 
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
-					console.log(subjTextInside[k-1]+"subjText");
+					// console.log(subjTextInside[k-1]+"subjText");
 					return subjX[k-1];
 				}
 			}
