@@ -253,18 +253,24 @@ var inCircle = svg.selectAll("inCircle")
 	// })
 	.on("mouseover", function(d,i){
 		// d3.selectAll(".inCircle")
-		console.log(d.codeName+"d.codeName from mouse");
-		console.log(i+"index from mouse")
+		// console.log(d.codeName+"d.codeName from mouse");
+		// console.log(i+"index from mouse")
 		// books(d.codeName,i);
 	})
 	.on("mouseout", function(d,i){ 
-		removeOutwardLines(d.codeName, i);
+		// removeOutwardLines(d.codeName, i);
 		// hideBooks();
 	});
 setInterval(function(){ 
-	tigReggib++; 
+	if (tigReggib<cData.length){
+			tigReggib++; 
+			console.log(tigReggib+"tigReggib");
+	}
+	else {
+		clearInterval();
+	}
 	runLinesOut(cData[tigReggib].codeName, tigReggib);
-	},3000);
+	},2000);
 })
 }
 runInnerCircles();
@@ -443,38 +449,54 @@ var newG = svg.selectAll("linesOut")
 		}
 	})
 	.attr("stroke-width",1);
-
-var outToText = svg.selectAll("outText") //not outText
-    .data(thisIs)
-    .enter()
-	.append("text")
-	.attr("class","outText")
-	// .attr("class","outText")
-	.attr("x", function(d,i){ 
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					console.log(subjTextInside[k-1]+"subjText");
-					return subjX[k-1];
+	d3.selectAll(".linesOut") //associated lines
+		.transition()
+		.attr("x2",function(d){
+			console.log("removing"+d);
+				for (k=0; k<subjCode.length; k++){
+					if (k==d){
+						return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
+					}
 				}
-			}
 		})
-	.attr("y", function(d,i){ 
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					// console.log(subjTextInside[k-1]+"subjText");
-					return subjY[k-1];
+		.attr("y2",function(d){
+				for (k=0; k<subjCode.length; k++){
+					if (k==d){
+						return (subjY[k-1]-calcY[thisCirc])/(300/whatRadius[thisCirc]);
+					}
 				}
-			}
 		})
-	.text(function(d,i){ 
-			for (k=0; k<subjCode.length; k++){
-				if (k==d){
-					// console.log(subjTextInside[k-1]+"subjText");
-					return subjTextInside[k-1]+" "+freqIs[k-1];
-				}
-			}
-		})
-	.attr("fill","black");
+// var outToText = svg.selectAll("outText") //not outText
+//     .data(thisIs)
+//     .enter()
+// 	.append("text")
+// 	.attr("class","outText")
+// 	// .attr("class","outText")
+// 	.attr("x", function(d,i){ 
+// 			for (k=0; k<subjCode.length; k++){
+// 				if (k==d){
+// 					console.log(subjTextInside[k-1]+"subjText");
+// 					return subjX[k-1];
+// 				}
+// 			}
+// 		})
+// 	.attr("y", function(d,i){ 
+// 			for (k=0; k<subjCode.length; k++){
+// 				if (k==d){
+// 					// console.log(subjTextInside[k-1]+"subjText");
+// 					return subjY[k-1];
+// 				}
+// 			}
+// 		})
+// 	.text(function(d,i){ 
+// 			for (k=0; k<subjCode.length; k++){
+// 				if (k==d){
+// 					// console.log(subjTextInside[k-1]+"subjText");
+// 					return subjTextInside[k-1]+" "+freqIs[k-1];
+// 				}
+// 			}
+// 		})
+// 	.attr("fill","black");
 }
 function removeOutwardLines(codes, thisCirc){
 	var outToText = svg.selectAll("outText") //not outText
