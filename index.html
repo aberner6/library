@@ -109,7 +109,8 @@ var subradius = 300;
 
 var firstLoad = 0;
 var tigReggib = 0;
-
+// runInnerCircles();
+// runOuterCircles();
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
@@ -273,6 +274,48 @@ var thisThing;
 var whatRadius = [];
 var myVar;
 var firstLoadVar;
+var secondLoadVar;
+var ready = 0;
+// prepData();
+// function prepData(){
+firstLoadVar = setInterval(function(){ 
+	if (firstLoad<300){
+	d3.tsv("connectionfreqcodes.txt", function(error, cData) {
+	firstLoad++; 
+	// console.log();
+	storeInnerSubjs(cData[firstLoad].codeName, firstLoad);
+	})
+	}
+	else {
+	runOnce();
+		clearInterval(firstLoadVar);
+		// ready = 1;
+		// console.log("false")
+	}
+	},1);
+function runOnce(){
+	runInnerCircles();
+	runOuterCircles();	
+}
+// secondLoadVar = setInterval(function(){
+// 	runInnerCircles();
+// 	runOuterCircles();
+// },1);
+// if (ready==1){
+// 		// console.log("run");
+// 			// ready = true;
+// 	clearInterval(firstLoadVar);
+// }
+// })	
+// }
+// if (ready==1){
+// 	console.log("run");
+// 	runInnerCircles();
+// 	runOuterCircles();
+// }
+
+
+
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
@@ -290,19 +333,7 @@ for (i = 0; i < cData.length;i++) {
 for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
 }
-firstLoadVar = setInterval(function(){ 
-	if (firstLoad<300){
-	firstLoad++; 
-	// console.log();
-	storeInnerSubjs(cData[firstLoad].codeName, firstLoad);
-	}
-	else {
-	 makeGlyph();
-	}
-	},.1);
-if (firstLoad>=300){
-		clearInterval(firstLoadVar);
-}
+
 var inCircle = svg.selectAll("inCircle")
 	.data(cData)
 	.enter().append("circle")
@@ -322,7 +353,7 @@ var inCircle = svg.selectAll("inCircle")
 		return Math.log(d.freq+2.0)*freqscale/2;
 	})
 	.attr("fill", "grey")
-	.attr("opacity",.3)
+	.attr("opacity",.1)
 	.on("click", function(d,i){
 		clicked = true;
 		d3.select(this)
@@ -368,6 +399,7 @@ $('.inCircle').hoverIntent({
 		// hideBooks();
     }
   })
+makeGlyph();    
 
 function makeGlyph(){
 	// console.log("make glyph");
@@ -379,19 +411,23 @@ function makeGlyph(){
 	}
 	else {
 	}
-	},5);
+	},1);
 if (tigReggib>=300){
 	// console.log("stop");
 	clearInterval(myVar);
 }
 }
-
 })
 }
-runInnerCircles();
-runOuterCircles();
 
-
+var thisIs = [];
+var otherThis = [];
+var storeLengths = [];
+var thisCircle;
+function storeInnerSubjs(arrayOfSubjs, index){
+otherThis = arrayOfSubjs.split(",");
+		storeLengths.push(otherThis.length);
+}
 
 function removeLines(){
 	svg.selectAll(".linesIn") //could be just .remove()
@@ -452,15 +488,6 @@ var linesInG = svg.selectAll("linesIn")
 	})
 	.attr("stroke-opacity",1)
 	.attr("stroke-width",2);
-}
-var thisIs = [];
-
-var storeLengths = [];
-
-var thisCircle;
-function storeInnerSubjs(arrayOfSubjs, index){
-thisIs = arrayOfSubjs.split(",");
-		storeLengths.push(thisIs.length);
 }
 function runLinesOut(arrayOfSubjs, index){
 
