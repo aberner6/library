@@ -10,7 +10,7 @@
 /* Hoverbox */
 #hoverbox {
     /*outline:1px solid grey;*/
-    width:300px; 
+    width:150px; 
     height:300px; 
     right: 4px; 
     overflow:auto;
@@ -104,8 +104,11 @@ var rScale = d3.scale.linear()
 
 var freqIs=[];
 var item;
-var tigReggib = 0;
+
 var subradius = 300;
+
+var firstLoad = 0;
+var tigReggib = 0;
 
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
@@ -269,6 +272,7 @@ var temp = [];
 var thisThing;
 var whatRadius = [];
 var myVar;
+var firstLoadVar;
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
@@ -286,8 +290,19 @@ for (i = 0; i < cData.length;i++) {
 for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
 }
-// var tigReggib = 0;
-
+firstLoadVar = setInterval(function(){ 
+	if (firstLoad<300){
+	firstLoad++; 
+	// console.log();
+	storeInnerSubjs(cData[firstLoad].codeName, firstLoad);
+	}
+	else {
+	 makeGlyph();
+	}
+	},.1);
+if (firstLoad>=300){
+		clearInterval(firstLoadVar);
+}
 var inCircle = svg.selectAll("inCircle")
 	.data(cData)
 	.enter().append("circle")
@@ -354,24 +369,21 @@ $('.inCircle').hoverIntent({
     }
   })
 
-
-
-
-
-
-myVar = setInterval(function(){ 
+function makeGlyph(){
+	// console.log("make glyph");
+	myVar = setInterval(function(){ 
 	if (tigReggib<300){
 			tigReggib++; 
-			console.log(tigReggib+"tigReggib");
+						// console.log(tigReggib+"tigReggib");
 	runLinesOut(cData[tigReggib].codeName, tigReggib);
 	}
 	else {
-
 	}
 	},5);
 if (tigReggib>=300){
-	console.log("stop");
-		clearInterval(myVar);
+	// console.log("stop");
+	clearInterval(myVar);
+}
 }
 
 })
@@ -442,13 +454,20 @@ var linesInG = svg.selectAll("linesIn")
 	.attr("stroke-width",2);
 }
 var thisIs = [];
+
+var storeLengths = [];
+
 var thisCircle;
+function storeInnerSubjs(arrayOfSubjs, index){
+thisIs = arrayOfSubjs.split(",");
+		storeLengths.push(thisIs.length);
+}
 function runLinesOut(arrayOfSubjs, index){
 
 thisIs = arrayOfSubjs.split(",");
-	for (i=0; i<thisIs.length; i++){
-		console.log(i+"ARRAY")
-	}
+	// for (i=0; i<thisIs.length; i++){
+		// console.log(i+"ARRAY LENGTH")
+	// }
 thisCircle = index;
 var justOne = thisIs[0];
 var grabIt = [];
@@ -505,7 +524,7 @@ var newG = svg.selectAll("linesOut")
 	d3.selectAll("line.hey"+thisCircle)
 		.transition()
 		.attr("x2",function(d){
-			console.log("removing"+d);
+			// console.log("removing"+d);
 				for (k=0; k<subjCode.length; k++){
 					if (k==d){
 						return (subjX[k-1]-calcX[thisCircle])/(300/whatRadius[thisCircle]);
@@ -551,12 +570,14 @@ var newG = svg.selectAll("linesOut")
 // 		})
 // 	.attr("fill","black");
 }
+
 function allOut(arrayOfSubjs, index){
 
 thisIs = arrayOfSubjs.split(",");
-	for (i=0; i<thisIs.length; i++){
-		console.log(i+"ARRAY")
-	}
+
+	// for (i=0; i<thisIs.length; i++){
+		// console.log(i+"ARRAY")
+	// }
 thisCircle = index;
 var justOne = thisIs[0];
 var grabIt = [];
@@ -571,7 +592,7 @@ var newG = svg.selectAll("linesOut")
     .attr("x1", 0)
     .attr("y1",0)
 	.attr("x2",function(d,i){
-		console.log(d);
+		// console.log(d);
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
 					console.log(subjTextInside[k-1]+"subjText");
@@ -646,7 +667,7 @@ console.log(thisCirc+"thisCirc");
 		d3.selectAll(".hey"+thisCirc) //associated lines
 		.transition()
 		.attr("x2",function(d){
-			console.log("removing"+d);
+			// console.log("removing"+d);
 				for (k=0; k<subjCode.length; k++){
 					if (k==d){
 						return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
@@ -667,7 +688,15 @@ var whichBooks = [];
 var manyBooks = [];
 var manyIds = [];
 var saveId = [];
-
+loadBooks();
+function loadBooks(){
+d3.tsv("all_id_codes_title.txt", function(error, data) {
+			for (j=0; j<data.length; j++){
+				manyBooks.push(data[j].title);
+				manyIds.push(data[j].id);
+			}
+		})
+}
 function books(incoming, thisCircle){
 
 d3.tsv("all_id_codes_title.txt", function(error, data) {
@@ -676,8 +705,8 @@ incomingIs = incoming.split(",");
 // console.log(incomingIs);
 // console.log(data.length)
 			for (j=0; j<data.length; j++){
-				manyBooks.push(data[j].title);
-				manyIds.push(data[j].id);
+				// manyBooks.push(data[j].title);
+				// manyIds.push(data[j].id);
 				if (data[j].code==incomingIs){ 
 					updateHoverbox(data[j].title, j, data[j].id);
 					whichBooks.push(data[j].title);
