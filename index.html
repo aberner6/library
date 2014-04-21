@@ -119,6 +119,8 @@ var surroundingCircles = svg.selectAll("surroundingPoints")
 	.enter().append("circle")
 	.attr("class", "surroundingPoints")
 	.attr("cx", function(d,i){
+		subjLoc.push(d.loc);
+		subjTextInside.push(d.subject);
 		subjX.push(width*.5+subradius*Math.cos(jump*(d.loc-1)));
 		return width*.5+subradius*Math.cos(jump*(d.loc-1));
 		    //   s.pos.x = width*0.5+subradius*cos(jump*(row.getInt("loc") - 1));
@@ -261,12 +263,10 @@ var angles = [];
 var r = [];
 var calcX=[];
 var calcY=[];
-var codeSubj=[];
 var radiusIs = [];
 var allCodes = [];	
 var temp = [];
 var thisThing;
-var codesLengths = [];
 var whatRadius = [];
 var myVar;
 function runInnerCircles(){
@@ -282,10 +282,6 @@ for (i = 0; i < cData.length;i++) {
 	allCodes.push(cData[i].codeName);
 	angles.push(cData[i].angles);
 	radiusIs.push(cData[i].radiusIs);
-	codesLengths.push(cData[i].q);
-}
-for (i=0; i<20; i++){
-	codeSubj.push(cData[i].codeSubj);
 }
 for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
@@ -297,8 +293,8 @@ var inCircle = svg.selectAll("inCircle")
 	.enter().append("circle")
 	.attr("class", "inCircle")
 	.attr("cx", function(d,i){
-		subjLoc.push(d.loc);
-		subjTextInside.push(d.subject);
+		// subjLoc.push(d.loc);
+		// subjTextInside.push(d.subject);
 		calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
      	return width*0.5+d.radiusIs*Math.cos(d.angles);
 	})
@@ -320,7 +316,7 @@ var inCircle = svg.selectAll("inCircle")
 		.attr("opacity", .9);
 		thing = d.codeName;
 		index = i;
-				allOut(thing, index);
+		allOut(thing, index);
 		books(thing, index);
 		// runLinesOut(d.codeName, i);
 		// books(d.codeName,i);
