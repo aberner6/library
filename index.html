@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
 	body{
-		font-family: "Geosanslight";
+		font-family: "Open Sans",'sans-serif';
 	}
 /* Hoverbox */
 #hoverbox {
     /*outline:1px solid grey;*/
-    width:150px; 
-    height:300px; 
+    width:20%; 
+    height:100%; 
     right: 4px; 
     overflow:auto;
     position: fixed;
@@ -34,7 +35,7 @@
   opacity: 0.2;
 }
 .outText{
-	font-size: 12px; font-family:Geosanslight; font-size:12pt; position: absolute; padding: 5px; z-index: 100000; 
+	font-size: 12px; font-size:12pt; position: absolute; padding: 5px; z-index: 100000; 
 	background-color: #000; 
     color: #FFF; max-width: 300px; padding: 5px 8px 4px 8px; text-align: center; 
 }
@@ -107,8 +108,8 @@ var item;
 
 var subradius = 300;
 
-var firstLoad = 0;
-var tigReggib = 0;
+var firstLoad = -1;
+var tigReggib = -1;
 // runInnerCircles();
 // runOuterCircles();
 function runOuterCircles(){
@@ -282,8 +283,10 @@ firstLoadVar = setInterval(function(){
 	if (firstLoad<300){
 	d3.tsv("connectionfreqcodes.txt", function(error, cData) {
 	firstLoad++; 
-	// console.log();
-	storeInnerSubjs(cData[firstLoad].codeName, firstLoad);
+	// console.log(cData);
+	if (firstLoad>=0){
+	storeInnerSubjs(cData[firstLoad].codeName, firstLoad);		
+	}
 	})
 	}
 	else {
@@ -328,7 +331,8 @@ for (i = 0; i < MAX_LEVELS;i++) {
 for (i = 0; i < cData.length;i++) {
 	allCodes.push(cData[i].codeName);
 	angles.push(cData[i].angles);
-	radiusIs.push(cData[i].radiusIs);
+	radiusIs.push(radius_levels[storeLengths[i]]);
+	// radiusIs.push(cData[i].radiusIs);
 }
 for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
@@ -341,12 +345,16 @@ var inCircle = svg.selectAll("inCircle")
 	.attr("cx", function(d,i){
 		// subjLoc.push(d.loc);
 		// subjTextInside.push(d.subject);
-		calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
-     	return width*0.5+d.radiusIs*Math.cos(d.angles);
+		// console.log(d.radiusIs+"radiusis")
+		// console.log(radius_levels[storeLengths[i]]); //radius_levels[storeLengths[i]]
+		// calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
+		calcX.push(width*0.5+radiusIs[i]*Math.cos(d.angles));
+		// calcX.push(width*0.5+storeLengths[i]*Math.cos(d.angles));
+     	return width*0.5+radiusIs[i]*Math.cos(d.angles);
 	})
-	.attr("cy", function(d){ 
-		calcY.push(height*0.5+d.radiusIs*Math.sin(d.angles));
-		return height*0.5+d.radiusIs*Math.sin(d.angles);
+	.attr("cy", function(d,i){ 
+		calcY.push(height*0.5+radiusIs[i]*Math.sin(d.angles));
+		return height*0.5+radiusIs[i]*Math.sin(d.angles);
 	})
 	.attr("r", function(d){
 		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
@@ -423,11 +431,29 @@ if (tigReggib>=300){
 var thisIs = [];
 var otherThis = [];
 var storeLengths = [];
+var countLengths = {};
+var countIt = 0;
+// var radius_levels
 var thisCircle;
 function storeInnerSubjs(arrayOfSubjs, index){
 otherThis = arrayOfSubjs.split(",");
-		storeLengths.push(otherThis.length);
+storeLengths.push(otherThis.length);
+// for (i=0; i<MAX_LEVELS; i++){
+	// if (i==otherThis.length){
+		// countIt++;
+countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[otherThis.length]+1 : 1;
+checkLengths();
 }
+function checkLengths(){
+	for (i=0; i<MAX_LEVELS; i++){
+if (countLengths[i]===undefined){
+	console.log("undefined");
+	countLengths[i] = 0;
+}
+}
+}
+
+
 
 function removeLines(){
 	svg.selectAll(".linesIn") //could be just .remove()
@@ -622,7 +648,7 @@ var newG = svg.selectAll("linesOut")
 		// console.log(d);
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
-					console.log(subjTextInside[k-1]+"subjText");
+					// console.log(subjTextInside[k-1]+"subjText");
 					return subjX[k-1]-calcX[thisCircle];
 				}
 			}
@@ -664,7 +690,7 @@ var outToText = svg.selectAll("outText") //not outText
 	.attr("x", function(d,i){ 
 			for (k=0; k<subjCode.length; k++){
 				if (k==d){
-					console.log(subjTextInside[k-1]+"subjText");
+					// console.log(subjTextInside[k-1]+"subjText");
 					return subjX[k-1];
 				}
 			}
@@ -746,9 +772,9 @@ incomingIs = incoming.split(",");
   hoverbox = d3.select("#hoverbox")
     .attr("class", "hidden");
 var updateHoverbox = function(theseBooks, index, whichCode) {
-console.log(theseBooks);
-console.log(index+"index");
-console.log(whichCode+"whichCode");
+// console.log(theseBooks);
+// console.log(index+"index");
+// console.log(whichCode+"whichCode");
 
 var indexIs = index;
    d3.select('#hoverbox')
@@ -758,11 +784,11 @@ var indexIs = index;
         .append("p")
         .attr("class","listBooks")
         .html(function(d){
-        	console.log(d);
+        	// console.log(d);
         	return d; //+"<br>"
         })
         .on("click", function(d,i){
-        	console.log(d+whichCode+"but which code is only one code and there are multiple books");
+        	// console.log(d+whichCode+"but which code is only one code and there are multiple books");
         	 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
         })
     hoverbox.classed("hidden", false); //show the hoverbox
