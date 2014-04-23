@@ -323,15 +323,9 @@ function runOnce(){
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes.txt", function(error, cData) {
-var counters = [0,0,146,106,33,14,2,0,0,0];
-var jumps;
-
-for (i = 0; i < MAX_LEVELS;i++) {
-    jumps = Math.PI*2/parseFloat(counters[i]);  
-}
 for (i = 0; i < cData.length;i++) {
 	allCodes.push(cData[i].codeName);
-	angles.push(cData[i].angles);
+	angles.push(holdAngles[i]);
 	radiusIs.push(radius_levels[storeLengths[i]]);
 	// radiusIs.push(cData[i].radiusIs);
 }
@@ -377,12 +371,6 @@ var inCircle = svg.selectAll("inCircle")
 	.on("mouseout", function(d,i){
 			removeOutwardLines(d.codeName, i);
 	})
-		// if (clicked == 0){
-		// 	hideBooks();
-		// 	removeOutwardLines(d.codeName, i);
-		// }
-
-	// })
 	//LOGIC IS RIGHT BUT
 	// .on("click", function(d,i){		
 	// 	if (clicked == 1){
@@ -410,35 +398,10 @@ var inCircle = svg.selectAll("inCircle")
 	// 	// books(d.codeName,i);
 	// })
 //LOGIC IS RIGHT BUT
-	// .on("mouseover", function(d,i){
-	// 			books(d.codeName,i);
-	// 		})
-	// .on("mouseout", function(d,i){ 
-	// // 	d3.select(this)
-	// // 	.attr("stroke","none")
-	// // 	.attr("stroke-width",1)
-	// // .attr("opacity",.3)
-	// // 	thing = d.codeName;
-	// // 	index = i;
-	// 				hideBooks();
-	// 	removeOutwardLines(d.codeName, i);
-	// });
-	// if (clicked==false) {
-	// 	hideBooks();
-	// 			removeOutwardLines(thing, index);
-	// }
-
-	// .on("mouseover", function(d){
-	// 	item = d.subjCode;
-	// })
-	// .on("mouseout", function(d){
-	// 	removeLines();
-	// });
 $('.inCircle').hoverIntent({
     over: function(){
 		// allOut(thing, index);
 		// books(thing, index);
-
 		// runLines(item);
 	// persistLines();
     },
@@ -472,28 +435,40 @@ var thisIs = [];
 var otherThis = [];
 var storeLengths = [];
 var countLengths = {};
+var jumps = {};
+var anglesAre = [];
+var holdAngles = [];
+
 var countIt = 0;
-// var radius_levels
 var thisCircle;
 function storeInnerSubjs(arrayOfSubjs, index){
 otherThis = arrayOfSubjs.split(",");
-storeLengths.push(otherThis.length);
-// for (i=0; i<MAX_LEVELS; i++){
-	// if (i==otherThis.length){
-		// countIt++;
-countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[otherThis.length]+1 : 1;
-checkLengths();
+storeLengths.push(otherThis.length); //now this is "q"
+
+countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[otherThis.length]+1 : 1; //now this is counters
+
+checkLengths(otherThis); //here we finish the counters array and create the new jumps thing
+// for (i=0; i<storeLengths.length; i++){
+// }
 }
-function checkLengths(){
+function checkLengths(otherThis){
 	for (i=0; i<MAX_LEVELS; i++){
 if (countLengths[i]===undefined){
 	console.log("undefined");
 	countLengths[i] = 0;
 }
 else {
-	// countLengths[i].push(Math.PI*2/countLengths[i]);
 }
+	jumps[i] = (Math.PI*2/countLengths[i]);
+
+
+	anglesAre[i] = 0;
 }
+
+anglesAre[otherThis.length]+=jumps[otherThis.length];
+// console.log(anglesAre[otherThis.length]+"at q"+otherThis.length)
+holdAngles.push(anglesAre[otherThis.length])
+// console.log(anglesAre[otherThis.length]+" at q "+otherThis.length)
 }
 
 
