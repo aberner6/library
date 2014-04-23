@@ -326,6 +326,8 @@ d3.tsv("connectionfreqcodes.txt", function(error, cData) {
 for (i = 0; i < cData.length;i++) {
 	allCodes.push(cData[i].codeName);
 	angles.push(holdAngles[i]);
+		// angles.push(cData[i].angles);
+
 	radiusIs.push(radius_levels[storeLengths[i]]);
 	// radiusIs.push(cData[i].radiusIs);
 }
@@ -343,13 +345,13 @@ var inCircle = svg.selectAll("inCircle")
 		// console.log(d.radiusIs+"radiusis")
 		// console.log(radius_levels[storeLengths[i]]); //radius_levels[storeLengths[i]]
 		// calcX.push(width*0.5+d.radiusIs*Math.cos(d.angles));
-		calcX.push(width*0.5+radiusIs[i]*Math.cos(d.angles));
+		calcX.push(width*0.5+radiusIs[i]*Math.cos(angles[i]));
 		// calcX.push(width*0.5+storeLengths[i]*Math.cos(d.angles));
-     	return width*0.5+radiusIs[i]*Math.cos(d.angles);
+     	return width*0.5+radiusIs[i]*Math.cos(angles[i]);
 	})
 	.attr("cy", function(d,i){ 
-		calcY.push(height*0.5+radiusIs[i]*Math.sin(d.angles));
-		return height*0.5+radiusIs[i]*Math.sin(d.angles);
+		calcY.push(height*0.5+radiusIs[i]*Math.sin(angles[i]));
+		return height*0.5+radiusIs[i]*Math.sin(angles[i]);
 	})
 	.attr("r", function(d){
 		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
@@ -436,7 +438,7 @@ var otherThis = [];
 var storeLengths = [];
 var countLengths = {};
 var jumps = {};
-var anglesAre = [];
+var anglesAre = {};
 var holdAngles = [];
 
 var countIt = 0;
@@ -447,29 +449,33 @@ storeLengths.push(otherThis.length); //now this is "q"
 
 countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[otherThis.length]+1 : 1; //now this is counters
 
-checkLengths(otherThis); //here we finish the counters array and create the new jumps thing
-// for (i=0; i<storeLengths.length; i++){
-// }
+checkLengths(otherThis,index); //here we finish the counters array and create the new jumps thing
 }
-function checkLengths(otherThis){
-	for (i=0; i<MAX_LEVELS; i++){
+function checkLengths(otherThis,index){
+	// console.log(index);
+for (i=0; i<MAX_LEVELS; i++){
+	anglesAre[i] = 0;
+
 if (countLengths[i]===undefined){
 	console.log("undefined");
 	countLengths[i] = 0;
 }
 else {
 }
-	jumps[i] = (Math.PI*2/countLengths[i]);
+	jumps[i] = ((Math.PI*2)/countLengths[i]);
+	var onlyThis = otherThis.length;
 
-
-	anglesAre[i] = 0;
+	// anglesAre[onlyThis]= jumps[otherThis.length] ? jumps[otherThis.length]+1 : 1;
+}
+then();
+}
+function then(){
+	for (i=0; i<storeLengths.length; i++){
+		anglesAre[storeLengths[i]]+=jumps[storeLengths[i]];
+		holdAngles.push(anglesAre[storeLengths[i]]);
+	}
 }
 
-anglesAre[otherThis.length]+=jumps[otherThis.length];
-// console.log(anglesAre[otherThis.length]+"at q"+otherThis.length)
-holdAngles.push(anglesAre[otherThis.length])
-// console.log(anglesAre[otherThis.length]+" at q "+otherThis.length)
-}
 
 
 
