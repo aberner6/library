@@ -438,7 +438,7 @@ var otherThis = [];
 var storeLengths = [];
 var countLengths = {};
 var jumps = {};
-var anglesAre = {};
+var anglesAre = [];
 var holdAngles = [];
 
 var countIt = 0;
@@ -451,6 +451,7 @@ countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[o
 
 checkLengths(otherThis,index); //here we finish the counters array and create the new jumps thing
 }
+var stop;
 function checkLengths(otherThis,index){
 	// console.log(index);
 for (i=0; i<MAX_LEVELS; i++){
@@ -462,20 +463,53 @@ if (countLengths[i]===undefined){
 }
 else {
 }
-	jumps[i] = ((Math.PI*2)/countLengths[i]);
-	var onlyThis = otherThis.length;
-
+	jumps[i]=((Math.PI*2)/countLengths[i]);
+// if stop
+// console.log(jumps[i])
 	// anglesAre[onlyThis]= jumps[otherThis.length] ? jumps[otherThis.length]+1 : 1;
 }
-then();
+if (index==300){
+	newFunction();
 }
-function then(){
+// console.log(index);
+
+// if (jumps[9]>0){
+// 	var onlyThis = 3;
+// 	// anglesAre.push(jumps[onlyThis]++);
+// 	console.log(jumps[onlyThis]);
+
+// 	// anglesAre[onlyThis] += jumps
+// 	// console.log(jumps);
+// 	// console.log(onlyThis);
+// }
+}
+function newFunction(){
+// if (jumps[9]>0){
+	var onlyThis = 3;
+	console.log(jumps[3]);
+	// anglesAre.push(jumps[onlyThis]++);
 	for (i=0; i<storeLengths.length; i++){
+		// anglesAre.push(jumps[storeLengths[i]]++);
 		anglesAre[storeLengths[i]]+=jumps[storeLengths[i]];
+		// console.log(anglesAre);
 		holdAngles.push(anglesAre[storeLengths[i]]);
-	}
+	}	
+		console.log(holdAngles);
 }
 
+
+
+
+
+// function then(){
+// if (jumps[9]>0){
+	// for (i=0; i<1; i++){
+		// anglesAre[storeLengths[1]]+=jumps[storeLengths[1]];
+		// holdAngles.push(anglesAre[storeLengths[i]]);
+	// }
+	// console.log(anglesAre);
+// }
+// }
 
 
 
