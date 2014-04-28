@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
+<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
@@ -372,20 +372,9 @@ var inCircle = svg.selectAll("inCircle")
 	.on("mouseover", function(d,i){
 		d3.select(this)
 		.attr("opacity", .9);
-					// if (d>=1 && d<=5){
-					// 	thing = 1;
-					// }
-					// if (d>5){
-					// 	d = d-5;
-					// 	console.log(d+"and i"+i)
-					// }	
-		// console.log(d.codeName+"at the top before fixing") //THIS IS WHAT I NEED TO FIX...
-
-		// thing = d.codeName; //THIS IS WHAT I NEED TO FIX...
 		console.log(d.codeName+"sending to all out");
 		index = i;
 		allOut(d.codeName, index); //FIX WHAT THING IS NOW
-	// }
 		})
 	.on("click", function(d,i){
 		d3.select(this)
@@ -394,49 +383,9 @@ var inCircle = svg.selectAll("inCircle")
 	.on("mouseout", function(d,i){
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
 	})
-// 	//LOGIC IS RIGHT BUT
-// 	// .on("click", function(d,i){		
-// 	// 	if (clicked == 1){
-// 	// 	d3.select(this)
-// 	// 	.attr("opacity", .9);
-// 	// 	thing = d.codeName;
-// 	// 	index = i;
-// 	// 	allOut(thing, index);
-// 	// 	books(d.codeName,i);		
-// 	// 	}
-// 	// 	if (clicked == 0){
-// 	// 		hideBooks();
-// 	// 		removeOutwardLines(d.codeName, i);
-// 	// 	}
-// 	// 	// clicked = true;
-// 	// 	// d3.select(this)
-// 	// 	// // .attr("stroke", "darkgray")
-// 	// 	// // .attr("stroke-width",2)
-// 	// 	// .attr("opacity", .9);
-// 	// 	// thing = d.codeName;
-// 	// 	// index = i;
-// 	// 	// allOut(thing, index);
-// 	// 	// clicked = false;
-// 	// 	// runLinesOut(d.codeName, i);
-// 	// 	// books(d.codeName,i);
-// 	// })
-// //LOGIC IS RIGHT BUT
-// $('.inCircle').hoverIntent({
-// 	over: function(){
-// 		// allOut(thing, index);
-// 		// books(thing, index);
-// 		// runLines(item);
-// 	// persistLines();
-// 	},
-// 	out: function(){
-// 		// removeOutwardLines(thing, index);
-// 		// hideBooks();
-// 	}
-//   })
 makeGlyph();    
 
 function makeGlyph(){
-	// console.log("make glyph");
 myVar = setInterval(function(){ 
 if (tigReggib<connDataLength-1){
 	tigReggib++; 
@@ -462,7 +411,6 @@ var holdAngles = [];
 var countIt = 0;
 var thisCircle;
 function storeInnerSubjs(arrayOfSubjs, index){
-		// console.log(connDataLength);
 
 otherThis = arrayOfSubjs.split(",");
 storeLengths.push(otherThis.length); //now this is "q"
@@ -522,19 +470,73 @@ var linesInG = svg.selectAll("linesIn")
 	.attr("x1",0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
+		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (thisNum==d[j]){
-				console.log(d[j]+"d[j]"+subjTextInside[d[j]-1]+"subjText");
+					// if (d[j]<=5){
+					// 	d[j] = 1;
+					// }
+					// else if (d[j]>5){
+					// 	d[j] = d[j]-5;
+					// }		
+				// }
+////NEED TO STORE THE REDO I THINK
+					if (d[j]<=5){
+						newThing.push(1);
+					}
+			if (d[j]>5){
+				// console.log(d[j]);
+				newThing.push(d[j]-5);
+				// console.log(newThing[0]);
+			}
+		}
+				console.log(newThing+"in x")
+		for (n=0; n<newThing.length; n++){
+			if (thisNum==newThing[n]){
+				console.log(newThing[n]+"newThing[n]"+subjTextInside[newThing[n]-1]+"newThing's text");
 				return subjX[thisNum-1]-calcX[i];
-			}		
+			}				
 		}
 	})
 	.attr("y2",function(d,i){
+		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (thisNum==d[j]){
-				return subjY[thisNum-1]-calcY[i];
-			}		
+					// if (d[j]<=5){
+					// 	d[j] = 1;
+					// }
+					// else if (d[j]>5){
+					// 	d[j] = d[j]-5;
+					// }		
+				// }
+////NEED TO STORE THE REDO I THINK
+					if (d[j]<=5){
+						newThing.push(1);
+					}
+			if (d[j]>5){
+				// console.log(d[j]);
+				newThing.push(d[j]-5);
+				// console.log(newThing[0]);
+			}
 		}
+		console.log(newThing+"in y")
+		for (n=0; n<newThing.length; n++){
+			if (thisNum==newThing[n]){
+				console.log(newThing[n]+"newThing[n]"+subjTextInside[newThing[n]-1]+"newThing's text");
+				return subjY[thisNum-1]-calcY[i];
+			}				
+		}
+		// for (j=0; j<allCodes[i].length; j++){
+		// 			// if (d[j]<=5){
+		// 			// 	d[j] = 1;
+		// 			// }
+		// 			// else if (d[j]>5){
+		// 			// 	d[j] = d[j]-5;
+		// 			// }	
+		// 			// console.log(d[j])		
+		// 	if (thisNum==d[j]){
+		// 		console.log(d[j]+"match"+d[j])
+		// 		return subjY[thisNum]-calcY[i];
+		// 	}		
+		// }
 	})
 	.attr("stroke",function(d,i){
 		return "lightgray";
@@ -708,7 +710,8 @@ var newG = svg.selectAll("linesOut")
 		var whichLoc;
 			for (k=1; k<=subjCode.length; k++){
 				if (k==d){
-				whichLoc = subjLoc[k];
+				whichLoc = subjLoc[k-1];
+				console.log(whichLoc+"whichLoc all out")
 				if (whichLoc<=6){
 					return "teal";
 				}
@@ -787,8 +790,6 @@ d3.selectAll(".outText").remove();
 					else if (d>5){
 						d = d-5;
 					}	
-
-			// console.log("removing"+d);
 				for (k=1; k<=subjCode.length; k++){
 					if (k==d){
 						return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
@@ -818,7 +819,6 @@ var saveId = [];
 loadBooks();
 function loadBooks(){
 d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-// d3.tsv("all_id_codes_title.txt", function(error, data) {
 			for (j=0; j<data.length; j++){
 				manyBooks.push(data[j].title);
 				manyIds.push(data[j].id);
@@ -829,34 +829,11 @@ function books(incoming, thisCircle){
 clicked = 0;
 
 d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-// console.log(data[0].code);
 incomingIs = incoming.split(",");
-// console.log(incomingIs);
-// console.log(data.length)
-// console.log(d+"d after minus 5");
-// console.log(incomingIs+"incoming books before 5");
-					// if (incomingIs<=5){
-					// 	incomingIs = 1;
-					// }
-					// else if (incomingIs>5){
-					// 	incomingIs = incomingIs-5;
-					// }
-
-// console.log(incomingIs+"incoming books after minus 5");
-
 			for (j=0; j<data.length; j++){
-					// if (data[j]<=5){
-					// 	data[j] = 1;
-					// }
-					// else if (data[j]>5){
-					// 	data[j] = data[j]-5;
-					// }
-				// manyBooks.push(data[j].title);
-				// manyIds.push(data[j].id);
 				if (data[j].code==incomingIs){ 
 					console.log(data[j].code+incomingIs)
 					updateHoverbox(data[j].title, j, data[j].id);
-					// console.log(data)
 					whichBooks.push(data[j].title);
 					saveId.push(data[j].id);
 				}
@@ -878,7 +855,6 @@ var indexIs = index;
 		.append("p")
 		.attr("class","listBooks")
 		.html(function(d){
-			// console.log(d);
 			return d; //+"<br>"
 		})
 		.on("click", function(d,i){
@@ -896,61 +872,7 @@ hoverbox.selectAll(".listBooks").remove();
 hoverbox.classed("hidden", true);
 whichBooks.length = 0;
 }
-function persistLines(){
-var otherLines = svg.selectAll("otherLines")
-	.data(r)
-	.enter()
-	.append("line")
-	.attr("transform", function(d,i){
-		return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
-	})
-	.attr("class", "persist")
-	//CAN I NORMALIZE THESE USING A JAVASCRIPT FUNCTION? MATH.NORMALIZE?
-	.attr("x1",0)
-	.attr("y1",0)
-	.attr("x2",	function(d,i){
-		for (j=0; j<allCodes[i].length; j++){
-			for (k=0; k<subjCode.length; k++){
-			if (subjCode[k]==d[j]-1){
-				return (subjX[k]-calcX[i]);
-			}		
-		}
-		}
-	})
-	.attr("y2",function(d,i){
-		for (j=0; j<allCodes[i].length; j++){
-			for (k=0; k<subjCode.length; k++){
-			if (subjCode[k]==d[j]-1){
-				return (subjY[k]-calcY[i]);
-			}		
-		}
-		}
-	})
-	.attr("stroke",function(d,i){
-		var whichLoc;
-		for (j=0; j<allCodes[i].length; j++){
-			for (k=0; k<subjCode.length; k++){
-			if (subjCode[k]==d[j]-1){
-				whichLoc = subjLoc[k];
-				if (whichLoc<=6){
-					return "teal";
-				}
-				if (whichLoc>6&&whichLoc<=10){
-					return "lightgreen";
-				}
-				if (whichLoc>10&&whichLoc<=15){
-					return "lightblue";
-				}
-				if (whichLoc>15&&whichLoc<21){
-					return "blue";
-				}		
-			}		
-		}
-	}
-	})
-	.attr("stroke-opacity", .07)
-	.attr("stroke-width",.2);
-}
+
 </script>
 </body>
 </html>
