@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
+<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
@@ -451,16 +451,17 @@ svg.selectAll(".linesIn") //could be just .remove()
 	.attr("stroke-width",.2);
 }
 var theseNums = [];
-var otherThing = [];
 function checked(checkedIt){
 console.log(checkedIt+"checked");
 theseNums = checkedIt;
-// if(checkedIt.length>1){
-// 	theseNums = checkedIt.split(",");	
+
+// console.log(theseNums+"theseNums");
+// for (t=0; t<theseNums.length; t++){
+// 	console.log(t);
 // }
-
-console.log(theseNums+"theseNums");
-
+		if (checkedIt.length>1){
+			d3.selectAll('.checkedLines').transition().attr("stroke-opacity",.4).attr("stroke-width",.5);
+		}
 var linesInG = svg.selectAll("checkedLines")
 	.data(r)
 	.enter()
@@ -481,57 +482,84 @@ var linesInG = svg.selectAll("checkedLines")
 				newThing.push(d[j]-5);
 			}
 		}
-		for (n=0; n<newThing.length; n++){
+		if (checkedIt.length>1){
+			console.log(checkedIt.length+"length");
 			for (t=0; t<theseNums.length; t++){
-							if (theseNums==["1", "1", "1"]){
-			// if (theseNums[t]==newThing[n]){
-				// console.log(newThing[n]+"newThing[n]"+subjTextInside[newThing[n]-1]+"newThing's text");
+				console.log(t+"t of these nums");
+			if (theseNums.toString()==newThing.toString()){
+			// d3.selectAll('.checkedLines').transition().attr("x2",0);
 				return subjX[theseNums[t]-1]-calcX[i];
+			}				
 			}
 		}
-			// else{
-			// 	// d3.select(this)
-			// 	// .transition()
-			// 	// .attr("x2",0)
-			// 	return 0;
-			// }				
+		if (checkedIt.length<=1){
+			for (n=0;n<newThing.length; n++){
+		if (checkedIt[0]==newThing[n]){
+			console.log(checkedIt.length+"length");
+			return subjX[checkedIt[0]-1]-calcX[i];
 		}
-	// }
+	}
+}
 	})
 	.attr("y2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
 			if (d[j]<=5){
 				newThing.push(1);
-				// otherThing.push(1);
 			}
 			if (d[j]>5){
 				newThing.push(d[j]-5);
-				// otherThing.push(d[j]-5);
 			}
 		}
-		console.log(newThing+"newthing")
-		for (n=0; n<newThing.length; n++){
-			for (t=0; t<theseNums.length; t++){
-			if (theseNums==["1", "1", "1"]){
-				console.log(newThing[n]+"newThing[n]"+subjTextInside[theseNums[t]-1]+"these nums");
-				return subjY[theseNums[t]-1]-calcY[i];
+		if (checkedIt.length>1){
+			for (t=0; t<theseNums.length; t++){	
+			if (theseNums.toString()==newThing.toString()){
+				return subjY[checkedIt[t]-1]-calcY[i];
 			}
 		}
-			// else{
-			// 	// d3.select(this)
-			// 	// .transition()
-			// 	// .attr("y2",0)
-			// 	return 0;
-			// }					
+	}
+		if (checkedIt.length<=1){
+			for (n=0;n<newThing.length; n++){
+		if (checkedIt[0]==newThing[n]){
+			console.log(checkedIt.length+"length");
+			return subjY[checkedIt[0]-1]-calcY[i];
+		}
+	}
+}
+		// else 
+		// if (theseNums.toString()==newThing.toString()){
+		// 	return subjY[checkedIt[0]-1]-calcY[i];
 		// }
+	})
+	.attr("stroke",
+		function(d,i){
+		var newThing = [];
+		for (j=0; j<allCodes[i].length; j++){
+			if (d[j]<=5){
+				newThing.push(1);
+			}
+			if (d[j]>5){
+				newThing.push(d[j]-5);
+			}
+		}
+		if (checkedIt.length<=1){
+			for (n=0;n<newThing.length; n++){
+		if (checkedIt[0]==newThing[n]){
+			return "lightgray";
+		}
+	}
+	}
+		if (checkedIt.length>1){
+			for (t=0; t<theseNums.length; t++){	
+			if (theseNums.toString()==newThing.toString()){
+				console.log(t+"t of theseNums");
+				return "pink";
+			}
+		}
 	}
 	})
-	.attr("stroke",function(d,i){
-		return "lightgray";
-	})
 	.attr("stroke-opacity",1)
-	.attr("stroke-width",2);
+	.attr("stroke-width",5);
 }
 
 
