@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
@@ -38,6 +38,9 @@
 	font-size: 12px; font-size:12pt; position: absolute; padding: 5px; z-index: 100000; 
 	background-color: #000; 
 	color: #FFF; max-width: 300px; padding: 5px 8px 4px 8px; text-align: center; 
+}
+.mouseoverText{
+	font-size: 10px; 
 }
 </style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
@@ -236,48 +239,48 @@ var surroundingCircles = svg.selectAll("surroundingPoints")
 // 	}
 //   })
 
-// var text = svg.selectAll("text")
-// 	.data(data)
-// 	.enter().append("text")
-// 	.attr("class","outerCircleText")
-// 	.attr("x", function(d,i){ 
-// 		if (subjX[i]>width/2){
-// 				return subjX[i]; 	
-// 		}
-// 		else {
-// 			return subjX[i]-d.subject.length*7;
-// 		}
-// 	})
-// 	.attr("y", function(d,i){ 
-// 		return subjY[i];
-// 	})
-// 	.text(function(d,i) { 
-// 		return d.subject; 
-// 	})
-// 	.attr("fill",function(d,i){
-// 		if (d.loc<=6){
-// 			return "teal";
-// 		}
-// 		if (d.loc>6&&d.loc<=10){
-// 			return "lightgreen";
-// 		}
-// 		if (d.loc>10&&d.loc<=15){
-// 			return "lightblue";
-// 		}
-// 		if (d.loc>15&&d.loc<21){
-// 			return "blue";
-// 		}
-// 	});
+var text = svg.selectAll("text")
+	.data(data)
+	.enter().append("text")
+	.attr("class","outerCircleText")
+	.attr("x", function(d,i){ 
+		if (subjX[i]>width/2){
+				return subjX[i]; 	
+		}
+		else {
+			return subjX[i]-d.subject.length*7;
+		}
+	})
+	.attr("y", function(d,i){ 
+		return subjY[i];
+	})
+	.text(function(d,i) { 
+		return d.subject; 
+	})
+	.attr("fill",function(d,i){
+		if (d.loc<=6){
+			return "teal";
+		}
+		if (d.loc>6&&d.loc<=10){
+			return "lightgreen";
+		}
+		if (d.loc>10&&d.loc<=15){
+			return "lightblue";
+		}
+		if (d.loc>15&&d.loc<21){
+			return "blue";
+		}
+	});
 
-// $('.surroundingCircles').tipsy({ 
-// 		gravity: 'nw', 
-// 		html: true, 
-// 		title: function() {
-// 		  var d = this.__data__;
-// 		  return d.subject+" ("+d.freq+")";
+$('.surroundingPoints').tipsy({ 
+		gravity: 'nw', 
+		html: true, 
+		title: function() {
+		  var d = this.__data__;
+		  return d.subject+" ("+d.freq+")";
 
-// 		}
-// });
+		}
+});
 })
 }
 
@@ -733,6 +736,7 @@ var newG = svg.selectAll("linesOut")
 					}
 				}
 		})
+
 }
 
 function allOut(arrayOfSubjs, index){
@@ -740,8 +744,20 @@ function allOut(arrayOfSubjs, index){
 thisIs = arrayOfSubjs.split(",");
 
 thisCircle = index;
+
 var justOne = thisIs[0];
 var grabIt = [];
+var mouseText = svg.selectAll("mouseoverText")
+	.data(thisIs)
+	.enter()
+	.append("text")
+	.attr("class","mouseoverText")
+	.attr("transform", function(d,i){
+		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
+	})
+	.attr("fill","black")
+	.text(thisIs.length);
+
 var newG = svg.selectAll("linesOut")
 	.data(thisIs)
 	.enter()
@@ -865,6 +881,9 @@ var newG = svg.selectAll("linesOut")
 function removeOutwardLines(codes, thisCirc){
 var outToText = svg.selectAll("outText") //not outText
 d3.selectAll(".outText").remove();
+	// .attr("class","mouseoverText")
+d3.selectAll(".mouseoverText").remove();
+
 // console.log(thisCirc+"thisCirc");
 		d3.selectAll(".hey"+thisCirc) //associated lines
 		.transition()
