@@ -44,7 +44,7 @@
 }
 .subjectText{
 	text-transform:uppercase;
-	font-size: 8px;
+	font-size: 9px;
 }
 .outerCircleText{
 border-radius: 4px 4px 4px 4px;
@@ -329,7 +329,7 @@ for (i=0; i<allCodes.length; i++){
 var inCircle = svg.selectAll("inCircle")
 	.data(cData)
 	.enter().append("circle")
-	.attr("class", "inCircle")
+	.attr("class", function(d,i){ return "inCircle"+i; })
 	.attr("cx", function(d,i){
 		calcX.push(width*0.5+radiusIs[i]*Math.cos(angles[i]));
 		return width*0.5+radiusIs[i]*Math.cos(angles[i]);
@@ -463,7 +463,11 @@ var linesInG = svg.selectAll("checkedLines")
 			for (t=0; t<theseNums.length; t++){
 				// console.log(t+"t of these nums");
 			if (theseNums.toString()==newThing.toString()){
-			// d3.selectAll('.checkedLines').transition().attr("x2",0);
+				console.log(i+"this is index?");
+				d3.select("circle.inCircle"+i)
+				.transition()
+				.attr("opacity", ".9")
+				.attr("fill","yellow");
 				return subjX[theseNums[t]-1]-calcX[i];
 			}				
 			}
