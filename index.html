@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
@@ -133,47 +133,9 @@ function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
 d3.tsv("subjects_top25.tsv", function(error, data) {
-var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float)subjTable.getRowCount();
+var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
 var angle = 0;
-// sData.push(data);
-var surroundingRects = svg.selectAll("surroundingPoints")
-	.data(data)
-	.enter().append("rect")
-	.attr("class", "surroundingPoints")
-	.attr("x", function(d,i){
-		subjCode.push(d.subjCode);
-		freqIs.push(d.freq);
-		subjLoc.push(d.loc);
-		subjTextInside.push(d.subject);
-		subjX.push(width*.5+subradius*Math.cos(jump*(d.loc-1)));
-		return width*.5+subradius*Math.cos(jump*(d.loc-1));
-	})
-	.attr("y", function(d,i){  
-	subjY.push(height*.5+subradius*Math.sin(jump*(d.loc-1))); 
-			return height*.5+subradius*Math.sin(jump*(d.loc-1))-10;
-	})
-	.attr("width", 30)
-	.attr("height", 14)
-	.attr("opacity",.5)
-	.attr("fill","none")
-	.attr("stroke", function(d,i){
-		if (d.loc<=6){
-			return "teal";
-		}
-		if (d.loc>6&&d.loc<=10){
-			return "lightgreen";
-		}
-		if (d.loc>10&&d.loc<=15){
-			return "lightblue";
-		}
-		if (d.loc>15&&d.loc<21){
-			return "blue";
-		}
-	})
-	.on("click", function(d){
-		checkedIt.push(d.subjCode);
-		checked(checkedIt);
-	});
+
 	// .on("mouseover", function(d){
 	// 	if (d.subjCode>4){
 	// 	item = d.subjCode-5;
@@ -198,7 +160,6 @@ var surroundingRects = svg.selectAll("surroundingPoints")
 
 
 
-// var text = d3.select('.outerCircleText');
 var text = svg.selectAll('.subjectText')
 	.data(data)
 	.enter().append("text")
@@ -208,17 +169,10 @@ var text = svg.selectAll('.subjectText')
 		subjLoc.push(d.loc);
 		subjTextInside.push(d.subject);
 		subjX.push(width*.5+subradius*Math.cos(jump*(d.loc-1)));
-		// return width*.5+subradius*Math.cos(jump*(d.loc-1));
-	// })
-	// .attr("y", function(d,i){  
 		subjY.push(height*.5+subradius*Math.sin(jump*(d.loc-1))); 
-			// return height*.5+subradius*Math.sin(jump*(d.loc-1));
-	// })
 		return "subjectText"; 
 	})
 	.attr("x", function(d,i){ 
-		// return (width*.5+subradius*Math.cos(jump*(d.loc-1)));
-
 		if (subjX[i]>width/2){
 				return subjX[i]; 	
 		}
@@ -245,11 +199,55 @@ var text = svg.selectAll('.subjectText')
 		if (d.loc>15&&d.loc<21){
 			return "blue";
 		}
+	})
+	.each(function(d) {
+        d.width = this.getBBox().width;
+      })
+	.on("click", function(d){
+		checkedIt.push(d.subjCode);
+		checked(checkedIt);
 	});
-	// .on("click", function(d){
-	// 	checkedIt.push(d.subjCode);
-	// 	checked(checkedIt);
-	// });
+
+var surroundingRects = svg.selectAll("surroundingPoints")
+	.data(data)
+	.enter().append("rect")
+	.attr("class", "surroundingPoints")
+	.attr("x", function(d,i){
+		if (subjX[i]>width/2){
+				return subjX[i]-5; 	
+		}
+		else {
+			return subjX[i]-(d.subject.length*3)-5;
+		}
+	})
+	.attr("y", function(d,i){  
+			return height*.5+subradius*Math.sin(jump*(d.loc-1))-10;
+	})
+	.attr("width", function(d){ 
+		return d.width+10;
+		// return d.subject.length*5.5; 
+	})
+	.attr("height", 14)
+	.attr("opacity",.5)
+	.attr("fill","none")
+	.attr("stroke", function(d,i){
+		if (d.loc<=6){
+			return "teal";
+		}
+		if (d.loc>6&&d.loc<=10){
+			return "lightgreen";
+		}
+		if (d.loc>10&&d.loc<=15){
+			return "lightblue";
+		}
+		if (d.loc>15&&d.loc<21){
+			return "blue";
+		}
+	})
+	.on("click", function(d){
+		checkedIt.push(d.subjCode);
+		checked(checkedIt);
+	});
 
 $('.subjectText').tipsy({ 
 		gravity: 'nw', 
