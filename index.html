@@ -8,6 +8,10 @@
 	body{
 		font-family: "Open Sans",'sans-serif';
 	}
+
+.surroundingPoints rect.selected{
+opacity: .1;
+}
 /* Hoverbox */
 #hoverbox {
 	/*outline:1px solid grey;*/
@@ -17,6 +21,7 @@
 	overflow:auto;
 	position: fixed;
 }
+
 #hoverbox.hidden {
   /*display: none;*/
 }
@@ -94,6 +99,7 @@ var legendconcolor;
   hsubtext = "rgba(210, 210, 210, 255)";
 loadBooks();
 
+var boolSelected = 0;
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
 	width = 1280, //- margin.left - margin.right,
 	height = 750; //- margin.top - margin.bottom;
@@ -130,6 +136,8 @@ var clicked = 0;
 // runInnerCircles();
 // runOuterCircles();
 var checkedIt = [];
+var wasItSubj;
+var storeClicks = {};
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
@@ -200,13 +208,39 @@ var text = svg.selectAll('.subjectText')
 		if (d.loc>15&&d.loc<21){
 			return "blue";
 		}
-	})
+	})	
+	.attr("opacity",1)
 	.each(function(d) {
         d.width = this.getBBox().width;
       })
-	.on("click", function(d){
-		checkedIt.push(d.subjCode);
-		checked(checkedIt);
+	.on("click", function(d,i){
+		boolSelected +=1;
+
+		  var d = this.__data__;
+		  wasItSubj = d.subjCode;
+		// if(d.subjCode == wasItSubj){
+		// 	storeClicks[i] = 1;
+		// }
+storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
+
+		// if ()
+
+		if(boolSelected%2==1){
+			// console.log(boolSelected)
+			d3.select(this)
+			.transition()
+			.attr("fill","black");
+			checkedIt.push(d.subjCode);
+			checked(checkedIt);
+		// boolSelected=1;
+		}
+		if(boolSelected%2==0){
+			d3.select(this)
+			.transition()
+			.attr("fill","yellow");
+//remove that subject number
+		}
+
 	});
 
 var surroundingRects = svg.selectAll("surroundingPoints")
@@ -244,11 +278,8 @@ var surroundingRects = svg.selectAll("surroundingPoints")
 		if (d.loc>15&&d.loc<21){
 			return "blue";
 		}
-	})
-	.on("click", function(d){
-		checkedIt.push(d.subjCode);
-		checked(checkedIt);
 	});
+
 
 $('.subjectText').tipsy({ 
 		gravity: 'nw', 
@@ -260,6 +291,12 @@ $('.subjectText').tipsy({
 		}
 });
 })
+}
+
+//Move SVG elements to the end of their container,
+//so they appear "on top".
+var moveToFront = function() { 
+	this.parentNode.appendChild(this); 
 }
 
 var angles = [];
@@ -433,7 +470,9 @@ svg.selectAll(".linesIn") //could be just .remove()
 	// .attr("stroke-width",.);
 }
 var theseNums = [];
+var boolUnselect = 0;
 function checked(checkedIt){
+boolUnselect = 1;
 console.log(checkedIt+"checked");
 theseNums = checkedIt;
 		if (checkedIt.length>1){
@@ -474,50 +513,21 @@ var linesInG = svg.selectAll("checkedLines")
 				.transition()
 				.attr("opacity", ".9")
 				.attr("fill","yellow");
-
-
-
-
-// incomingIs = incoming.split(",");
-			// for (j=0; j<manyCodes.length; j++){
-
-			// 	for (t=0; t<theseNums.length; t++){
-			// 	if (theseNums[t]>1){
-			// 		theseNums[t] = theseNums[t]+5;
-			// 	}			
-			// 	if (theseNums[t]==1){
-			// 		theseNums[t] = theseNums[t]+1;
-			// 	}
-			// 	}
-				
-			// 	if (manyCodes[j].toString()==theseNums.toString()){ 
-			// 		updateHoverbox(manyBooks[j], j, manyIds[j]);
-			// 		// whichBooks.push(manyBooks[j]);
-			// 		// saveId.push(manyIds[j]);
-			// 	}
-			// }
-// 				console.log()
-// .on("click", function(d,i){
-// 		d3.select(this)
-// 		books(d.codeName,i); //FIX CODENAME
-// 		})
-
-
-
-
+console.log(checkedIt+"and i"+i)
+		checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
 
 
 				return subjX[theseNums[t]-1]-calcX[i];
 			}				
 			}
 		}
-		if (checkedIt.length<=1){
+		// if (checkedIt.length<=1){
 			for (n=0;n<newThing.length; n++){
 		if (checkedIt[0]==newThing[n]){
 			// console.log(checkedIt.length+"length");
 			return subjX[checkedIt[0]-1]-calcX[i];
 		}
-	}
+	// }
 }
 	})
 	.attr("y2",function(d,i){
@@ -540,7 +550,7 @@ var linesInG = svg.selectAll("checkedLines")
 			}
 		}
 	}
-		if (checkedIt.length<=1){
+		// if (checkedIt.length<=1){
 			console.log("less than 1");
 			for (n=0;n<newThing.length; n++){
 		if (checkedIt[0]==newThing[n]){
@@ -548,11 +558,7 @@ var linesInG = svg.selectAll("checkedLines")
 			return subjY[checkedIt[0]-1]-calcY[i];
 		}
 	}
-}
-		// else 
-		// if (theseNums.toString()==newThing.toString()){
-		// 	return subjY[checkedIt[0]-1]-calcY[i];
-		// }
+// }
 	})
 	.attr("stroke", function(d,i){
 		var newThing = [];
@@ -770,8 +776,104 @@ var newG = svg.selectAll("linesOut")
 		})
 }
 
-function allOut(arrayOfSubjs, index){
+function checkedIn(arrayOfSubjs, index){
+// if (checked=1){
+	thisIs = arrayOfSubjs;
+	// console.log(thisIs+"is checked?"+checked)
+// }
+thisCircle = index;
 
+var justOne = thisIs[0];
+var grabIt = [];
+var mouseText = svg.selectAll("mouseoverText")
+	.data(thisIs)
+	.enter()
+	.append("text")
+	.attr("class","mouseoverText")
+	.attr("transform", function(d,i){
+		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
+	})
+	.attr("fill","black")
+	.text(thisIs.length);
+
+var newG = svg.selectAll("linesOut")
+	.data(thisIs)
+	.enter()
+	.append("line")
+	.attr("transform", function(d,i){
+		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
+	})
+	.attr("class", "hey"+thisCircle)//"linesOut")
+	.attr("x1", 0)
+	.attr("y1",0)
+	.attr("x2",function(d,i){
+		// console.log(d+"d before all out processing");
+					// if (d<=5){
+					// 	d = 1;
+					// }
+					// else if (d>5){
+					// 	d = d-5;
+					// }	
+		// console.log(d+"d after all out processing");
+
+			for (k=1; k<=subjCode.length; k++){
+				if (k==d){
+					console.log(d+subjCode[k]+"matched")
+					// console.log(subjTextInside[k-1]+"subjText");
+					return subjX[k-1]-calcX[thisCircle];
+				}
+			}
+	})
+	.attr("y2",function(d,i){
+					// if (d<=5){
+					// 	d = 1;
+					// }
+					// else if (d>5){
+					// 	d = d-5;
+					// }	
+
+			for (k=1; k<=subjCode.length; k++){
+				if (k==d){
+					return subjY[k-1]-calcY[thisCircle];
+				}
+			}
+		})
+	.attr("stroke",function(d,i){
+					// if (d<=5){
+					// 	d = 1;
+					// }
+					// else if (d>5){
+					// 	d = d-5;
+					// }	
+		var whichLoc;
+			for (k=1; k<=subjCode.length; k++){
+				if (k==d){
+				whichLoc = subjLoc[k-1];
+				console.log(whichLoc+"whichLoc all out")
+				if (whichLoc<=6){
+					return "teal";
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					return "lightgreen";
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					return "lightblue";
+				}
+				if (whichLoc>15&&whichLoc<21){
+					return "blue";
+				}	
+			}	
+		}
+	})
+	.attr("stroke-width",1);
+}
+
+function allOut(arrayOfSubjs, index){
+// if (checked=1){
+// 	thisIs = arrayOfSubjs;
+// 	console.log(thisIs+"is checked?"+checked)
+// }
+// if (checked = 0){}
 thisIs = arrayOfSubjs.split(",");
 
 thisCircle = index;
