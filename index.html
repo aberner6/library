@@ -225,20 +225,22 @@ storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 
 		// if ()
 
-		if(boolSelected%2==1){
+		if(storeClicks[i]%2==1){
 			// console.log(boolSelected)
 			d3.select(this)
 			.transition()
 			.attr("fill","black");
+			runLines(d.subjCode);
+			
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 		// boolSelected=1;
 		}
-		if(boolSelected%2==0){
+		if(storeClicks[i]%2==0){
 			d3.select(this)
 			.transition()
 			.attr("fill","yellow");
-//remove that subject number
+//and remove that subject number
 		}
 
 	});
@@ -471,10 +473,14 @@ svg.selectAll(".linesIn") //could be just .remove()
 }
 var theseNums = [];
 var boolUnselect = 0;
+
 function checked(checkedIt){
+
 boolUnselect = 1;
 console.log(checkedIt+"checked");
+
 theseNums = checkedIt;
+
 		if (checkedIt.length>1){
 			d3.selectAll('.checkedLines').transition().attr("stroke-opacity",.4);
 			 // .attr("stroke-width",.5);
@@ -483,14 +489,8 @@ theseNums = checkedIt;
 var linesInG = svg.selectAll("checkedLines")
 	.data(r)
 	.enter()
-	.append("line")
-	.attr("transform", function(d,i){
-		return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
-	})
-	.attr("class", "checkedLines")
-	.attr("x1",0)
-	.attr("y1",0)
-	.attr("x2",function(d,i){
+	.append("l")
+	.attr("class", function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
 			if (d[j]<=5){
@@ -503,114 +503,147 @@ var linesInG = svg.selectAll("checkedLines")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
 
-		if (checkedIt.length>1){
-			// console.log(checkedIt.length+"length");
 			for (t=0; t<theseNums.length; t++){
-				// console.log(t+"t of these nums");
 			if (theseNums.toString()==newThing.toString()){
 				console.log(i+"this is index?");
 				d3.select("circle.inCircle"+i)
 				.transition()
 				.attr("opacity", ".9")
 				.attr("fill","yellow");
-console.log(checkedIt+"and i"+i)
-		checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
-
-
-				return subjX[theseNums[t]-1]-calcX[i];
-			}				
+				console.log(checkedIt+"and i"+i)
+				checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
 			}
 		}
-		// if (checkedIt.length<=1){
-			for (n=0;n<newThing.length; n++){
-		if (checkedIt[0]==newThing[n]){
-			// console.log(checkedIt.length+"length");
-			return subjX[checkedIt[0]-1]-calcX[i];
-		}
-	// }
+		return "checkedLines";
+	})
 }
-	})
-	.attr("y2",function(d,i){
-		var newThing = [];
-		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
-				newThing.push(1);
-			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
-			}
-		}
-		newThing.sort(function(a, b){return a-b});
-		theseNums.sort(function(a, b){return a-b});
-		if (checkedIt.length>1){
-						// console.log("greater than 1");
-			for (t=0; t<theseNums.length; t++){	
-			if (theseNums.toString()==newThing.toString()){
-				return subjY[checkedIt[t]-1]-calcY[i];
-			}
-		}
-	}
-		// if (checkedIt.length<=1){
-			console.log("less than 1");
-			for (n=0;n<newThing.length; n++){
-		if (checkedIt[0]==newThing[n]){
-			// console.log(checkedIt.length+"length");
-			return subjY[checkedIt[0]-1]-calcY[i];
-		}
-	}
-// }
-	})
-	.attr("stroke", function(d,i){
-		var newThing = [];
-		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
-				newThing.push(1);
-			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
-			}
-		}
-		newThing.sort(function(a, b){return a-b});
-		theseNums.sort(function(a, b){return a-b});
+	// .attr("transform", function(d,i){
+	// 	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
+	// })
+	// .attr("class", "checkedLines")
+	// .attr("x1",0)
+	// .attr("y1",0)
+	// .attr("x2",function(d,i){
+// 		var newThing = [];
+// 		for (j=0; j<allCodes[i].length; j++){
+// 			if (d[j]<=5){
+// 				newThing.push(1);
+// 			}
+// 			if (d[j]>5){
+// 				newThing.push(d[j]-5);
+// 			}
+// 		}
+// 		newThing.sort(function(a, b){return a-b});
+// 		theseNums.sort(function(a, b){return a-b});
 
-		if (checkedIt.length<=1){
-			for (n=0;n<newThing.length; n++){
-		if (checkedIt[0]==newThing[n]){
-			return "lightgray";
-		}
-		}
-		}
+// 		// if (checkedIt.length>1){
+// 			// console.log(checkedIt.length+"length");
+// 			for (t=0; t<theseNums.length; t++){
+// 				// console.log(t+"t of these nums");
+// 			if (theseNums.toString()==newThing.toString()){
+// 				console.log(i+"this is index?");
+// 				d3.select("circle.inCircle"+i)
+// 				.transition()
+// 				.attr("opacity", ".9")
+// 				.attr("fill","yellow");
+// console.log(checkedIt+"and i"+i)
+// 		checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
 
-		if (checkedIt.length>1){
-			for (t=0; t<theseNums.length; t++){	
-			if (theseNums.toString()==newThing.toString()){
-				console.log(t+"t of theseNums");
-			var whichLoc;
-			for (k=1; k<=subjCode.length; k++){
-				if (k==theseNums[t]){
-				whichLoc = subjLoc[k-1];
-				console.log(whichLoc+"whichLoc all out")
-				if (whichLoc<=6){
-					return "teal";
-				}
-				if (whichLoc>6&&whichLoc<=10){
-					return "lightgreen";
-				}
-				if (whichLoc>10&&whichLoc<=15){
-					return "lightblue";
-				}
-				if (whichLoc>15&&whichLoc<21){
-					return "blue";
-				}	
-				}	
-			}
-		}
-		}
-	}
-	})
-	.attr("stroke-opacity",1)
-	.attr("stroke-width",1);
-}
+
+// 				return subjX[theseNums[t]-1]-calcX[i];
+// 			}				
+// 			}
+// 		// }
+// 		// if (checkedIt.length<=1){
+// 		// for (n=0;n<theseNums.length; n++){
+// 		// 	// if (theseNums[n]==newThing[n]){
+// 		// 	// console.log(checkedIt.length+"length");
+// 		// 	return subjX[theseNums[n]-1]-calcX[i];
+// 		// }
+// 	// }
+// // }
+// 	})
+// 	.attr("y2",function(d,i){
+// 		var newThing = [];
+// 		for (j=0; j<allCodes[i].length; j++){
+// 			if (d[j]<=5){
+// 				newThing.push(1);
+// 			}
+// 			if (d[j]>5){
+// 				newThing.push(d[j]-5);
+// 			}
+// 		}
+// 		newThing.sort(function(a, b){return a-b});
+// 		theseNums.sort(function(a, b){return a-b});
+// 		// if (checkedIt.length>1){
+// 						// console.log("greater than 1");
+// 			for (t=0; t<theseNums.length; t++){	
+// 			if (theseNums.toString()==newThing.toString()){
+// 				return subjY[checkedIt[t]-1]-calcY[i];
+// 			}
+// 		}
+// 	// }
+// 		// if (checkedIt.length<=1){
+// 			console.log("less than 1");
+// 			// for (n=0;n<newThing.length; n++){
+// 		// 	for (n=0;n<theseNums.length; n++){
+// 		// // if (checkedIt[0]==newThing[n]){
+// 		// 	// console.log(checkedIt.length+"length");
+// 		// 	return subjY[theseNums[n]-1]-calcY[i];
+// 		// }
+// 	// }
+// // }
+// 	})
+// 	.attr("stroke", function(d,i){
+// 		var newThing = [];
+// 		for (j=0; j<allCodes[i].length; j++){
+// 			if (d[j]<=5){
+// 				newThing.push(1);
+// 			}
+// 			if (d[j]>5){
+// 				newThing.push(d[j]-5);
+// 			}
+// 		}
+// 		newThing.sort(function(a, b){return a-b});
+// 		theseNums.sort(function(a, b){return a-b});
+
+// 		if (checkedIt.length<=1){
+// 			for (n=0;n<newThing.length; n++){
+// 		if (checkedIt[0]==newThing[n]){
+// 			return "lightgray";
+// 		}
+// 		}
+// 		}
+
+// 		if (checkedIt.length>1){
+// 			for (t=0; t<theseNums.length; t++){	
+// 			if (theseNums.toString()==newThing.toString()){
+// 				console.log(t+"t of theseNums");
+// 			var whichLoc;
+// 			for (k=1; k<=subjCode.length; k++){
+// 				if (k==theseNums[t]){
+// 				whichLoc = subjLoc[k-1];
+// 				console.log(whichLoc+"whichLoc all out")
+// 				if (whichLoc<=6){
+// 					return "teal";
+// 				}
+// 				if (whichLoc>6&&whichLoc<=10){
+// 					return "lightgreen";
+// 				}
+// 				if (whichLoc>10&&whichLoc<=15){
+// 					return "lightblue";
+// 				}
+// 				if (whichLoc>15&&whichLoc<21){
+// 					return "blue";
+// 				}	
+// 				}	
+// 			}
+// 		}
+// 		}
+// 	}
+// 	})
+// 	.attr("stroke-opacity",1)
+// 	.attr("stroke-width",1);
 
 
 
