@@ -231,7 +231,7 @@ storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 			.transition()
 			.attr("fill","black");
 			runLines(d.subjCode);
-			
+
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 		// boolSelected=1;
@@ -481,10 +481,10 @@ console.log(checkedIt+"checked");
 
 theseNums = checkedIt;
 
-		if (checkedIt.length>1){
-			d3.selectAll('.checkedLines').transition().attr("stroke-opacity",.4);
+		// if (checkedIt.length>1){
+			// d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
 			 // .attr("stroke-width",.5);
-		}
+		// }
 
 var linesInG = svg.selectAll("checkedLines")
 	.data(r)
@@ -505,6 +505,8 @@ var linesInG = svg.selectAll("checkedLines")
 
 			for (t=0; t<theseNums.length; t++){
 			if (theseNums.toString()==newThing.toString()){
+			d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
+
 				console.log(i+"this is index?");
 				d3.select("circle.inCircle"+i)
 				.transition()
