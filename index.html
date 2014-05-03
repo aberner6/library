@@ -241,6 +241,17 @@ storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 			.transition()
 			.attr("fill","yellow");
 //and remove that subject number
+for (c=0; c<checkedIt.length; c++){
+	if (checkedIt[c]==d.subjCode){
+		console.log(checkedIt);
+		checkedIt.splice(c, d.subjCode);
+		console.log(checkedIt);
+	}
+}
+			checkedIt.splice(d.subjCode);
+			checked(checkedIt);
+			removeRunnedLines(d.subjCode);
+
 		}
 
 	});
@@ -652,15 +663,56 @@ var linesInG = svg.selectAll("checkedLines")
 
 
 
+function removeRunnedLines(passSubjNum){
+console.log(passSubjNum+"passed");
+var thisNum = passSubjNum;
+
+linesInG
+	.transition()
+	.attr("x2",function(d,i){
+		var newThing = [];
+		for (j=0; j<allCodes[i].length; j++){
+			if (d[j]<=5){
+				newThing.push(1);
+			}
+			if (d[j]>5){
+				newThing.push(d[j]-5);
+			}
+		}
+		for (n=0; n<newThing.length; n++){
+			if (thisNum==newThing[n]){
+				return 0;
+			}				
+		}
+	})
+	.attr("y2",function(d,i){
+		var newThing = [];
+		for (j=0; j<allCodes[i].length; j++){
+			if (d[j]<=5){
+				newThing.push(1);
+			}
+			if (d[j]>5){
+				newThing.push(d[j]-5);
+			}
+		}
+		console.log(newThing+"in y")
+		for (n=0; n<newThing.length; n++){
+			if (thisNum==newThing[n]){
+				return 0;
+			}				
+		}
+	})
+}
 
 
 
 
+var linesInG;
 function runLines(passSubjNum){
 console.log(passSubjNum+"passed");
 var thisNum = passSubjNum;
 
-var linesInG = svg.selectAll("linesIn")
+linesInG = svg.selectAll("linesIn")
 	.data(r)
 	.enter()
 	.append("line")
