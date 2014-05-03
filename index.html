@@ -218,15 +218,10 @@ var text = svg.selectAll('.subjectText')
 
 		  var d = this.__data__;
 		  wasItSubj = d.subjCode;
-		// if(d.subjCode == wasItSubj){
-		// 	storeClicks[i] = 1;
-		// }
+
 storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 
-		// if ()
-
 		if(storeClicks[i]%2==1){
-			// console.log(boolSelected)
 			d3.select(this)
 			.transition()
 			.attr("fill","black");
@@ -234,8 +229,8 @@ storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
-		// boolSelected=1;
 		}
+
 		if(storeClicks[i]%2==0){
 			d3.select(this)
 			.transition()
@@ -251,6 +246,8 @@ for (c=0; c<checkedIt.length; c++){
 			checkedIt.splice(d.subjCode);
 			checked(checkedIt);
 			removeRunnedLines(d.subjCode);
+d3.selectAll(".mouseoverText").remove();
+d3.selectAll('.checkedLinesOut').remove();
 		}
 
 	});
@@ -472,14 +469,12 @@ function newFunction(){
 		anglesAre[storeLengths[i]]+=jumps[storeLengths[i]];
 		holdAngles.push(anglesAre[storeLengths[i]]);
 	}	
-// console.log(holdAngles);
 }
 
 function removeLines(){
 svg.selectAll(".linesIn") //could be just .remove()
 	.transition()
 	.attr("stroke-opacity",.07)
-	// .attr("stroke-width",.);
 }
 var theseNums = [];
 var boolUnselect = 0;
@@ -513,7 +508,6 @@ var linesInG = svg.selectAll("checkedLines")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
 
-			for (t=0; t<theseNums.length; t++){
 			if (theseNums.toString()==newThing.toString()){
 			d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
 
@@ -524,138 +518,19 @@ var linesInG = svg.selectAll("checkedLines")
 				.attr("fill","yellow");
 				console.log(checkedIt+"and i"+i)
 				checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
+				// d3.selectAll('.checkedLinesOut')
+				// .transition()
+				// .attr("opacity",1)
 			}
-		}
+			else {
+				d3.select("circle.inCircle"+i)
+				.transition()
+				.attr("fill", "gray")
+				.attr("opacity",.1);
+			}
 		return "checkedLines";
 	})
 }
-	// .attr("transform", function(d,i){
-	// 	return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
-	// })
-	// .attr("class", "checkedLines")
-	// .attr("x1",0)
-	// .attr("y1",0)
-	// .attr("x2",function(d,i){
-// 		var newThing = [];
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (d[j]<=5){
-// 				newThing.push(1);
-// 			}
-// 			if (d[j]>5){
-// 				newThing.push(d[j]-5);
-// 			}
-// 		}
-// 		newThing.sort(function(a, b){return a-b});
-// 		theseNums.sort(function(a, b){return a-b});
-
-// 		// if (checkedIt.length>1){
-// 			// console.log(checkedIt.length+"length");
-// 			for (t=0; t<theseNums.length; t++){
-// 				// console.log(t+"t of these nums");
-// 			if (theseNums.toString()==newThing.toString()){
-// 				console.log(i+"this is index?");
-// 				d3.select("circle.inCircle"+i)
-// 				.transition()
-// 				.attr("opacity", ".9")
-// 				.attr("fill","yellow");
-// console.log(checkedIt+"and i"+i)
-// 		checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
-
-
-// 				return subjX[theseNums[t]-1]-calcX[i];
-// 			}				
-// 			}
-// 		// }
-// 		// if (checkedIt.length<=1){
-// 		// for (n=0;n<theseNums.length; n++){
-// 		// 	// if (theseNums[n]==newThing[n]){
-// 		// 	// console.log(checkedIt.length+"length");
-// 		// 	return subjX[theseNums[n]-1]-calcX[i];
-// 		// }
-// 	// }
-// // }
-// 	})
-// 	.attr("y2",function(d,i){
-// 		var newThing = [];
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (d[j]<=5){
-// 				newThing.push(1);
-// 			}
-// 			if (d[j]>5){
-// 				newThing.push(d[j]-5);
-// 			}
-// 		}
-// 		newThing.sort(function(a, b){return a-b});
-// 		theseNums.sort(function(a, b){return a-b});
-// 		// if (checkedIt.length>1){
-// 						// console.log("greater than 1");
-// 			for (t=0; t<theseNums.length; t++){	
-// 			if (theseNums.toString()==newThing.toString()){
-// 				return subjY[checkedIt[t]-1]-calcY[i];
-// 			}
-// 		}
-// 	// }
-// 		// if (checkedIt.length<=1){
-// 			console.log("less than 1");
-// 			// for (n=0;n<newThing.length; n++){
-// 		// 	for (n=0;n<theseNums.length; n++){
-// 		// // if (checkedIt[0]==newThing[n]){
-// 		// 	// console.log(checkedIt.length+"length");
-// 		// 	return subjY[theseNums[n]-1]-calcY[i];
-// 		// }
-// 	// }
-// // }
-// 	})
-// 	.attr("stroke", function(d,i){
-// 		var newThing = [];
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (d[j]<=5){
-// 				newThing.push(1);
-// 			}
-// 			if (d[j]>5){
-// 				newThing.push(d[j]-5);
-// 			}
-// 		}
-// 		newThing.sort(function(a, b){return a-b});
-// 		theseNums.sort(function(a, b){return a-b});
-
-// 		if (checkedIt.length<=1){
-// 			for (n=0;n<newThing.length; n++){
-// 		if (checkedIt[0]==newThing[n]){
-// 			return "lightgray";
-// 		}
-// 		}
-// 		}
-
-// 		if (checkedIt.length>1){
-// 			for (t=0; t<theseNums.length; t++){	
-// 			if (theseNums.toString()==newThing.toString()){
-// 				console.log(t+"t of theseNums");
-// 			var whichLoc;
-// 			for (k=1; k<=subjCode.length; k++){
-// 				if (k==theseNums[t]){
-// 				whichLoc = subjLoc[k-1];
-// 				console.log(whichLoc+"whichLoc all out")
-// 				if (whichLoc<=6){
-// 					return "teal";
-// 				}
-// 				if (whichLoc>6&&whichLoc<=10){
-// 					return "lightgreen";
-// 				}
-// 				if (whichLoc>10&&whichLoc<=15){
-// 					return "lightblue";
-// 				}
-// 				if (whichLoc>15&&whichLoc<21){
-// 					return "blue";
-// 				}	
-// 				}	
-// 			}
-// 		}
-// 		}
-// 	}
-// 	})
-// 	.attr("stroke-opacity",1)
-// 	.attr("stroke-width",1);
 
 
 
@@ -763,30 +638,6 @@ linesInG = svg.selectAll("linesIn")
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function runLinesOut(arrayOfSubjs, index){
 
 thisIs = arrayOfSubjs.split(",");
@@ -806,26 +657,7 @@ var newG = svg.selectAll("linesOut")
 	.attr("y1",0)
 	.attr("x2",0)
 	.attr("y2",0)
-//OPTION 1
-	// .attr("x2",function(d,i){
-	// 	console.log(d);
-	// 		for (k=0; k<subjCode.length; k++){
-	// 			if (k==d){
-	// 				console.log(subjTextInside[k-1]+"subjText");
-	// 				return subjX[k-1]-calcX[thisCircle];
-	// 			}
-	// 		}
-	// })
-	// .attr("y2",function(d,i){
-	// 		for (k=0; k<subjCode.length; k++){
-	// 			if (k==d){
-	// 				return subjY[k-1]-calcY[thisCircle];
-	// 			}
-	// 		}
-	// 	})
-////////////////ATTENTION SUBJECT CODE
 	.attr("stroke",function(d,i){
-
 		return "lightgray";
 	})
 	.attr("stroke-width",1);
@@ -853,7 +685,6 @@ var newG = svg.selectAll("linesOut")
 						d = d-5;
 					}	
 // console.log(d+"d after minus 5");
-
 			for (k=1; k<=subjCode.length; k++){
 					if (k==d){////D - ATTENTION SUBJECT CODE
 						return (subjY[k-1]-calcY[thisCircle])/(300/whatRadius[thisCircle]);
@@ -861,74 +692,9 @@ var newG = svg.selectAll("linesOut")
 				}
 		})
 }
-function removeCheckedLines(arrayOfSubjs, index){
-// if (checked=1){
-thisIs = arrayOfSubjs;
-	// console.log(thisIs+"is checked?"+checked)
-// }
-thisCircle = index;
-console.log(thisIs+"checkedIn")
-var justOne = thisIs[0];
-var grabIt = [];
-var mouseText = svg.selectAll("mouseoverText")
-	.data(thisIs)
-	.enter()
-	.append("text")
-	.attr("class","mouseoverText")
-	.attr("transform", function(d,i){
-		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
-	})
-	.attr("fill","black")
-	.text(thisIs.length);
 
-var newG = svg.selectAll("linesOut")
-	.data(thisIs)
-	.enter()
-	.append("line")
-	.attr("transform", function(d,i){
-		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
-	})
-	.attr("class", "hey"+thisCircle)//"linesOut")
-	.attr("x1", 0)
-	.attr("y1",0)
-	.attr("x2",function(d,i){
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-					console.log(d+subjCode[k]+"matched")
-					return subjX[k-1]-calcX[thisCircle];
-				}
-			}
-	})
-	.attr("y2",function(d,i){
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-					return subjY[k-1]-calcY[thisCircle];
-				}
-			}
-		})
-	.attr("stroke",function(d,i){
-		var whichLoc;
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-				whichLoc = subjLoc[k-1];
-				console.log(whichLoc+"whichLoc all out")
-				if (whichLoc<=6){
-					return "teal";
-				}
-				if (whichLoc>6&&whichLoc<=10){
-					return "lightgreen";
-				}
-				if (whichLoc>10&&whichLoc<=15){
-					return "lightblue";
-				}
-				if (whichLoc>15&&whichLoc<21){
-					return "blue";
-				}	
-			}	
-		}
-	})
-	.attr("stroke-width",1);
-}
+
+var newG;
 function checkedIn(arrayOfSubjs, index){
 // if (checked=1){
 	thisIs = arrayOfSubjs;
@@ -944,19 +710,22 @@ var mouseText = svg.selectAll("mouseoverText")
 	.append("text")
 	.attr("class","mouseoverText")
 	.attr("transform", function(d,i){
-		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
+		return "translate(" + (calcX[thisCircle]+8) + "," + (calcY[thisCircle]-5) + ")";
 	})
-	.attr("fill","black")
+	.attr("fill","gray")
 	.text(thisIs.length);
 
-var newG = svg.selectAll("linesOut")
+// newG = svg.selectAll("linesOut")
+newG = svg.selectAll("checkedLinesOut")
 	.data(thisIs)
 	.enter()
 	.append("line")
 	.attr("transform", function(d,i){
 		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
-	.attr("class", "hey"+thisCircle)//"linesOut")
+	.attr("class","checkedLinesOut")
+	.attr("opacity",1)
+	// .attr("class", "hey"+thisCircle)//"linesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
