@@ -248,9 +248,11 @@ for (c=0; c<checkedIt.length; c++){
 			removeRunnedLines(d.subjCode);
 d3.selectAll(".mouseoverText").remove();
 d3.selectAll('.checkedLinesOut').remove();
-if (checkedIt.length<=1){
+if (checkedIt.length<1){
 	console.log("remove checked lines even if subject is just 1")
 d3.selectAll('.checkedLines').remove();
+			d3.selectAll('.linesIn').remove();
+
 }
 		}
 
@@ -513,6 +515,7 @@ var linesInG = svg.selectAll("checkedLines")
 		theseNums.sort(function(a, b){return a-b});
 
 			if (theseNums.toString()==newThing.toString()){
+				console.log("yup in here")
 			d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
 
 				console.log(i+"this is index?");
