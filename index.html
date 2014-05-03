@@ -226,7 +226,6 @@ storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 			.transition()
 			.attr("fill","black");
 			runLines(d.subjCode);
-
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 		}
@@ -243,11 +242,16 @@ for (c=0; c<checkedIt.length; c++){
 		console.log(checkedIt);
 	}
 }
-			checkedIt.splice(d.subjCode);
+			// checkedIt.splice(d.subjCode);
+
 			checked(checkedIt);
 			removeRunnedLines(d.subjCode);
 d3.selectAll(".mouseoverText").remove();
 d3.selectAll('.checkedLinesOut').remove();
+if (checkedIt.length<=1){
+	console.log("remove checked lines even if subject is just 1")
+d3.selectAll('.checkedLines').remove();
+}
 		}
 
 	});
@@ -536,11 +540,11 @@ var linesInG = svg.selectAll("checkedLines")
 
 
 
-
+//NEED TO FIGURE OUT A WAY TO TAKE OUT THAT FIRST SUBJECT LINE...
 function removeRunnedLines(passSubjNum){
 console.log(passSubjNum+"passed");
 var thisNum = passSubjNum;
-
+console.log(thisNum.length)
 linesInG
 	.transition()
 	.attr("x2",function(d,i){
