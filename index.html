@@ -214,48 +214,50 @@ var text = svg.selectAll('.subjectText')
         d.width = this.getBBox().width;
       })
 	.on("click", function(d,i){
-		boolSelected +=1;
+		var d = this.__data__;
+		wasItSubj = d.subjCode;
 
-		  var d = this.__data__;
-		  wasItSubj = d.subjCode;
+		storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 
-storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
-
-		if(storeClicks[i]%2==1){
+		if(storeClicks[i]%2==1){ //if clicked ON
 			d3.select(this)
 			.transition()
-			.attr("fill","black");
+			.attr("fill","yellow");
 			runLines(d.subjCode);
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 		}
 
-		if(storeClicks[i]%2==0){
+		if(storeClicks[i]%2==0){ //if unselected
 			d3.select(this)
 			.transition()
-			.attr("fill","yellow");
-//and remove that subject number
-for (c=0; c<checkedIt.length; c++){
-	if (checkedIt[c]==d.subjCode){
-		console.log(checkedIt);
-		checkedIt.splice(c, d.subjCode);
-		console.log(checkedIt);
-	}
-}
-			// checkedIt.splice(d.subjCode);
+			.attr("fill","black");
 
-			checked(checkedIt);
-			removeRunnedLines(d.subjCode);
-d3.selectAll(".mouseoverText").remove();
-d3.selectAll('.checkedLinesOut').remove();
-if (checkedIt.length<1){
-	console.log("remove checked lines even if subject is just 1")
-d3.selectAll('.checkedLines').remove();
-			d3.selectAll('.linesIn').remove();
+		//and remove that subject number
+		for (c=0; c<checkedIt.length; c++){
+			if (checkedIt[c]==d.subjCode){
+				console.log(checkedIt+"before removing");
+				// checkedIt.splice(d.subjCode,1);
 
-}
+				checkedIt.splice(c,1);
+				console.log(checkedIt+"after removing");
+			}
 		}
+		checked(checkedIt);
+		removeRunnedLines(d.subjCode);
+		d3.selectAll(".mouseoverText").remove();
 
+		// d3.selectAll('.checkedLinesOut').remove(); 
+		// if (checkedIt.length<1){
+		// 	console.log("remove checked lines even if subject is just 1")
+		// 	d3.selectAll('.checkedLines').remove();
+		// 	d3.selectAll('.linesIn').remove();
+			d3.selectAll("circle.inCircle"+i)
+				.transition()
+				.attr("opacity", ".1")
+				.attr("fill","grey");
+		// }	
+		}
 	});
 
 var surroundingRects = svg.selectAll("surroundingPoints")
@@ -275,7 +277,6 @@ var surroundingRects = svg.selectAll("surroundingPoints")
 	})
 	.attr("width", function(d){ 
 		return d.width+10;
-		// return d.subject.length*5.5; 
 	})
 	.attr("height", 14)
 	.attr("opacity",.5)
@@ -335,14 +336,11 @@ function firstVariable(){
 	d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
 		connDataLength = cData.length;
 	})
-		// secondVariable(connDataLength);	
 }
 ////PROBLEM OF GETTING THIS VARIABLE BEFORE RUNNING OTHER FUNCTIONS
-// function secondVariable(connDataLength){
 firstLoadVar = setInterval(function(){ 
 	if (connDataLength>0){
 	if (firstLoad<connDataLength-1){
-		// console.log(connDataLength);
 	d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
 	firstLoad++; 
 	if (firstLoad>=0){
@@ -353,8 +351,6 @@ firstLoadVar = setInterval(function(){
 	else {
 	runOnce();
 	clearInterval(firstLoadVar);
-		// ready = 1;
-		// console.log("false")
 	}
 }
 },1);	
@@ -449,7 +445,7 @@ storeLengths.push(otherThis.length); //now this is "q"
 
 countLengths[otherThis.length] = countLengths[otherThis.length] ? countLengths[otherThis.length]+1 : 1; //now this is counters
 
-checkLengths(otherThis,index); //here we finish the counters array and create the new jumps thing
+checkLengths(otherThis,index); //here we finish counters array and create the new jumps thing
 }
 var stop;
 function checkLengths(otherThis,index){
@@ -478,9 +474,9 @@ function newFunction(){
 }
 
 function removeLines(){
-svg.selectAll(".linesIn") //could be just .remove()
-	.transition()
-	.attr("stroke-opacity",.07)
+// svg.selectAll(".linesIn") //could be just .remove()
+	// .transition()
+	// .attr("stroke-opacity",.07)
 }
 var theseNums = [];
 var boolUnselect = 0;
@@ -516,7 +512,10 @@ var linesInG = svg.selectAll("checkedLines")
 
 			if (theseNums.toString()==newThing.toString()){
 				console.log("yup in here")
-			d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
+				d3.selectAll('.linesIn')
+				.transition()
+				.duration(2000)
+				.attr("opacity",.2);
 
 				console.log(i+"this is index?");
 				d3.select("circle.inCircle"+i)
@@ -525,11 +524,9 @@ var linesInG = svg.selectAll("checkedLines")
 				.attr("fill","yellow");
 				console.log(checkedIt+"and i"+i)
 				checkedIn(checkedIt, i); //FIX WHAT THING IS NOW
-				// d3.selectAll('.checkedLinesOut')
-				// .transition()
-				// .attr("opacity",1)
 			}
 			else {
+				// console.log("wasn't equal")
 				d3.select("circle.inCircle"+i)
 				.transition()
 				.attr("fill", "gray")
@@ -550,6 +547,7 @@ var thisNum = passSubjNum;
 console.log(thisNum.length)
 linesInG
 	.transition()
+	// .attr("opacity",0)
 	.attr("x2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
@@ -562,6 +560,7 @@ linesInG
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
+				console.log("equal")
 				return 0;
 			}				
 		}
@@ -592,7 +591,10 @@ var linesInG;
 function runLines(passSubjNum){
 console.log(passSubjNum+"passed");
 var thisNum = passSubjNum;
-
+				d3.selectAll('.linesIn')
+				.transition()
+				.duration(2000)
+				.attr("opacity",0);
 linesInG = svg.selectAll("linesIn")
 	.data(r)
 	.enter()
@@ -640,7 +642,7 @@ linesInG = svg.selectAll("linesIn")
 	.attr("stroke",function(d,i){
 		return "lightgray";
 	})
-	.attr("stroke-opacity",1)
+	.attr("opacity",1)
 	.attr("stroke-width",2);
 }
 
