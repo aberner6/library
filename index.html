@@ -615,9 +615,40 @@ linesInG = svg.selectAll("linesIn")
 			}				
 		}
 	})
-
 	.attr("stroke",function(d,i){
-		return "lightpink";
+		var newThing = [];
+		for (j=0; j<allCodes[i].length; j++){
+			if (d[j]<5){
+				newThing.push(1);
+			}
+			if (d[j]>=5){
+				newThing.push(d[j]);
+			}
+		}
+		for (n=0; n<newThing.length; n++){
+			if (thisNum==newThing[n]){
+			// for (k=0; k<=subjCode.length; k++){
+		var whichLoc;
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==thisNum){
+				whichLoc = subjLoc[k];
+				console.log(subjCode[k]+"subj code all out")
+				if (whichLoc<=6){
+					return "teal";
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					return "lightgreen";
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					return "lightblue";
+				}
+				if (whichLoc>15&&whichLoc<21){
+					return "blue";
+				}	
+			}	
+		}
+	}
+}
 	})
 	.attr("opacity",.1)
 	.attr("stroke-width",2);
@@ -744,7 +775,6 @@ var mouseText = svg.selectAll("mouseoverText")
 	.attr("fill","gray")
 	.text(thisIs.length);
 
-// newG = svg.selectAll("linesOut")
 newG = svg.selectAll("checkedLinesOut")
 	.data(thisIs)
 	.enter()
@@ -757,14 +787,26 @@ newG = svg.selectAll("checkedLinesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
-			for (k=0; k<=subjCode.length; k++){
+					if (d<5){
+						d = 1;
+					}
+					else if (d>=5){
+						d = d;
+					}	
+			for (k=0; k<subjCode.length; k++){
 				if (subjCode[k]==d){
 					return subjX[k]-calcX[thisCircle];
 				}
 			}
 	})
 	.attr("y2",function(d,i){
-			for (k=0; k<=subjCode.length; k++){
+					if (d<5){
+						d = 1;
+					}
+					else if (d>=5){
+						d = d;
+					}	
+			for (k=0; k<subjCode.length; k++){
 				if (subjCode[k]==d){
 					return subjY[k]-calcY[thisCircle];
 				}
@@ -772,10 +814,16 @@ newG = svg.selectAll("checkedLinesOut")
 		})
 	.attr("stroke",function(d,i){
 		var whichLoc;
-			for (k=1; k<=subjCode.length; k++){
+					if (d<5){
+						d = 1;
+					}
+					else if (d>=5){
+						d = d;
+					}	
+			for (k=0; k<subjCode.length; k++){
 				if (subjCode[k]==d){
 				whichLoc = subjLoc[k];
-				// console.log(whichLoc+"whichLoc all out")
+				console.log(whichLoc+"whichLoc all out")
 				if (whichLoc<=6){
 					return "teal";
 				}
