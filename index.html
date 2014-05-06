@@ -784,11 +784,10 @@ var newG = vis.selectAll("linesOut")
 			}
 			else if (d>=5){
 				d = d;
-			}			
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){ ////D - ATTENTION SUBJECT CODE
-						// console.log(d+"inside k"+" and i "+i)
-					return (subjX[k-1]-calcX[thisCircle])/(300/whatRadius[thisCircle]);
+			}		
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return (subjX[k]-calcX[thisCircle])/(300/whatRadius[thisCircle]);
 				}
 			}
 		})
@@ -799,13 +798,12 @@ var newG = vis.selectAll("linesOut")
 					else if (d>=5){
 						d = d;
 					}	
-// console.log(d+"d after minus 5");
-			for (k=1; k<=subjCode.length; k++){
-					if (k==d){////D - ATTENTION SUBJECT CODE
-						return (subjY[k-1]-calcY[thisCircle])/(300/whatRadius[thisCircle]);
-					}
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return (subjY[k]-calcY[thisCircle])/(300/whatRadius[thisCircle]);
 				}
-		})
+			}
+	})
 }
 
 
@@ -1005,14 +1003,14 @@ console.log(thisCirc+"thisCirc");
 	.attr("x2",function(d,i){
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
-					return (subjX[k]-calcX[thisCircle])/(300/whatRadius[thisCirc]);
+					return (subjX[k]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
 				}
 			}
 	})
 	.attr("y2",function(d,i){
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
-					return (subjY[k]-calcY[thisCircle])/(300/whatRadius[thisCirc]);
+					return (subjY[k]-calcY[thisCirc])/(300/whatRadius[thisCirc]);
 				}
 			}
 		})
