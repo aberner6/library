@@ -103,6 +103,7 @@ var legendconcolor;
   legendconcolor = "rgba(210, 210, 210, 75)";
   subtext = "rgba(150, 150, 150, 255)";
   hsubtext = "rgba(210, 210, 210, 255)";
+loadBooks();
 
 var boolSelected = 0;
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -117,11 +118,19 @@ var svg = d3.select("body")
       .attr("viewBox", "0 0 " + width + " " + height )
       .attr("preserveAspectRatio", "xMidYMid meet")
       // .attr("pointer-events", "all")
-   .call(
-   	d3.behavior.zoom()
-   .scale(1.0)
+    .call(zoom);
+
+// var g = svg.append("g");
+
+    	// d3.behavior.zoom()
+  // .translate([0, 0])
+  // .scale(1.0)
+  // .scaleExtent([0.8, 5.0])
+  //   	.on("zoom", redraw));
+var zoom = d3.behavior.zoom()
+  .scale(1.0)
   .scaleExtent([0.8, 5.0])
-   	.on("zoom", redraw));
+  .on("zoom", redraw);
 
 var vis = svg
     .append('svg:g');
@@ -131,29 +140,6 @@ function redraw() {
       "translate(" + d3.event.translate + ")"
       + " scale(" + d3.event.scale + ")");
 }
-
-
-// var g = svg.append("g");
-
-    	// d3.behavior.zoom()
-  // .translate([0, 0])
-  // .scale(1.0)
-  // .scaleExtent([0.8, 5.0])
-  //   	.on("zoom", redraw));
-
-// var zoom = d3.behavior.zoom()
-//   .scale(1.0)
-//   .scaleExtent([0.8, 5.0])
-//   .on("zoom", redraw);
-
-// var vis = svg
-//     .append('svg:g');
-
-// function redraw() {
-//   vis.attr("transform",
-//       "translate(" + d3.event.translate + ")"
-//       + " scale(" + d3.event.scale + ")");
-// }
 // function redraw(){
 //   var t = d3.event.translate,
 //       s = d3.event.scale;
@@ -170,7 +156,6 @@ function redraw() {
 	// .attr("width", width + margin.left + margin.right)
 	// .attr("height", height*2 + margin.top + margin.bottom);
 		// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-loadBooks();
 
 var subjX=[];
 var subjY=[];
