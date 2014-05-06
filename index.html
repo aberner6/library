@@ -101,7 +101,7 @@ loadBooks();
 
 var boolSelected = 0;
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
-	width = 1280, //- margin.left - margin.right,
+	width = 1080, //- margin.left - margin.right,
 	height = 750; //- margin.top - margin.bottom;
 
 var svg = d3.select("body").append("svg")
@@ -128,7 +128,8 @@ var rScale = d3.scale.linear()
 var freqIs=[];
 var item;
 
-var subradius = 300;
+var subradius = 325;
+var scaling = 1.1;
 
 var firstLoad = -1;
 var tigReggib = -1;
@@ -360,7 +361,6 @@ function runOnce(){
 	runInnerCircles();
 	runOuterCircles();	
 }
-
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
@@ -379,18 +379,20 @@ for (i=0; i<allCodes.length; i++){
 var inCircle = svg.selectAll("inCircle")
 	.data(cData)
 	.enter().append("circle")
-	.attr("class", function(d,i){ return "inCircle"+i; })
+	.attr("class", function(d,i){ 
+		calcX.push(width*0.5+scaling*radiusIs[i]*Math.cos(angles[i]));
+		calcY.push(height*0.5+scaling*radiusIs[i]*Math.sin(angles[i]));
+		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
+		return "inCircle"+i; 
+	})
 	.attr("cx", function(d,i){
-		calcX.push(width*0.5+radiusIs[i]*Math.cos(angles[i]));
-		return width*0.5+radiusIs[i]*Math.cos(angles[i]);
+		return width*0.5+scaling*radiusIs[i]*Math.cos(angles[i]);
 	})
 	.attr("cy", function(d,i){ 
-		calcY.push(height*0.5+radiusIs[i]*Math.sin(angles[i]));
-		return height*0.5+radiusIs[i]*Math.sin(angles[i]);
+		return height*0.5+scaling*radiusIs[i]*Math.sin(angles[i]);
 	})
 	.attr("r", function(d){
-		whatRadius.push(Math.log(d.freq+2.0)*freqscale/2);
-		return Math.log(d.freq+2.0)*freqscale/2;
+		return (Math.log(d.freq+2.0)*freqscale/2);
 	})
 	.attr("fill", "gray")
 	.attr("opacity",.1)
