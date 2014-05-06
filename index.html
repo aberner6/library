@@ -399,12 +399,14 @@ var inCircle = svg.selectAll("inCircle")
 	.on("mouseover", function(d,i){
 		d3.select(this)
 		.attr("opacity", .9);
-		// console.log(d.codeName+"sending to all out");
+		console.log(d.codeName+"sending to all out");
 		index = i;
 		allOut(d.codeName, index); //FIX WHAT THING IS NOW
 		})
 	.on("click", function(d,i){
+		console.log("clicked for books")
 		d3.select(this)
+		console.log(d.codeName+"d.codeName on click")
 		books(d.codeName,i); //FIX CODENAME
 		})
 	.on("mouseout", function(d,i){
@@ -501,11 +503,11 @@ var chckdLines = svg.selectAll("checkedLines")
 	.attr("class", function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		newThing.sort(function(a, b){return a-b});
@@ -553,17 +555,21 @@ linesInG = svg.selectAll("linesIn")
 	.attr("class", function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				return "linesIn"+subjCode[thisNum-1];
-			}				
+			for (k=0; k<=subjCode.length; k++){
+				if(subjCode[k]==thisNum){
+				return "linesIn"+subjCode[k];
+			}
+		}
+		}				
 		}
 	})
 	.attr("x1",0)
@@ -571,35 +577,45 @@ linesInG = svg.selectAll("linesIn")
 	.attr("x2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				return subjX[thisNum-1]-calcX[i];
+				console.log(newThing[n]+" "+thisNum+"matching?")
+			for (k=0; k<=subjCode.length; k++){
+				if(subjCode[k]==thisNum){
+				return subjX[k]-calcX[i];
+			}
+			}
 			}				
 		}
 	})
 	.attr("y2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				return subjY[thisNum-1]-calcY[i];
+			for (k=0; k<=subjCode.length; k++){
+				if(subjCode[k]==thisNum){
+				return subjY[k]-calcY[i];
+			}
+			}
 			}				
 		}
 	})
+
 	.attr("stroke",function(d,i){
 		return "lightpink";
 	})
@@ -617,11 +633,11 @@ d3.selectAll(".linesIn"+passSubjNum)
 	.attr("x2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		for (n=0; n<newThing.length; n++){
@@ -634,11 +650,11 @@ d3.selectAll(".linesIn"+passSubjNum)
 	.attr("y2",function(d,i){
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<=5){
+			if (d[j]<5){
 				newThing.push(1);
 			}
-			if (d[j]>5){
-				newThing.push(d[j]-5);
+			if (d[j]>=5){
+				newThing.push(d[j]);
 			}
 		}
 		// console.log(newThing+"in y")
@@ -677,11 +693,11 @@ var newG = svg.selectAll("linesOut")
 	d3.selectAll("line.hey"+thisCircle)
 		.transition()
 		.attr("x2",function(d,i){
-			if (d<=5){
+			if (d<5){
 				d = 1;
 			}
-			else if (d>5){
-				d = d-5;
+			else if (d>=5){
+				d = d;
 			}			
 			for (k=1; k<=subjCode.length; k++){
 				if (k==d){ ////D - ATTENTION SUBJECT CODE
@@ -691,11 +707,11 @@ var newG = svg.selectAll("linesOut")
 			}
 		})
 		.attr("y2",function(d){
-					if (d<=5){
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
 // console.log(d+"d after minus 5");
 			for (k=1; k<=subjCode.length; k++){
@@ -742,17 +758,32 @@ newG = svg.selectAll("checkedLinesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-					// console.log(d+subjCode[k]+"matched")
-					return subjX[k-1]-calcX[thisCircle];
+			for (k=0; k<=subjCode.length; k++){
+				// if (k==d){
+
+
+
+			// for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return subjX[k]-calcX[thisCircle];
 				}
 			}
+
+
+
+
+
+
+
+					// console.log(d+subjCode[k]+"matched")
+					// return subjX[k-1]-calcX[thisCircle];
+				// }
+			// }
 	})
 	.attr("y2",function(d,i){
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-					return subjY[k-1]-calcY[thisCircle];
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return subjY[k]-calcY[thisCircle];
 				}
 			}
 		})
@@ -814,50 +845,50 @@ var newG = svg.selectAll("linesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
-		// console.log(d+"d before all out processing");
-					if (d<=5){
+		console.log(d+"d before all out processing");
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
-		// console.log(d+"d after all out processing");
+		console.log(d+"d after all out processing");
 
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
 					console.log(d+subjCode[k]+"matched")
 					// console.log(subjTextInside[k-1]+"subjText");
-					return subjX[k-1]-calcX[thisCircle];
+					return subjX[k]-calcX[thisCircle];
 				}
 			}
 	})
 	.attr("y2",function(d,i){
-					if (d<=5){
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
 
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-					return subjY[k-1]-calcY[thisCircle];
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return subjY[k]-calcY[thisCircle];
 				}
 			}
 		})
 	.attr("stroke",function(d,i){
-					if (d<=5){
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
 
 		var whichLoc;
-			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-				whichLoc = subjLoc[k-1];
-				console.log(whichLoc+"whichLoc all out")
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+				whichLoc = subjLoc[k];
+				console.log(subjCode[k]+"subj code all out")
 				if (whichLoc<=6){
 					return "teal";
 				}
@@ -933,11 +964,11 @@ d3.selectAll(".mouseoverText").remove();
 		d3.selectAll(".hey"+thisCirc) //associated lines
 		.transition()
 		.attr("x2",function(d){
-					if (d<=5){
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
 				for (k=1; k<=subjCode.length; k++){
 					if (k==d){
@@ -946,11 +977,11 @@ d3.selectAll(".mouseoverText").remove();
 				}
 		})
 		.attr("y2",function(d){
-					if (d<=5){
+					if (d<5){
 						d = 1;
 					}
-					else if (d>5){
-						d = d-5;
+					else if (d>=5){
+						d = d;
 					}	
 				for (k=1; k<=subjCode.length; k++){
 					if (k==d){
@@ -976,24 +1007,35 @@ d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
 			}
 		})
 }
+
+var matchingArray = [];
+var matched = [];
 function books(incoming, thisCircle){
 clicked = 0;
-
 d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
 incomingIs = incoming.split(",");
 // console.log(incomingIs-1);
-for (i=0; i<incomingIs.length; i++){
-	incomingIs[i] = incomingIs[i]-1; 
-}
+//match incoming with corresponding other code
+// matchingArray = [1,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
+
+// for (i=0; i<subjCode.length; i++){
+// 	for (j=0;j<incomingIs.length; j++){
+// 	if (incomingIs[j]==subjCode[i]){
+// 		matched.push(matchingArray[i]);
+// 	}
+// 	}
+// }
+// console.log(matched);
+	// incomingIs[i] = incomingIs[i]-1; 
 			for (j=0; j<data.length; j++){
-				for (i=0; i<incomingIs.length; i++){
+				// for (i=0; i<incomingIs.length; i++){
 				if (data[j].code==incomingIs){ 
-					console.log(data[j].code+incomingIs)
+					console.log(data[j].code+" matching "+incomingIs)
 					updateHoverbox(data[j].title, j, data[j].id);
 					whichBooks.push(data[j].title);
 					saveId.push(data[j].id);
 				}
-			}
+			// }
 			}
 })
 }
