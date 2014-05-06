@@ -50,8 +50,14 @@ opacity: .1;
 .subjectText{
 	text-transform:uppercase;
 	font-size: 9px;
+	cursor: pointer;
+
+}
+.surroundingPoints{
+	cursor:pointer;
 }
 .outerCircleText{
+	cursor:pointer;
 border-radius: 4px 4px 4px 4px;
 -moz-border-radius: 4px 4px 4px 4px;
 -webkit-border-radius: 4px 4px 4px 4px;
@@ -101,12 +107,34 @@ loadBooks();
 
 var boolSelected = 0;
 var margin = {top: 20, right: 20, bottom: 30, left: 50},
-	width = 1080, //- margin.left - margin.right,
+	width = 1200, //- margin.left - margin.right,
 	height = 750; //- margin.top - margin.bottom;
+var svg = d3.select("body")
+    .append("svg")
+      .attr({
+        "width": width,
+        "height": height
+      })
+      .attr("viewBox", "0 0 " + width + " " + height )
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      // .attr("pointer-events", "all")
+    .call(d3.behavior.zoom().on("zoom", redraw));
 
-var svg = d3.select("body").append("svg")
-.attr("width",width)
-.attr("height",height);
+var vis = svg
+    .append('svg:g');
+
+function redraw() {
+  vis.attr("transform",
+      "translate(" + d3.event.translate + ")"
+      + " scale(" + d3.event.scale + ")");
+}
+
+
+////WILL THIS WORK?
+
+// var svg = d3.select("body").append("svg")
+// .attr("width",width)
+// .attr("height",height);
 	// .attr("width", width + margin.left + margin.right)
 	// .attr("height", height*2 + margin.top + margin.bottom);
 		// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -169,8 +197,8 @@ var angle = 0;
 //   })
 
 
-
-var text = svg.selectAll('.subjectText')
+//not svg.selectall
+var text = vis.selectAll('.subjectText')
 	.data(data)
 	.enter().append("text")
 	.attr("class",function(d,i){
@@ -214,10 +242,10 @@ var text = svg.selectAll('.subjectText')
 	.each(function(d) {
         d.width = this.getBBox().width;
       })
+	.each(moveToFront)
 	.on("click", function(d,i){
 		var d = this.__data__;
 		wasItSubj = d.subjCode;
-
 		storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
 
 		if(storeClicks[i]%2==1){ //if clicked ON
@@ -232,7 +260,6 @@ var text = svg.selectAll('.subjectText')
 
 		if(storeClicks[i]%2==0){ //if unselected
 			console.log("clicked off"+storeClicks[i]%2)
-
 			d3.select(this)
 			.transition()
 			.attr("fill","black");
@@ -248,21 +275,14 @@ var text = svg.selectAll('.subjectText')
 		checked(checkedIt);
 		removeRunnedLines(d.subjCode);
 		d3.selectAll(".mouseoverText").remove();
-
-		// d3.selectAll('.checkedLinesOut').remove(); 
-		// if (checkedIt.length<1){
-		// 	console.log("remove checked lines even if subject is just 1")
-		// 	d3.selectAll('.checkedLines').remove();
-		// 	d3.selectAll('.linesIn').remove();
-			d3.selectAll("circle.inCircle"+i)
-				.transition()
-				.attr("opacity", ".1")
-				.attr("fill","grey");
-		// }	
+		d3.selectAll("circle.inCircle"+i)
+			.transition()
+			.attr("opacity", ".1")
+			.attr("fill","grey");
 		}
 	});
 
-var surroundingRects = svg.selectAll("surroundingPoints")
+var surroundingRects = vis.selectAll("surroundingPoints")
 	.data(data)
 	.enter().append("rect")
 	.attr("class", "surroundingPoints")
@@ -376,7 +396,7 @@ for (i=0; i<allCodes.length; i++){
 	r.push(allCodes[i].split(","));
 }
 
-var inCircle = svg.selectAll("inCircle")
+var inCircle = vis.selectAll("inCircle")
 	.data(cData)
 	.enter().append("circle")
 	.attr("class", function(d,i){ 
@@ -498,7 +518,7 @@ theseNums = checkedIt;
 			 // .attr("stroke-width",.5);
 		// }
 
-var chckdLines = svg.selectAll("checkedLines")
+var chckdLines = vis.selectAll("checkedLines")
 	.data(r)
 	.enter()
 	.append("l")
@@ -547,7 +567,7 @@ function runLines(passSubjNum){
 console.log(passSubjNum+"running lines");
 var thisNum = passSubjNum;
 
-linesInG = svg.selectAll("linesIn")
+linesInG = vis.selectAll("linesIn")
 	.data(r)
 	.enter()
 	.append("line")
@@ -707,7 +727,7 @@ thisIs = arrayOfSubjs.split(",");
 thisCircle = index;
 var justOne = thisIs[0];
 var grabIt = [];
-var newG = svg.selectAll("linesOut")
+var newG = vis.selectAll("linesOut")
 	.data(thisIs)
 	.enter()
 	.append("line")
@@ -766,7 +786,7 @@ thisCircle = index;
 console.log(thisIs+"checkedIn")
 var justOne = thisIs[0];
 var grabIt = [];
-var mouseText = svg.selectAll("mouseoverText")
+var mouseText = vis.selectAll("mouseoverText")
 	.data(thisIs)
 	.enter()
 	.append("text")
@@ -777,7 +797,7 @@ var mouseText = svg.selectAll("mouseoverText")
 	.attr("fill","gray")
 	.text(thisIs.length);
 
-newG = svg.selectAll("checkedLinesOut")
+newG = vis.selectAll("checkedLinesOut")
 	.data(thisIs)
 	.enter()
 	.append("line")
@@ -856,7 +876,7 @@ thisCircle = index;
 
 var justOne = thisIs[0];
 var grabIt = [];
-var mouseText = svg.selectAll("mouseoverText")
+var mouseText = vis.selectAll("mouseoverText")
 	.data(thisIs)
 	.enter()
 	.append("text")
@@ -867,7 +887,7 @@ var mouseText = svg.selectAll("mouseoverText")
 	.attr("fill","black")
 	.text(thisIs.length);
 
-var newG = svg.selectAll("linesOut")
+var newG = vis.selectAll("linesOut")
 	.data(thisIs)
 	.enter()
 	.append("line")
@@ -941,7 +961,7 @@ var newG = svg.selectAll("linesOut")
 	.attr("stroke-width",1);
 }
 function removeOutwardLines(codes, thisCirc){
-var outToText = svg.selectAll("outText") //not outText
+var outToText = vis.selectAll("outText") //not outText
 d3.selectAll(".outText").remove();
 	// .attr("class","mouseoverText")
 d3.selectAll(".mouseoverText").remove();
