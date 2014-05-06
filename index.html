@@ -754,31 +754,14 @@ newG = svg.selectAll("checkedLinesOut")
 	})
 	.attr("class","checkedLinesOut")
 	.attr("opacity",1)
-	// .attr("class", "hey"+thisCircle)//"linesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
 			for (k=0; k<=subjCode.length; k++){
-				// if (k==d){
-
-
-
-			// for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
 					return subjX[k]-calcX[thisCircle];
 				}
 			}
-
-
-
-
-
-
-
-					// console.log(d+subjCode[k]+"matched")
-					// return subjX[k-1]-calcX[thisCircle];
-				// }
-			// }
 	})
 	.attr("y2",function(d,i){
 			for (k=0; k<=subjCode.length; k++){
@@ -790,8 +773,8 @@ newG = svg.selectAll("checkedLinesOut")
 	.attr("stroke",function(d,i){
 		var whichLoc;
 			for (k=1; k<=subjCode.length; k++){
-				if (k==d){
-				whichLoc = subjLoc[k-1];
+				if (subjCode[k]==d){
+				whichLoc = subjLoc[k];
 				// console.log(whichLoc+"whichLoc all out")
 				if (whichLoc<=6){
 					return "teal";
@@ -838,10 +821,10 @@ var newG = svg.selectAll("linesOut")
 	.data(thisIs)
 	.enter()
 	.append("line")
+	.attr("class", "hey"+thisCircle)//"linesOut")
 	.attr("transform", function(d,i){
 		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
-	.attr("class", "hey"+thisCircle)//"linesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
@@ -872,6 +855,7 @@ var newG = svg.selectAll("linesOut")
 
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
+					console.log(d+"in all out")
 					return subjY[k]-calcY[thisCircle];
 				}
 			}
@@ -905,54 +889,6 @@ var newG = svg.selectAll("linesOut")
 		}
 	})
 	.attr("stroke-width",1);
-// var outToText = svg.selectAll("outText") //not outText
-// 	.data(thisIs)
-// 	.enter()
-// 	.append("text")
-// 	.attr("class","outText")
-// 	.attr("x", function(d,i){ 
-// 					if (d<=5){
-// 						d = 1;
-// 					}
-// 					else if (d>5){
-// 						d = d-5;
-// 					}			
-// 			for (k=1; k<=subjCode.length; k++){
-// 				if (k==d){
-// 					// console.log(subjTextInside[k-1]+"subjText");
-// 					return subjX[k-1];
-// 				}
-// 			}
-// 		})
-// 	.attr("y", function(d,i){ 
-// 					if (d<=5){
-// 						d = 1;
-// 					}
-// 					else if (d>5){
-// 						d = d-5;
-// 					}			
-// 			for (k=1; k<=subjCode.length; k++){
-// 				if (k==d){
-// 					// console.log(subjTextInside[k-1]+"subjText");
-// 					return subjY[k-1];
-// 				}
-// 			}
-// 		})
-	// .text(function(d,i){ 
-	// 				if (d<=5){
-	// 					d = 1;
-	// 				}
-	// 				else if (d>5){
-	// 					d = d-5;
-	// 				}			
-	// 		for (k=1; k<=subjCode.length; k++){
-	// 			if (k==d){
-	// 				// console.log(subjTextInside[k-1]+"subjText");
-	// 				return subjTextInside[k-1]+" "+freqIs[k-1];
-	// 			}
-	// 		}
-	// 	})
-	// .attr("fill","black");
 }
 function removeOutwardLines(codes, thisCirc){
 var outToText = svg.selectAll("outText") //not outText
@@ -960,35 +896,88 @@ d3.selectAll(".outText").remove();
 	// .attr("class","mouseoverText")
 d3.selectAll(".mouseoverText").remove();
 
-// console.log(thisCirc+"thisCirc");
+console.log(thisCirc+"thisCirc");
 		d3.selectAll(".hey"+thisCirc) //associated lines
 		.transition()
-		.attr("x2",function(d){
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-				for (k=1; k<=subjCode.length; k++){
-					if (k==d){
-						return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
-					}
+	.attr("x2",function(d,i){
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return (subjX[k]-calcX[thisCircle])/(300/whatRadius[thisCirc]);
 				}
-		})
-		.attr("y2",function(d){
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-				for (k=1; k<=subjCode.length; k++){
-					if (k==d){
-						return (subjY[k-1]-calcY[thisCirc])/(300/whatRadius[thisCirc]);
-					}
+			}
+	})
+	.attr("y2",function(d,i){
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+					return (subjY[k]-calcY[thisCircle])/(300/whatRadius[thisCirc]);
 				}
+			}
 		})
+	// .attr("x2",function(d,i){
+	// 				if (d<5){
+	// 					d = 1;
+	// 				}
+	// 				else if (d>=5){
+	// 					d = d;
+	// 				}	
+	// 		for (k=0; k<=subjCode.length; k++){
+	// 			if (subjCode[k]==d){
+	// 				console.log(d+"remove outward and k is "+k)
+	// 				return subjX[k]-calcX[thisCirc]/(300/whatRadius[thisCirc]);
+	// 			}
+	// 		}
+	// })
+	// .attr("y2",function(d,i){
+	// 				if (d<5){
+	// 					d = 1;
+	// 				}
+	// 				else if (d>=5){
+	// 					d = d;
+	// 				}	
+
+	// 		for (k=0; k<=subjCode.length; k++){
+	// 			if (subjCode[k]==d){
+	// 				return subjY[k]-calcY[thisCirc]/(300/whatRadius[thisCirc]);
+	// 			}
+	// 		}
+	// 	})
+					// if (k==d){
+					// 	return (subjX[k-1]-calcX[thisCirc])/(300/whatRadius[thisCirc]);
+					// }
+				// }
+		// })
+		// .attr("y2",function(d){
+		// 			if (d<5){
+		// 				d = 1;
+		// 			}
+		// 			else if (d>=5){
+		// 				d = d;
+		// 			}	
+		// 	for (k=0; k<=subjCode.length; k++){
+		// 		if (subjCode[k]==d){
+		// 			return subjY[k]-calcY[thisCircle]/(300/whatRadius[thisCirc]);
+		// 		}
+		// 	}
+	// .attr("y2",function(d,i){
+	// 				if (d<5){
+	// 					d = 1;
+	// 				}
+	// 				else if (d>=5){
+	// 					d = d;
+	// 				}	
+
+	// 		for (k=0; k<=subjCode.length; k++){
+	// 			if (subjCode[k]==d){
+	// 				return subjY[k]-calcY[thisCirc]/(300);
+	// 			}
+	// 		}
+	// 	})
+				// for (k=1; k<=subjCode.length; k++){
+				// 	if (k==d){
+				// 		return (subjY[k-1]-calcY[thisCirc])/(300/whatRadius[thisCirc]);
+				// 	}
+				// }
+		// })
 }
 
 var incomingIs = [];
