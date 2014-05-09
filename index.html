@@ -188,6 +188,10 @@ var clicked = 0;
 var checkedIt = [];
 var wasItSubj;
 var storeClicks = {};
+
+
+var matching = 0;
+
 function runOuterCircles(){
 //BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
 ////this works great
@@ -264,11 +268,12 @@ var text = vis.selectAll('.subjectText')
 			runLines(d.subjCode);
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
+			matching = 0;
 					// hoverbox.classed("hidden",false);
 		}
 
 		if(storeClicks[i]%2==0){ //if unselected
-hideBooks();
+		hideBooks();
 					// hoverbox.classed("hidden",true);
 
 			console.log("clicked off"+storeClicks[i]%2)
@@ -529,7 +534,6 @@ theseNums = checkedIt;
 			// d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
 			 // .attr("stroke-width",.5);
 		// }
-
 var chckdLines = vis.selectAll("checkedLines")
 	.data(r)
 	.enter()
@@ -544,10 +548,10 @@ var chckdLines = vis.selectAll("checkedLines")
 				newThing.push(d[j]);
 			}
 		}
-console.log(newThing+"UNsorted")
+// console.log(newThing+"UNsorted")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
-console.log(newThing+"sorted")
+// console.log(newThing+"sorted")
 			if (theseNums.toString()==newThing.toString()){
 				console.log("yup in here")
 				// d3.selectAll('.linesIn')
@@ -566,6 +570,7 @@ console.log(newThing+"sorted")
 				otherBooks(checkedToString,i); 
 
 				checkedIn(checkedIt, i);
+				matching = 1;
 			}
 			else {
 				// hideBooks();
@@ -574,6 +579,9 @@ console.log(newThing+"sorted")
 				.transition()
 				.attr("fill", "gray")
 				.attr("opacity",.1);
+			}
+			if (matching==0){
+				hideBooks();
 			}
 		return "checkedLines";
 	})
@@ -667,7 +675,6 @@ linesInG = vis.selectAll("linesIn")
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-			// for (k=0; k<=subjCode.length; k++){
 		var whichLoc;
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==thisNum){
@@ -1018,104 +1025,66 @@ d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
 			for (i=0; i<manyCodes.length; i++){
 				dividedCodes.push(manyCodes[i].split(","));
 			}
+for (j=0; j<dividedCodes.length; j++){
+	codeSorted.push(dividedCodes[j].sort(function(a, b){return a-b}));
+}
+console.log(data.length)
 
 		})
 }
 
-
-// for (i = 0; i < cData.length;i++) {
-// 	allCodes.push(cData[i].codeName);
-// }
-
-// for (i=0; i<allCodes.length; i++){
-// 	r.push(allCodes[i].split(","));
-// }
-
-
-
-
-
-
-
-// var chckdLines = vis.selectAll("checkedLines")
-// 	.data(r)
-// 	.enter()
-// 	.append("l")
-// 	.attr("class", function(d,i){
-// 		var newThing = [];
-// 		for (j=0; j<allCodes[i].length; j++){
-// 			if (d[j]<5){
-// 				newThing.push(1);
-// 			}
-// 			if (d[j]>=5){
-// 				newThing.push(d[j]);
-// 			}
-// 		}
-// console.log(newThing+"UNsorted")
-// 		newThing.sort(function(a, b){return a-b});
-// 		theseNums.sort(function(a, b){return a-b});
-// console.log(newThing+"sorted")
-
-
-
-
-
-
-
-
-
-
-
-var matchingArray = [];
-var matched = [];
-function books(incoming, thisCircle){
-clicked = 0;
-d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-incomingIs = incoming.split(",");
-			for (j=0; j<data.length; j++){
-				if (data[j].code==incomingIs){ 
-					console.log(data[j].code+" matching "+incomingIs)
-					updateHoverbox(data[j].title, j, data[j].id);
-					whichBooks.push(data[j].title);
-					saveId.push(data[j].id);
-				}
-			}
-})
-}
 var testing;
 var newChecked = [];
 var codeSorted = [];
 var otherFirst = [];
 function otherBooks(checkedToString, thisCircle){
 console.log("otherBooks"+checkedToString+"i"+thisCircle);
-newChecked.push(checkedToString);
-d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-			for (j=0; j<data.length; j++){
-			// 		otherFirst.push(data[j].code);
-			// 	}
+//need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
 
-					codeSorted.push(dividedCodes[j].sort(function(a, b){return a-b}));
-}
-		// codeSorted.sort(function(a, b){return a-b});
-		newChecked.sort(function(a, b){return a-b});
+	checkedIt.sort(function(a, b){return a-b});
 
 for (i=0; i<codeSorted.length; i++){
-				if (codeSorted[i]==newChecked){
-				console.log(data[j].code+"and"+newChecked) 
-					updateHoverbox(data[i].title, i, data[i].id);
-					whichBooks.push(data[i].title);
-					saveId.push(data[i].id);
+			if (codeSorted[i].toString()==checkedIt.toString()){
+					updateHoverbox(manyBooks[i], i, manyIds[i]);
+					whichBooks.push(manyBooks[i]);
+					saveId.push(manyIds[i]);
 				}
 			}
-})
 }
+
+
+
+
+
+
+
+
+
+
+//need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
+var matchingArray = [];
+var matched = [];
+function books(incoming, thisCircle){
+clicked = 0;
+// d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
+incomingIs = incoming.split(",");
+			for (j=0; j<manyCodes.length; j++){
+				if (manyCodes[j]==incomingIs){ 
+					console.log(manyCodes[j]+" matching "+incomingIs)
+					updateHoverbox(manyBooks[j], j, manyIds[j]);
+					whichBooks.push(manyBooks[j]);
+					saveId.push(manyIds[j]);
+				}
+			}
+// })
+}
+
+
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
 	// .attr("class", "hidden");
 
 var updateHoverbox = function(theseBooks, index, whichCode) {
-console.log(theseBooks);
-console.log(whichBooks);
 console.log(whichCode+"whichCode");
 var indexIs = index;
 
@@ -1140,7 +1109,7 @@ var indexIs = index;
 function hideBooks(){
 			thing = 0;
 		index = 0;
-	manyIds.length = 0;
+	saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 // hoverbox.classed("hidden", true);
 whichBooks.length = 0;
