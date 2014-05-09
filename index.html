@@ -1042,6 +1042,7 @@ console.log("otherBooks"+checkedToString+"i"+thisCircle);
 //need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
 
 	checkedIt.sort(function(a, b){return a-b});
+		console.log(checkedIt+"sorted")
 
 for (i=0; i<codeSorted.length; i++){
 			if (codeSorted[i].toString()==checkedIt.toString()){
@@ -1049,8 +1050,44 @@ for (i=0; i<codeSorted.length; i++){
 					whichBooks.push(manyBooks[i]);
 					saveId.push(manyIds[i]);
 				}
-			}
+
+
+// else {
+	for (j=0; j<checkedIt.length; j++){
+		if (checkedIt[j]==1){
+			////SPLICE IN A 2 FOR THE 1...
+		checkedIt.splice(j,1,"2")
+		console.log(checkedIt+"spliced")
+			//BUT THEN ADD THESE TO THE EXISTING ARRAY AS OPPOSED TO REPLACING THAT ARRAY WITH WHAT IS PUSHED BELOW...
+		
+			if (codeSorted[i].toString()==checkedIt.toString()){
+
+				////SO I THINK WHAT HAS TO HAPPEN IS THAT HOVERBOX GETS UPDATED AT THE END, AFTER WHICH BOOKS AND WHICH IDS HAVE BEEN PUSHED ALL POSSIBLE BOOKS AND IDS - EVEN THOSE CREATED FROM COMPARED SUBJECTS 2, 3, 4...
+					updateHoverbox(manyBooks[i], i, manyIds[i]);
+					whichBooks.push(manyBooks[i]);
+					saveId.push(manyIds[i]);
+				}
+	}
+	}	
 }
+}
+
+
+// switch(codeSorted[i].toString()){
+// 	for (j=0; j<checkedIt.length; j++){
+// 	case checkedIt[j]==1:
+
+// }// 				
+	// 		else {
+	// 			for (j=0; j<checkedIt.length; j++){
+	// 				if (checkedIt[j]==1){
+
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+// }
 
 
 
