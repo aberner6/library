@@ -1063,6 +1063,9 @@ for (i=0; i<codeSorted.length; i++){
 			if (codeSorted[i].toString()==checkedIt.toString()){
 
 				////SO I THINK WHAT HAS TO HAPPEN IS THAT HOVERBOX GETS UPDATED AT THE END, AFTER WHICH BOOKS AND WHICH IDS HAVE BEEN PUSHED ALL POSSIBLE BOOKS AND IDS - EVEN THOSE CREATED FROM COMPARED SUBJECTS 2, 3, 4...
+				////MAYBE INSTEAD I CAN SIMULATE THAT CIRCLE HAVING BEEN CLICKED ON AND THEN USING ITS INHERENT DATA TO POPULATE AS IF IT HAD BEEN CLICKED... 
+				////SO THEN THE CHALLENGE IS HOW TO IDENTIFY THE CIRCLE? 
+				
 					updateHoverbox(manyBooks[i], i, manyIds[i]);
 					whichBooks.push(manyBooks[i]);
 					saveId.push(manyIds[i]);
