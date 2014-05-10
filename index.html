@@ -28,6 +28,19 @@ opacity: .1;
 	overflow:auto;
 	position: fixed;
 }
+#booksColumn{
+	top:4px;
+	right: 4px; 	
+	cursor: pointer;
+border-left: 1px gray solid;
+border-right: 1px gray solid;
+  color: gray;
+  padding: 5px;
+	opacity: .7;
+	background-color: rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+position:absolute;
+}
 
 #hoverbox.hidden {
   display: none;
@@ -84,6 +97,10 @@ border: 0.5px solid #808080;
 <div class = "outerCircleText"></div>
 	<div id = "hoverbox"></div>
 <div class = "listBooks"></div>
+<div id = "booksColumn">B</div>
+
+
+
 <script type = "text/javascript">
 
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
@@ -283,7 +300,7 @@ var text = vis.selectAll('.subjectText')
 
 		//and remove that subject number
 		for (c=0; c<checkedIt.length; c++){
-			if (checkedIt[c]==d.subjCode){
+			if (checkedIt[c]==d.subjCode){ // || 2 || 3 || 4
 				console.log(checkedIt+"before removing");
 				checkedIt.splice(c,1);
 				console.log(checkedIt+"after removing");
@@ -523,12 +540,13 @@ function newFunction(){
 var theseNums = [];
 var boolUnselect = 0;
 var checkedToString;
+var checkedIndex;
 function checked(checkedIt){
 
 boolUnselect = 1;
-console.log(checkedIt+"checked");
 
 theseNums = checkedIt;
+console.log(theseNums+"theseNums");
 
 		// if (checkedIt.length>1){
 			// d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
@@ -552,8 +570,11 @@ var chckdLines = vis.selectAll("checkedLines")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
 // console.log(newThing+"sorted")
-			if (theseNums.toString()==newThing.toString()){
-				console.log("yup in here")
+			if(theseNums.toString()==newThing.toString()){
+				
+			// }
+			// if (theseNums.toString()==newThing.toString()){
+				console.log("first function")
 				// d3.selectAll('.linesIn')
 				// .transition()
 				// .duration(2000)
@@ -566,11 +587,10 @@ var chckdLines = vis.selectAll("checkedLines")
 				.attr("fill","yellow");
 				console.log(checkedIt+"and i"+i)
 				checkedToString = checkedIt.toString();
-
-				otherBooks(checkedToString,i); 
-
 				checkedIn(checkedIt, i);
+				checkedIndex = i;
 				matching = 1;
+				// fillInBooks(checkedIt,i);
 			}
 			else {
 				// hideBooks();
@@ -583,10 +603,13 @@ var chckdLines = vis.selectAll("checkedLines")
 			if (matching==0){
 				hideBooks();
 			}
+
 		return "checkedLines";
 	})
 }
-
+$('#booksColumn').click(function(){
+	otherBooks(checkedIt,checkedIndex); 
+})
 
 var linesInG;
 function runLines(passSubjNum){
@@ -1017,63 +1040,63 @@ var dividedCodes = [];
 var saveId = [];
 function loadBooks(){
 d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-			for (j=0; j<data.length; j++){
-				manyBooks.push(data[j].title);
-				manyIds.push(data[j].id);
-				manyCodes.push(data[j].code);
-			}
-			for (i=0; i<manyCodes.length; i++){
-				dividedCodes.push(manyCodes[i].split(","));
-			}
+for (j=0; j<data.length; j++){
+	manyBooks.push(data[j].title);
+	manyIds.push(data[j].id);
+	manyCodes.push(data[j].code);
+}
+for (i=0; i<manyCodes.length; i++){
+	dividedCodes.push(manyCodes[i].split(","));
+}
 for (j=0; j<dividedCodes.length; j++){
 	codeSorted.push(dividedCodes[j].sort(function(a, b){return a-b}));
 }
-console.log(data.length)
-
-		})
+})
 }
 
 var testing;
 var newChecked = [];
 var codeSorted = [];
 var otherFirst = [];
-function otherBooks(checkedToString, thisCircle){
-console.log("otherBooks"+checkedToString+"i"+thisCircle);
+var booksChecked = [];
+function otherBooks(checkedTo, thisCircle){
+console.log("otherBooks"+checkedTo+"i"+thisCircle);
 //need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
+booksChecked=checkedTo;
+booksChecked.sort(function(a, b){return a-b});
+		console.log(booksChecked+"books checked sorted")
 
-	checkedIt.sort(function(a, b){return a-b});
-		console.log(checkedIt+"sorted")
+// for (i=0; i<codeSorted.length; i++){
+// 	if (codeSorted[i].toString()==booksChecked.toString()){
+// 		console.log("initial check is yes")
+// 		whichBooks.push(manyBooks[i]);
+// 		saveId.push(manyIds[i]);
+// 	}
+// }
 
-for (i=0; i<codeSorted.length; i++){
-			if (codeSorted[i].toString()==checkedIt.toString()){
-					// updateHoverbox(manyBooks[i], i, manyIds[i]);
-					console.log("initial check is yes")
-					whichBooks.push(manyBooks[i]);
-					saveId.push(manyIds[i]);
-				}
-}
 
-	for (j=0; j<checkedIt.length; j++){
-		if (checkedIt[j]==1){
-			////SPLICE IN A 2 FOR THE 1...
-		checkedIt.splice(j,1,"2")
-		console.log(checkedIt+"spliced")
+
+////SPLICE IN A 2 AND COMPARE
+for (j=0; j<booksChecked.length; j++){
+	if (booksChecked[j]==1){
+		booksChecked.splice(j,1,"2")
+		console.log(booksChecked+"spliced in a 2")
+	}
+	else if (booksChecked[j]==2){
+		booksChecked.splice(j,1,"1")
+		console.log(booksChecked+"spliced in a 1")		
 	}
 }
-			//BUT THEN ADD THESE TO THE EXISTING ARRAY AS OPPOSED TO REPLACING THAT ARRAY WITH WHAT IS PUSHED BELOW...
+for (i=0; i<codeSorted.length; i++){
+	if (codeSorted[i].toString()==booksChecked.toString()){
+		whichBooks.push(manyBooks[i]);
+		saveId.push(manyIds[i]);
+	}
+}
 
-		for (i=0; i<codeSorted.length; i++){
-			if (codeSorted[i].toString()==checkedIt.toString()){
 
-				////SO I THINK WHAT HAS TO HAPPEN IS THAT HOVERBOX GETS UPDATED AT THE END, AFTER WHICH BOOKS AND WHICH IDS HAVE BEEN PUSHED ALL POSSIBLE BOOKS AND IDS - EVEN THOSE CREATED FROM COMPARED SUBJECTS 2, 3, 4...
-				////MAYBE INSTEAD I CAN SIMULATE THAT CIRCLE HAVING BEEN CLICKED ON AND THEN USING ITS INHERENT DATA TO POPULATE AS IF IT HAD BEEN CLICKED... 
-				////SO THEN THE CHALLENGE IS HOW TO IDENTIFY THE CIRCLE? 
 
-					whichBooks.push(manyBooks[i]);
-					saveId.push(manyIds[i]);
-				}
-			}
-	updateHoverbox(whichBooks, saveId);
+updateHoverbox(whichBooks, saveId);
 }
 
 
