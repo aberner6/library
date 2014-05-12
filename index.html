@@ -574,7 +574,7 @@ var chckdLines = vis.selectAll("checkedLines")
 				newThing.push(d[j]);
 			}
 		}
-// console.log(newThing+"UNsorted")
+// console.log(newThing+"what happens w 1 and newthing")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
 // console.log(newThing+"sorted")
@@ -1103,15 +1103,25 @@ if (booksChecked[j]==1){
 	}
 		console.log(booksChecked+"spliced in a 2")
 	}
-else if (booksChecked[j]==2){
-	booksChecked.splice(j,1,"1")
+if (booksChecked[j]==2){
+	booksChecked.splice(j,1,"3")
 	for (i=0; i<codeSorted.length; i++){
 		if (codeSorted[i].toString()==booksChecked.toString()){
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
 	}		
-		console.log(booksChecked+"spliced in a 1")		
+		console.log(booksChecked+"spliced in a 3")		
+	}
+if (booksChecked[j]==3){
+	booksChecked.splice(j,1,"4")
+	for (i=0; i<codeSorted.length; i++){
+		if (codeSorted[i].toString()==booksChecked.toString()){
+			whichBooks.push(manyBooks[i]);
+			saveId.push(manyIds[i]);
+		}
+	}		
+		console.log(booksChecked+"spliced in a 4")		
 	}
 }
 // for (i=0; i<codeSorted.length; i++){
