@@ -306,6 +306,14 @@ var text = vis.selectAll('.subjectText')
 				console.log(checkedIt+"after removing");
 			}
 		}
+		booksChecked.length=0;
+		// for (c=0; c<booksChecked.length; c++){
+		// 	if (booksChecked[c]==d.subjCode){ // || 2 || 3 || 4
+		// 		console.log(booksChecked+"before removing");
+		// 		booksChecked.splice(c,1);
+		// 		console.log(booksChecked+"after removing");
+		// 	}
+		// }
 		checked(checkedIt);
 		removeRunnedLines(d.subjCode);
 		d3.selectAll(".mouseoverText").remove();
@@ -1059,40 +1067,59 @@ var newChecked = [];
 var codeSorted = [];
 var otherFirst = [];
 var booksChecked = [];
+var overFour = 0;
 function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
 //need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
-booksChecked=checkedTo;
+for (i=0; i<checkedIt.length; i++){booksChecked.push(checkedTo[i])}
+
 booksChecked.sort(function(a, b){return a-b});
 		console.log(booksChecked+"books checked sorted")
 
-// for (i=0; i<codeSorted.length; i++){
-// 	if (codeSorted[i].toString()==booksChecked.toString()){
-// 		console.log("initial check is yes")
-// 		whichBooks.push(manyBooks[i]);
-// 		saveId.push(manyIds[i]);
-// 	}
-// }
-
-
-
-////SPLICE IN A 2 AND COMPARE
 for (j=0; j<booksChecked.length; j++){
-	if (booksChecked[j]==1){
-		booksChecked.splice(j,1,"2")
-		console.log(booksChecked+"spliced in a 2")
+		if (booksChecked[j]>4){
+			overFour = 1;
+		}
 	}
-	else if (booksChecked[j]==2){
-		booksChecked.splice(j,1,"1")
-		console.log(booksChecked+"spliced in a 1")		
-	}
-}
+if (overFour==1){
 for (i=0; i<codeSorted.length; i++){
 	if (codeSorted[i].toString()==booksChecked.toString()){
 		whichBooks.push(manyBooks[i]);
 		saveId.push(manyIds[i]);
 	}
 }
+}	
+
+////SPLICE IN A 2 AND COMPARE
+for (j=0; j<booksChecked.length; j++){
+
+if (booksChecked[j]==1){
+	booksChecked.splice(j,1,"2")
+	for (i=0; i<codeSorted.length; i++){
+		if (codeSorted[i].toString()==booksChecked.toString()){
+			whichBooks.push(manyBooks[i]);
+			saveId.push(manyIds[i]);
+		}
+	}
+		console.log(booksChecked+"spliced in a 2")
+	}
+else if (booksChecked[j]==2){
+	booksChecked.splice(j,1,"1")
+	for (i=0; i<codeSorted.length; i++){
+		if (codeSorted[i].toString()==booksChecked.toString()){
+			whichBooks.push(manyBooks[i]);
+			saveId.push(manyIds[i]);
+		}
+	}		
+		console.log(booksChecked+"spliced in a 1")		
+	}
+}
+// for (i=0; i<codeSorted.length; i++){
+// 	if (codeSorted[i].toString()==booksChecked.toString()){
+// 		whichBooks.push(manyBooks[i]);
+// 		saveId.push(manyIds[i]);
+// 	}
+// }
 
 
 
