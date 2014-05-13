@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
+<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
 	</head>
 	<style>
@@ -314,6 +314,8 @@ var text = vis.selectAll('.subjectText')
 		// 		console.log(booksChecked+"after removing");
 		// 	}
 		// }
+		d3.selectAll(".checkedLinesOut").remove();
+
 		checked(checkedIt);
 		removeRunnedLines(d.subjCode);
 		d3.selectAll(".mouseoverText").remove();
@@ -463,7 +465,7 @@ var inCircle = vis.selectAll("inCircle")
 	.on("mouseover", function(d,i){
 		d3.select(this)
 		.attr("opacity", .9);
-		console.log(d.codeName+"sending to all out");
+		// console.log(d.codeName+"sending to all out");
 		index = i;
 		allOut(d.codeName, index); //FIX WHAT THING IS NOW
 		})
@@ -598,6 +600,8 @@ var chckdLines = vis.selectAll("checkedLines")
 				checkedIn(checkedIt, i);
 				checkedIndex = i;
 				matching = 1;
+					// otherBooks(checkedIt,checkedIndex); //put it here to front load the prep process?
+
 				// fillInBooks(checkedIt,i);
 			}
 			else {
@@ -616,6 +620,7 @@ var chckdLines = vis.selectAll("checkedLines")
 	})
 }
 $('#booksColumn').click(function(){
+	// displayBooks();
 	otherBooks(checkedIt,checkedIndex); 
 })
 
@@ -979,7 +984,7 @@ var newG = vis.selectAll("linesOut")
 
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
-					console.log(d+"in all out")
+					// console.log(d+"in all out")
 					return subjY[k]-calcY[thisCircle];
 				}
 			}
@@ -1057,7 +1062,11 @@ for (i=0; i<manyCodes.length; i++){
 	dividedCodes.push(manyCodes[i].split(","));
 }
 for (j=0; j<dividedCodes.length; j++){
-	codeSorted.push(dividedCodes[j].sort(function(a, b){return a-b}));
+	codeSorted.push((dividedCodes[j].sort(function(a, b){return a-b})).toString());
+
+	// codeSorted = codeSorted[j].toString();
+
+
 }
 })
 }
@@ -1083,7 +1092,7 @@ for (j=0; j<booksChecked.length; j++){
 	}
 if (overFour==1){
 for (i=0; i<codeSorted.length; i++){
-	if (codeSorted[i].toString()==booksChecked.toString()){
+	if (codeSorted[i]==booksChecked.toString()){
 		whichBooks.push(manyBooks[i]);
 		saveId.push(manyIds[i]);
 	}
@@ -1096,45 +1105,43 @@ for (j=0; j<booksChecked.length; j++){
 if (booksChecked[j]==1){
 	booksChecked.splice(j,1,"2")
 	for (i=0; i<codeSorted.length; i++){
-		if (codeSorted[i].toString()==booksChecked.toString()){
+		if (codeSorted[i]==booksChecked.toString()){
+			// console.log(manyBooks[i]+"code 2")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
 	}
-		console.log(booksChecked+"spliced in a 2")
+		// console.log(booksChecked+"spliced in a 2")
 	}
 if (booksChecked[j]==2){
 	booksChecked.splice(j,1,"3")
 	for (i=0; i<codeSorted.length; i++){
-		if (codeSorted[i].toString()==booksChecked.toString()){
+		if (codeSorted[i]==booksChecked.toString()){
+			// console.log(manyBooks[i]+"code 3")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
 	}		
-		console.log(booksChecked+"spliced in a 3")		
+		// console.log(booksChecked+"spliced in a 3")		
 	}
 if (booksChecked[j]==3){
 	booksChecked.splice(j,1,"4")
 	for (i=0; i<codeSorted.length; i++){
-		if (codeSorted[i].toString()==booksChecked.toString()){
+		if (codeSorted[i]==booksChecked.toString()){
+			// console.log(manyBooks[i]+"code 4")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
 	}		
-		console.log(booksChecked+"spliced in a 4")		
+		// console.log(booksChecked+"spliced in a 4")		
 	}
 }
-// for (i=0; i<codeSorted.length; i++){
-// 	if (codeSorted[i].toString()==booksChecked.toString()){
-// 		whichBooks.push(manyBooks[i]);
-// 		saveId.push(manyIds[i]);
-// 	}
-// }
-
-
-
+//PUT THIS IN THE SEPARATE FUNCTION THAT DISPLAYS BOOKS?
 updateHoverbox(whichBooks, saveId);
 }
+// function displayBooks(){
+// 	updateHoverbox(whichBooks, saveId);
+// }
 
 
 // switch(codeSorted[i].toString()){
