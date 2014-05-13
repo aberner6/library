@@ -306,7 +306,8 @@ var text = vis.selectAll('.subjectText')
 				console.log(checkedIt+"after removing");
 			}
 		}
-		booksChecked.length=0;
+		booksChecked.length = 0;
+		bookColors.length = 0;
 		// for (c=0; c<booksChecked.length; c++){
 		// 	if (booksChecked[c]==d.subjCode){ // || 2 || 3 || 4
 		// 		console.log(booksChecked+"before removing");
@@ -1077,10 +1078,37 @@ var codeSorted = [];
 var otherFirst = [];
 var booksChecked = [];
 var overFour = 0;
+var bookColors = [];
+var manyBookColors = {};
+var colors = ["teal","teal","teal","teal","teal","teal","teal","teal","teal","teal","teal","lightgreen","lightgreen","lightgreen","lightblue","lightblue","lightblue","lightblue","lightblue","blue","blue","blue","blue","blue","blue"];
 function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
 //need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
-for (i=0; i<checkedIt.length; i++){booksChecked.push(checkedTo[i])}
+for (i=0; i<checkedIt.length; i++){
+	booksChecked.push(checkedTo[i])
+}
+for (j=0; j<booksChecked.length; j++){
+
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==booksChecked[j]){
+				whichLoc = subjLoc[k];
+				// console.log(subjCode[k]+"subj code all out")
+				if (whichLoc<=6){
+					bookColors.push("teal")
+				}
+				if (whichLoc>6&&whichLoc<=10){
+					bookColors.push("lightgreen");
+				}
+				if (whichLoc>10&&whichLoc<=15){
+					bookColors.push("lightblue");
+				}
+				if (whichLoc>15&&whichLoc<21){
+					bookColors.push("blue");
+				}	
+			}
+			}	
+	// bookColors.push(colors[booksChecked[j]])
+}
 
 booksChecked.sort(function(a, b){return a-b});
 		console.log(booksChecked+"books checked sorted")
@@ -1095,9 +1123,14 @@ for (i=0; i<codeSorted.length; i++){
 	if (codeSorted[i]==booksChecked.toString()){
 		whichBooks.push(manyBooks[i]);
 		saveId.push(manyIds[i]);
+		// bookCodes.push(manyCodes[i]);
+		// bookColors = bookColors
 	}
 }
-}	
+}
+// for (i=0; i<whichBooks.length; i++){
+// 	manyBookColors[i] = bookCodes[i];
+// }	
 
 ////SPLICE IN A 2 AND COMPARE
 for (j=0; j<booksChecked.length; j++){
@@ -1111,7 +1144,6 @@ if (booksChecked[j]==1){
 			saveId.push(manyIds[i]);
 		}
 	}
-		// console.log(booksChecked+"spliced in a 2")
 	}
 if (booksChecked[j]==2){
 	booksChecked.splice(j,1,"3")
@@ -1122,7 +1154,6 @@ if (booksChecked[j]==2){
 			saveId.push(manyIds[i]);
 		}
 	}		
-		// console.log(booksChecked+"spliced in a 3")		
 	}
 if (booksChecked[j]==3){
 	booksChecked.splice(j,1,"4")
@@ -1133,40 +1164,11 @@ if (booksChecked[j]==3){
 			saveId.push(manyIds[i]);
 		}
 	}		
-		// console.log(booksChecked+"spliced in a 4")		
 	}
 }
 //PUT THIS IN THE SEPARATE FUNCTION THAT DISPLAYS BOOKS?
 updateHoverbox(whichBooks, saveId);
 }
-// function displayBooks(){
-// 	updateHoverbox(whichBooks, saveId);
-// }
-
-
-// switch(codeSorted[i].toString()){
-// 	for (j=0; j<checkedIt.length; j++){
-// 	case checkedIt[j]==1:
-
-// }// 				
-	// 		else {
-	// 			for (j=0; j<checkedIt.length; j++){
-	// 				if (checkedIt[j]==1){
-
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-// }
-
-
-
-
-
-
-
-
 
 
 //need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
@@ -1204,6 +1206,9 @@ var updateHoverbox = function(theseBooks, whichCode) {
 		.enter()
 		.append("p")
 		.attr("class","listBooks")
+		.attr("fill",function(){
+			// for
+		})
 		.html(function(d){
 			return d; //+"<br>"
 		})
