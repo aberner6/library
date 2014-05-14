@@ -16,29 +16,20 @@ background-color: rgba(0, 0, 0, 0.8);
 width: 24%;
 height: 114px;
 top: 250px;
-/*left: 38%;*/
 }
 .introNav{
 display: block;
 position: absolute;
 z-index: 150;
 text-align: center;
-font-size: 30px;
+font-size: 20px;
 color: #ccc;
 cursor: pointer;
 display: none;
 opacity: 0;
-width: 5px;
+/*width: 5px;*/
 top: 250px;
-margin-left:23%;
-/*left: 60%;*/
-}
-.nothing1{
-	top:50px;
-	width:0px; 
-	height:0px; 
-	right: 50%; 
-	position: fixed;
+margin-left:22%;
 }
 
 #container{
@@ -52,7 +43,21 @@ margin-left:23%;
 /* Hoverbox */
 
 #booksColumn{
-top:4px;
+top: 4px;
+right: 4px;
+cursor: pointer;
+/*border-left: 1px gray solid;
+border-right: 1px gray solid;*/
+color: darkgray;
+padding: 6px;
+opacity: .7;
+/*background-color: lightgray;*/
+border-bottom: 1px gray solid;
+
+position: absolute;
+/*width: 10px;
+height: 20px;*/
+/*top:4px;
 right: 4px; 	
 cursor: pointer;
 border-left: 1px gray solid;
@@ -62,6 +67,31 @@ padding: 5px;
 opacity: .7;
 background-color: rgba(0, 0, 0, 0.3);
 border-radius: 4px;
+position:absolute;*/
+}
+#booksColumn:hover{
+		background-color: lightgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;
+
+}
+#booksColumn.selected{
+		background-color: lightgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;	
+}
+#hoverbox{
+	width: 20%;
+	height: 100%;
+	overflow:auto;
+top:35px;
+right: 4px; 	
+color: gray;
+padding: 5px;
+opacity: .9;
+/*background-color: rgba(0, 0, 0, 0.3);*/
 position:absolute;
 }
 
@@ -113,40 +143,37 @@ border: 0.5px solid #808080;
 	letter-spacing: 2px;
 	position: absolute;
 	cursor: pointer;
-/*border-left: 1px gray solid;*/
-/*border-right: 1px gray solid;*/
 border-bottom: 1px gray solid;
-color: #222;
-
-  /*font: 14px 'Gotham';*/
-  /*text-transform: none;*/
-  /*color: gray;*/
+color: darkgray;
+/*background-color: lightgray;*/
   padding: 5px;
-  	/*width: ;*/
 	top: 80%;
 	margin-left: 8.5%;
 	display:none;
 	opacity: .7;
-	background-color: rgba(0, 0, 0, 0.12)
-}
+/*	background-color: rgba(0, 0, 0, 0.12)
+*/}
 .center
 {
 margin-left:auto;
 margin-right:auto;
 width: 20em;
-/*width:70%;*/
-/*background-color:#b0e0e6;*/
 }
 #skip:hover{
-		background-color: white;
-		color:gray;
+		background-color: lightgray;
+		color:white;
 	cursor: pointer;
+border-bottom: 1px yellow solid;
+
 }
 .intro p {
 	margin: 20px;
 }
-.introNav:hover{
-	opacity:.5;	
+.introNav p:hover{
+		background-color: lightgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;
 }
 #wholeThing{
 	  position: absolute;

@@ -34,8 +34,10 @@
 				<p>Next thing said</p>
 </div>
 <div class="introNav" style="opacity: 1;">
-					<p>	&gt;</p>
-</div>
+					<p>-></p>
+
+<!-- 					<p>	&gt;</p>
+ --></div>
 </div>
 <script type = "text/javascript">
 var animateOpening = true;
@@ -47,11 +49,11 @@ var animateOpening = true;
 			.style("display","block")
 			.style("opacity",1.0);
 		$('#skip').fadeIn("slow");
-var i = 0;
+var countProgress = 0;
 	$('.introNav').on("click", function(){
-		console.log(i)
-		i++;
-		if (i==411){
+		console.log(countProgress)
+		countProgress++;
+		if (countProgress==1){
 			console.log(i)
 			d3.select("#intro1")
 			.transition().style("opacity", 0.0).style("display", "none");
@@ -70,8 +72,8 @@ var i = 0;
 	})
 	$('#skip').on("click",function(){
 		d3.select("#container").transition().style("opacity", 1.0);
-		d3.select("#intro1, #intro2").transition().style("opacity", 0.0).style("display", "none");
-		d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, .introNav").transition().style("opacity", 0.0).style("display", "none");
+		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");
 	})
 }
@@ -255,6 +257,7 @@ var text = vis.selectAll('.subjectText')
       })
 	.each(moveToFront)
 	.on("click", function(d,i){
+		count=0;
 		var d = this.__data__;
 		wasItSubj = d.subjCode;
 		storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
@@ -272,7 +275,8 @@ var text = vis.selectAll('.subjectText')
 		}
 
 		if(storeClicks[i]%2==0){ //if unselected
-		hideBooks();
+		// d3.select("#booksColumn.selected").classed("selected", false);
+		// hideBooks();
 					// hoverbox.classed("hidden",true);
 
 			console.log("clicked off"+storeClicks[i]%2)
@@ -301,7 +305,6 @@ var text = vis.selectAll('.subjectText')
 
 		checked(checkedIt);
 		removeRunnedLines(d.subjCode);
-		d3.selectAll(".mouseoverText").remove();
 		d3.selectAll("circle.inCircle"+i)
 			.transition()
 			.attr("opacity", ".1")
@@ -545,6 +548,8 @@ function newFunction(){
 	// .transition()
 	// .attr("stroke-opacity",.07)
 // }
+var count = 0;
+
 var theseNums = [];
 var boolUnselect = 0;
 var checkedToString;
@@ -560,6 +565,7 @@ console.log(theseNums+"theseNums");
 			// d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
 			 // .attr("stroke-width",.5);
 		// }
+		// var firstFunction=0;
 var chckdLines = vis.selectAll("checkedLines")
 	.data(r)
 	.enter()
@@ -583,11 +589,12 @@ var chckdLines = vis.selectAll("checkedLines")
 			// }
 			// if (theseNums.toString()==newThing.toString()){
 				console.log("first function")
+				// firstFunction = 1;
 				// d3.selectAll('.linesIn')
 				// .transition()
 				// .duration(2000)
 				// .attr("opacity",.2);
-
+				count = 1;
 				console.log(i+"this is index?");
 				d3.select("circle.inCircle"+i)
 				.transition()
@@ -598,19 +605,50 @@ var chckdLines = vis.selectAll("checkedLines")
 				checkedIn(checkedIt, i);
 				checkedIndex = i;
 				matching = 1;
+				d3.select("#booksColumn").classed("selected", true);
+				// .style("background-color","lightgray")
+				// .style("color","white")
+				// .style("border-bottom","1px yellow solid");
+
+
 					// otherBooks(checkedIt,checkedIndex); //put it here to front load the prep process?
+				// console.log("matching"+matching)
 
 				// fillInBooks(checkedIt,i);
 			}
+
 			else {
+				 count++;
+
+				// console.log(count);
+
 				// hideBooks();
 				// console.log("wasn't equal")
 				d3.select("circle.inCircle"+i)
 				.transition()
 				.attr("fill", "gray")
 				.attr("opacity",.1);
+				// d3.select("#booksColumn.selected").classed("selected", false);
 			}
+	// if(theseNums.toString()!=newThing.toString()){
+	// 	// console.log("!=")
+	// 	// d3.select("#booksColumn.selected").classed("selected", false);
+	// 	hideBooks();
+	// }
+	if (count%allCodes.length==0){
+		d3.select("#booksColumn.selected").classed("selected", false);	
+		d3.selectAll(".mouseoverText").remove();	
+		hideBooks();			
+	}
+	else {
+		// d3.selectAll(".mouseoverText").remove();
+		d3.select("#booksColumn.selected").classed("selected", true);	
+		// hideBooks();			
+	}
 			if (matching==0){
+				// console.log("matching"+matching)
+				d3.select("#booksColumn.selected").classed("selected", false);
+	// d3.select("#booksColumn").transition().style("background-color","lightgray");
 				hideBooks();
 			}
 
@@ -754,7 +792,7 @@ d3.selectAll(".linesIn"+passSubjNum)
 		}
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				console.log("equal")
+				// console.log("equal")
 				return 0;
 			}				
 		}
@@ -1192,12 +1230,15 @@ incomingIs = incoming.split(",");
 	// .attr("class", "hidden");
 
 var updateHoverbox = function(theseBooks, whichCode) {
-// console.log(whichCode+"whichCode");
+console.log(whichCode+"whichCode");
+console.log("updateHoverbox")
 // var indexIs = index;
 
 // hoverbox.selectAll(".listBooks").classed("hidden",false);
 
    d3.select('#hoverbox')
+   // .transition().style("display","block")
+
    .selectAll(".listBooks")
    .data(whichBooks)
 		.enter()
@@ -1224,109 +1265,7 @@ d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
 }
 
-/**
-   * Add overlay layer to the page
-   *
-   * @api private
-   * @method _addOverlayLayer
-   * @param {Object} targetElm
-   */
 
-// var targetElm = 'body';
-//  _addOverlayLayer();
-
-//   function _addOverlayLayer() {
-//     var overlayLayer = document.createElement('div'),
-//         styleText = '',
-//         self = this;
-
-//     //set css class name
-//     overlayLayer.className = 'introjs-overlay';
-
-//     //check if the target element is body, we should calculate the size of overlay layer in a better way
-//     // if (targetElm === 'body') {
-//       styleText += 'top: 0;bottom: 0; left: 0;right: 0;position: fixed;';
-//       overlayLayer.setAttribute('style', styleText);
-//     // } 
-// document.getElementById("wholeThing").appendChild(overlayLayer);
-// }
-// .appendChild(overlayLayer);
-
-    // overlayLayer.onclick = function() {
-    //     _exitIntro.call(self, targetElm);
-
-    //     //check if any callback is defined
-    //     if (self._introExitCallback != undefined) {
-    //       self._introExitCallback.call(self);
-    //     }
-    // };
-
-    // setTimeout(function() {
-    //   styleText += 'opacity: .8;';
-    //   overlayLayer.setAttribute('style', styleText);
-    // }, 10);
-    // return true;
-  // }
- /**
-   * Exit from intro
-   *
-   * @api private
-   * @method _exitIntro
-   * @param {Object} targetElement
-  //  */
-  // function _exitIntro(targetElement) {
-  //   //remove overlay layer from the page
-  //   var overlayLayer = targetElement.querySelector('.introjs-overlay');
-    
-  //   //return if intro already completed or skipped
-  //   if (overlayLayer == null) {
-  //     return;
-  //   }
-
-  //   //for fade-out animation
-  //   overlayLayer.style.opacity = 0;
-  //   setTimeout(function () {
-  //     if (overlayLayer.parentNode) {
-  //       overlayLayer.parentNode.removeChild(overlayLayer);
-  //     }
-  //   }, 500);
-
-    // //remove all helper layers
-    // var helperLayer = targetElement.querySelector('.introjs-helperLayer');
-    // if (helperLayer) {
-    //   helperLayer.parentNode.removeChild(helperLayer);
-    // }
-
-    // //remove intro floating element
-    // var floatingElement = document.querySelector('.introjsFloatingElement');
-    // if (floatingElement) {
-    //   floatingElement.parentNode.removeChild(floatingElement);
-    // }
-
-    // //remove `introjs-showElement` class from the element
-    // var showElement = document.querySelector('.introjs-showElement');
-    // if (showElement) {
-    //   showElement.className = showElement.className.replace(/introjs-[a-zA-Z]+/g, '').replace(/^\s+|\s+$/g, ''); // This is a manual trim.
-    // }
-
-    // //remove `introjs-fixParent` class from the elements
-    // var fixParents = document.querySelectorAll('.introjs-fixParent');
-    // if (fixParents && fixParents.length > 0) {
-    //   for (var i = fixParents.length - 1; i >= 0; i--) {
-    //     fixParents[i].className = fixParents[i].className.replace(/introjs-fixParent/g, '').replace(/^\s+|\s+$/g, '');
-    //   };
-    // }
-
-    // //clean listeners
-    // if (window.removeEventListener) {
-    //   window.removeEventListener('keydown', this._onKeyDown, true);
-    // } else if (document.detachEvent) { //IE
-    //   document.detachEvent('onkeydown', this._onKeyDown);
-    // }
-    
-    // //set the step to zero
-    // this._currentStep = undefined;
-  // }
 </script>
 </body>
 </html>
