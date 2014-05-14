@@ -79,6 +79,8 @@ var i = 0;
 
 var freqscale = 5; //size of circles
 var  MAX_LEVELS = 10; //number larger than number of levels of circles
+var conn_levels = [10, 10, 270, 190, 135, 75, 25, 10, 10, 10]; //how far away from the center each level is
+
 var radius_levels = [0, 0, 240, 180, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
 var subradius = 250; 
 var MIN_LINE = 3.0; //length of the little ones
@@ -420,6 +422,21 @@ for (i=0; i<allCodes.length; i++){
 	// if (first)
 	r.push(allCodes[i].split(","));
 }
+
+var ringCircle = vis.selectAll("ringCircle")
+	.data(conn_levels)
+	.enter()
+	.append("circle")
+	.attr("class","ringCircle")
+	.attr("cx",width/2)
+	.attr("cy",height/2)
+	.attr("r", function(d){
+		return d;
+	})
+	.attr("fill","none")
+	.attr("opacity",.1)
+	.attr("stroke","lightgray")
+	.attr("stroke-width",.5)
 
 var inCircle = vis.selectAll("inCircle")
 	.data(cData)
