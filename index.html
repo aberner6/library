@@ -39,6 +39,9 @@
 <!-- 					<p>	&gt;</p>
  --></div>
 </div>
+<div class="intro" id="intro3" style="display: none; opacity: 0;">
+				<p>This does this</p>
+</div>
 <script type = "text/javascript">
 var animateOpening = true;
 	if (animateOpening) {
@@ -69,10 +72,17 @@ var countProgress = 0;
 			// .attr("r", radiusSmall)
 			// .attr("opacity", portOnOpacity);
 		}
+		if (countProgress==2){
+			console.log(i)
+			d3.select("#intro2")
+			.transition().style("opacity", 0.0).style("display", "none");
+			d3.select("#intro3")
+			.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
+		}
 	})
 	$('#skip').on("click",function(){
 		d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, .introNav").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, .introNav").transition().style("opacity", 0.0).style("display", "none");
 		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");
 	})
@@ -80,10 +90,10 @@ var countProgress = 0;
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
 
 var freqscale = 5; //size of circles
-var  MAX_LEVELS = 10; //number larger than number of levels of circles
-var conn_levels = [10, 10, 270, 190, 135, 75, 25, 10, 10, 10]; //how far away from the center each level is
+var  MAX_LEVELS = 20; //number larger than number of levels of circles
+var conn_levels = [10, 10, 265, 210, 135, 75, 25, 10, 10, 10]; //how far away from the center each level is
 
-var radius_levels = [0, 0, 240, 180, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
+var radius_levels = [0, 0, 240, 190, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
 var subradius = 250; 
 var MIN_LINE = 3.0; //length of the little ones
 var TEXT_PAD_X = 5;
@@ -129,23 +139,20 @@ var svg = d3.select("#container")
  var height = document.getElementById("container").offsetHeight;
 
 
-    svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
+svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
 
-      // .attr("preserveAspectRatio", "xMid")
-
-      // .attr("preserveAspectRatio", "xMidYMid meet")
-      // .attr("pointer-events", "all")
-
-  // var zoom =
-
+// var introSVG = d3.select("#intro3").append("svg")
+// 	.attr("width",20)
+// 	.attr("height",10);
 
 var vis = svg
     .append('svg:g');
-   	svg.call(d3.behavior.zoom()
+svg.call(d3.behavior.zoom()
    	.scale(1.0)
    	.scaleExtent([0.95, 5.0])
    	.on("zoom", redraw)
    	);
+
 var zoomingDoc = [];
 
 function redraw() {
@@ -181,8 +188,7 @@ var scaling = 1.1;
 var firstLoad = -1;
 var tigReggib = -1;
 var clicked = 0;
-// runInnerCircles();
-// runOuterCircles();
+
 var checkedIt = [];
 var wasItSubj;
 var storeClicks = {};
@@ -191,26 +197,10 @@ var storeClicks = {};
 var matching = 0;
 
 function runOuterCircles(){
-//BUT HAVING ASYNCHORNOUS PROBLEMS FOR LOADING THE ARRAYS SO IS THERE SOME SORT OF WHEN YOURE FINISHED DO THE OTHER THING THING?
-////this works great
 d3.tsv("subjects_top25.tsv", function(error, data) {
 var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
 var angle = 0;
 
-// $('.surroundingCircles').hoverIntent({
-// 	over: function(){
-// 		// runLines(item);
-// 	},
-// 	out: function(){
-// 		// removeLines();
-// 	}
-//   })
-   // d3.select('#hoverbox')
-   // .selectAll(".listBooks")
-   // .data(whichBooks)
-// var text = d3.select("#subjectsIntro")
-//not svg.selectall
-//not vis.selectall;;;
 var text = vis.selectAll('.subjectText')
 	.data(data)
 	.enter().append("text")
@@ -294,13 +284,7 @@ var text = vis.selectAll('.subjectText')
 		}
 		booksChecked.length = 0;
 		bookColors.length = 0;
-		// for (c=0; c<booksChecked.length; c++){
-		// 	if (booksChecked[c]==d.subjCode){ // || 2 || 3 || 4
-		// 		console.log(booksChecked+"before removing");
-		// 		booksChecked.splice(c,1);
-		// 		console.log(booksChecked+"after removing");
-		// 	}
-		// }
+
 		d3.selectAll(".checkedLinesOut").remove();
 
 		checked(checkedIt);
@@ -311,6 +295,11 @@ var text = vis.selectAll('.subjectText')
 			.attr("fill","grey");
 		}
 	});
+
+// vis.selectAll("#intro3")
+//     .attr("class","intro")
+//     .attr("x",subjX[0])
+//     .attr("y",subjY[0]);
 
 var surroundingRects = vis.selectAll("surroundingPoints")
 	.data(data)
@@ -411,6 +400,9 @@ function runOnce(){
 	runInnerCircles();
 	runOuterCircles();	
 }
+var countLittleCircle = 0;
+var littleCircIndex;
+var littleCircChecked = [];
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
@@ -461,28 +453,67 @@ var inCircle = vis.selectAll("inCircle")
 	})
 	.attr("fill", "gray")
 	.attr("opacity",.1)
-	.attr("stroke","darkgray")
+	.attr("stroke","white")
 	.attr("stroke-width",1)
 	.on("mouseover", function(d,i){
 		d3.select(this)
 		.attr("opacity", .9);
-		// console.log(d.codeName+"sending to all out");
 		index = i;
 		allOut(d.codeName, index); //FIX WHAT THING IS NOW
 		})
-	.on("click", function(d,i){
-		console.log("clicked for books")
-		d3.select(this)
-		console.log(d.codeName+"d.codeName on click")
-		books(d.codeName,i); //FIX CODENAME
-		})
 	.on("mouseout", function(d,i){
+		// if(countLittleCircle%2==0){
 		d3.select(this)
-		.attr("opacity", .1);
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
+		// }
 	})
-makeGlyph();    
+	
+	.on("click", function(d,i){
+		console.log("clicked little circle for books")
+		d3.select(this)
+			.each(moveToFront)
 
+		console.log(d.codeName+"d.codeName on click of little circle")
+		countLittleCircle++;
+		console.log(countLittleCircle+"countLittleCircle")
+littleCircChecked.length=0;
+
+	if (countLittleCircle%2==0){
+		d3.select(this)
+		.transition()
+		.attr("fill","grey")
+		removeOutwardLines(d.codeName, i); //FIX CODENAME
+		d3.select("#booksColumn.selected").classed("selected", false);	
+		d3.selectAll(".mouseoverText").remove();	
+		hideBooks();			
+	}
+	if (countLittleCircle%2==1){
+		d3.select("#container").transition().style("opacity", .3);
+		
+		d3.select(this)
+		.transition()
+		.attr("fill","yellow");
+		allOut(d.codeName, index); //FIX WHAT THING IS NOW
+		d3.select("#booksColumn").classed("selected", true);	
+		// books(d.codeName,i); //FIX CODENAME
+				// books(littleCircChecked, littleCircIndex); //FIX CODENAME
+		littleCircChecked.push(d.codeName);
+		littleCircIndex = i;
+	}
+	});
+
+
+makeGlyph();    
+// $('#container').click(function(d,i) {
+// d3.select("#container").transition().style("opacity", 1);
+// console.log("clicked container")
+// d3.selectAll("inCircle"+i)
+// 		.transition()
+// 		.attr("fill","grey")
+// 		d3.select("#booksColumn.selected").classed("selected", false);	
+// 		d3.selectAll(".mouseoverText").remove();	
+// 		hideBooks();
+// });
 function makeGlyph(){
 myVar = setInterval(function(){ 
 if (tigReggib<connDataLength-1){
@@ -559,13 +590,7 @@ function checked(checkedIt){
 boolUnselect = 1;
 
 theseNums = checkedIt;
-console.log(theseNums+"theseNums");
 
-		// if (checkedIt.length>1){
-			// d3.selectAll('.linesIn').transition().duration(2000).attr("stroke-opacity",.2);
-			 // .attr("stroke-width",.5);
-		// }
-		// var firstFunction=0;
 var chckdLines = vis.selectAll("checkedLines")
 	.data(r)
 	.enter()
@@ -580,20 +605,9 @@ var chckdLines = vis.selectAll("checkedLines")
 				newThing.push(d[j]);
 			}
 		}
-// console.log(newThing+"what happens w 1 and newthing")
 		newThing.sort(function(a, b){return a-b});
 		theseNums.sort(function(a, b){return a-b});
-// console.log(newThing+"sorted")
 			if(theseNums.toString()==newThing.toString()){
-				
-			// }
-			// if (theseNums.toString()==newThing.toString()){
-				console.log("first function")
-				// firstFunction = 1;
-				// d3.selectAll('.linesIn')
-				// .transition()
-				// .duration(2000)
-				// .attr("opacity",.2);
 				count = 1;
 				console.log(i+"this is index?");
 				d3.select("circle.inCircle"+i)
@@ -606,58 +620,39 @@ var chckdLines = vis.selectAll("checkedLines")
 				checkedIndex = i;
 				matching = 1;
 				d3.select("#booksColumn").classed("selected", true);
-				// .style("background-color","lightgray")
-				// .style("color","white")
-				// .style("border-bottom","1px yellow solid");
-
-
-					// otherBooks(checkedIt,checkedIndex); //put it here to front load the prep process?
-				// console.log("matching"+matching)
-
-				// fillInBooks(checkedIt,i);
 			}
 
 			else {
 				 count++;
-
-				// console.log(count);
-
-				// hideBooks();
-				// console.log("wasn't equal")
 				d3.select("circle.inCircle"+i)
 				.transition()
 				.attr("fill", "gray")
 				.attr("opacity",.1);
-				// d3.select("#booksColumn.selected").classed("selected", false);
 			}
-	// if(theseNums.toString()!=newThing.toString()){
-	// 	// console.log("!=")
-	// 	// d3.select("#booksColumn.selected").classed("selected", false);
-	// 	hideBooks();
-	// }
 	if (count%allCodes.length==0){
 		d3.select("#booksColumn.selected").classed("selected", false);	
 		d3.selectAll(".mouseoverText").remove();	
 		hideBooks();			
 	}
 	else {
-		// d3.selectAll(".mouseoverText").remove();
 		d3.select("#booksColumn.selected").classed("selected", true);	
-		// hideBooks();			
 	}
-			if (matching==0){
-				// console.log("matching"+matching)
-				d3.select("#booksColumn.selected").classed("selected", false);
-	// d3.select("#booksColumn").transition().style("background-color","lightgray");
-				hideBooks();
-			}
+	if (matching==0){
+		d3.select("#booksColumn.selected").classed("selected", false);
+		hideBooks();
+	}
 
 		return "checkedLines";
 	})
 }
+
 $('#booksColumn').click(function(){
-	// displayBooks();
+if (littleCircChecked.length>0){
+	books(littleCircChecked, littleCircIndex); //FIX CODENAME
+}
+if(matching==1 || count%allCodes.length>0){
 	otherBooks(checkedIt,checkedIndex); 
+}
 })
 
 var linesInG;
@@ -904,31 +899,31 @@ newG = vis.selectAll("checkedLinesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-			for (k=0; k<subjCode.length; k++){
-				if (subjCode[k]==d){
-					return subjX[k]-calcX[thisCircle];
-				}
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+		for (k=0; k<subjCode.length; k++){
+			if (subjCode[k]==d){
+				return subjX[k]-calcX[thisCircle];
 			}
+		}
 	})
 	.attr("y2",function(d,i){
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-			for (k=0; k<subjCode.length; k++){
-				if (subjCode[k]==d){
-					return subjY[k]-calcY[thisCircle];
-				}
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+		for (k=0; k<subjCode.length; k++){
+			if (subjCode[k]==d){
+				return subjY[k]-calcY[thisCircle];
 			}
-		})
+		}
+	})
 	.attr("stroke",function(d,i){
 		var whichLoc;
 					if (d<5){
@@ -960,13 +955,7 @@ newG = vis.selectAll("checkedLinesOut")
 }
 
 function allOut(arrayOfSubjs, index){
-// if (checked=1){
-// 	thisIs = arrayOfSubjs;
-// 	console.log(thisIs+"is checked?"+checked)
-// }
-// if (checked = 0){}
 thisIs = arrayOfSubjs.split(",");
-
 thisCircle = index;
 
 var justOne = thisIs[0];
@@ -993,22 +982,19 @@ var newG = vis.selectAll("linesOut")
 	.attr("x1", 0)
 	.attr("y1",0)
 	.attr("x2",function(d,i){
-		// console.log(d+"d before all out processing");
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-		// console.log(d+"d after all out processing");
-
-			for (k=0; k<=subjCode.length; k++){
-				if (subjCode[k]==d){
-					console.log(d+subjCode[k]+"matched")
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+		for (k=0; k<=subjCode.length; k++){
+			if (subjCode[k]==d){
+				console.log(d+subjCode[k]+"matched in lines out")
 					// console.log(subjTextInside[k-1]+"subjText");
-					return subjX[k]-calcX[thisCircle];
-				}
+				return subjX[k]-calcX[thisCircle];
 			}
+		}
 	})
 	.attr("y2",function(d,i){
 					if (d<5){
@@ -1058,12 +1044,10 @@ var newG = vis.selectAll("linesOut")
 function removeOutwardLines(codes, thisCirc){
 var outToText = vis.selectAll("outText") //not outText
 d3.selectAll(".outText").remove();
-	// .attr("class","mouseoverText")
 d3.selectAll(".mouseoverText").remove();
 
-console.log(thisCirc+"thisCirc");
-		d3.selectAll(".hey"+thisCirc) //associated lines
-		.transition()
+d3.selectAll(".hey"+thisCirc) //associated lines
+	.transition()
 	.attr("x2",function(d,i){
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
@@ -1080,6 +1064,7 @@ console.log(thisCirc+"thisCirc");
 		})
 }
 
+var incomingSplit = [];
 var incomingIs = [];
 var whichBooks = [];
 var manyBooks = [];
@@ -1087,6 +1072,7 @@ var manyIds = [];
 var manyCodes = [];
 var dividedCodes = [];
 var saveId = [];
+
 function loadBooks(){
 d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
 for (j=0; j<data.length; j++){
@@ -1099,10 +1085,6 @@ for (i=0; i<manyCodes.length; i++){
 }
 for (j=0; j<dividedCodes.length; j++){
 	codeSorted.push((dividedCodes[j].sort(function(a, b){return a-b})).toString());
-
-	// codeSorted = codeSorted[j].toString();
-
-
 }
 })
 }
@@ -1116,34 +1098,32 @@ var overFour = 0;
 var bookColors = [];
 var manyBookColors = {};
 var colors = ["teal","teal","teal","teal","teal","teal","teal","teal","teal","teal","teal","lightgreen","lightgreen","lightgreen","lightblue","lightblue","lightblue","lightblue","lightblue","blue","blue","blue","blue","blue","blue"];
+
 function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
-//need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
+
 for (i=0; i<checkedIt.length; i++){
 	booksChecked.push(checkedTo[i])
 }
-for (j=0; j<booksChecked.length; j++){
-
-			for (k=0; k<=subjCode.length; k++){
-				if (subjCode[k]==booksChecked[j]){
-				whichLoc = subjLoc[k];
-				// console.log(subjCode[k]+"subj code all out")
-				if (whichLoc<=6){
-					bookColors.push("teal")
-				}
-				if (whichLoc>6&&whichLoc<=10){
-					bookColors.push("lightgreen");
-				}
-				if (whichLoc>10&&whichLoc<=15){
-					bookColors.push("lightblue");
-				}
-				if (whichLoc>15&&whichLoc<21){
-					bookColors.push("blue");
-				}	
-			}
-			}	
-	// bookColors.push(colors[booksChecked[j]])
-}
+// for (j=0; j<booksChecked.length; j++){
+// 			for (k=0; k<=subjCode.length; k++){
+// 				if (subjCode[k]==booksChecked[j]){
+// 				whichLoc = subjLoc[k];
+// 				if (whichLoc<=6){
+// 					bookColors.push("teal")
+// 				}
+// 				if (whichLoc>6&&whichLoc<=10){
+// 					bookColors.push("lightgreen");
+// 				}
+// 				if (whichLoc>10&&whichLoc<=15){
+// 					bookColors.push("lightblue");
+// 				}
+// 				if (whichLoc>15&&whichLoc<21){
+// 					bookColors.push("blue");
+// 				}	
+// 			}
+// 			}	
+// }
 
 booksChecked.sort(function(a, b){return a-b});
 		console.log(booksChecked+"books checked sorted")
@@ -1158,14 +1138,9 @@ for (i=0; i<codeSorted.length; i++){
 	if (codeSorted[i]==booksChecked.toString()){
 		whichBooks.push(manyBooks[i]);
 		saveId.push(manyIds[i]);
-		// bookCodes.push(manyCodes[i]);
-		// bookColors = bookColors
 	}
 }
 }
-// for (i=0; i<whichBooks.length; i++){
-// 	manyBookColors[i] = bookCodes[i];
-// }	
 
 ////SPLICE IN A 2 AND COMPARE
 for (j=0; j<booksChecked.length; j++){
@@ -1174,7 +1149,6 @@ if (booksChecked[j]==1){
 	booksChecked.splice(j,1,"2")
 	for (i=0; i<codeSorted.length; i++){
 		if (codeSorted[i]==booksChecked.toString()){
-			// console.log(manyBooks[i]+"code 2")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
@@ -1184,7 +1158,6 @@ if (booksChecked[j]==2){
 	booksChecked.splice(j,1,"3")
 	for (i=0; i<codeSorted.length; i++){
 		if (codeSorted[i]==booksChecked.toString()){
-			// console.log(manyBooks[i]+"code 3")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
@@ -1194,74 +1167,76 @@ if (booksChecked[j]==3){
 	booksChecked.splice(j,1,"4")
 	for (i=0; i<codeSorted.length; i++){
 		if (codeSorted[i]==booksChecked.toString()){
-			// console.log(manyBooks[i]+"code 4")
 			whichBooks.push(manyBooks[i]);
 			saveId.push(manyIds[i]);
 		}
 	}		
 	}
 }
-//PUT THIS IN THE SEPARATE FUNCTION THAT DISPLAYS BOOKS?
 updateHoverbox(whichBooks, saveId);
 }
 
-
-//need to come up with a way to resort checked books for those that contain 1 into 1, 2 or 3...
 var matchingArray = [];
 var matched = [];
 function books(incoming, thisCircle){
 clicked = 0;
-// d3.tsv("all_id_codes_title_top25.txt", function(error, data) {
-incomingIs = incoming.split(",");
+incomingIs = incoming.toString();
+incomingSplit = incomingIs.split(",");
 			for (j=0; j<manyCodes.length; j++){
-				if (manyCodes[j]==incomingIs){ 
-					console.log(manyCodes[j]+" matching "+incomingIs)
+				if (manyCodes[j]==incomingSplit){ 
+					console.log(manyCodes[j]+" matching "+incomingSplit)
 					updateHoverbox(manyBooks[j], j, manyIds[j]);
 					whichBooks.push(manyBooks[j]);
 					saveId.push(manyIds[j]);
 				}
 			}
-// })
 }
 
 
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
-	// .attr("class", "hidden");
-
 var updateHoverbox = function(theseBooks, whichCode) {
 console.log(whichCode+"whichCode");
 console.log("updateHoverbox")
-// var indexIs = index;
 
-// hoverbox.selectAll(".listBooks").classed("hidden",false);
-
-   d3.select('#hoverbox')
-   // .transition().style("display","block")
-
+var bookList = hoverbox
    .selectAll(".listBooks")
    .data(whichBooks)
 		.enter()
-		.append("p")
+		.append("text")
+		// .append("p")
 		.attr("class","listBooks")
-		.attr("fill",function(){
-			// for
+		.text(function(d){
+			return d;
 		})
-		.html(function(d){
-			return d; //+"<br>"
-		})
+		.attr("x",0)
+		.attr("y",0)
 		.on("click", function(d,i){
-			// console.log(d+whichCode+"but which code is only one code and there are multiple books");
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
-		})
-// hoverbox.classed("hidden", false); //show the hoverbox		
+		});
+$(function(){
+	var itsHeight = $(".listBooks").height();
+	console.log(itsHeight);
+})
+// var orHeight = document.getElementsByClassName('hoverbox').offsetHeight;
+// console.log(itsHeight);
+
+// console.log(document.getElementById('listBooks').offsetHeight);
+		// .each(function(d) {
+  //       // var other = d3.selectAll(".listBooks").getBBox().width;
+  //  			// console.log(other);
+  //   			console.log(bookList.getBBox().width);
+  //     })
+		// .html(function(d){
+		// 	return d; //+"<br>"
+		// })
+
 };
 
 function hideBooks(){
 	// console.log("hidebooks")
 	saveId.length = 0;
 d3.selectAll(".listBooks").remove();
-// hoverbox.classed("hidden", true);
 whichBooks.length = 0;
 }
 
