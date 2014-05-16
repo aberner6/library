@@ -20,8 +20,10 @@
 <div id = "container"></div>
 
 <div class = "outerCircleText"></div>
-<div id = "hoverbox"></div>
+<div id = "hoverbox">
+</div>
 <div class = "listBooks"></div>
+
 <div id = "booksColumn">B</div>
 <div class="center">
 		<div id="skip">Skip Intro</div>
@@ -647,6 +649,9 @@ var chckdLines = vis.selectAll("checkedLines")
 }
 
 $('#booksColumn').click(function(){
+		d3.select("#hoverbox")
+			.transition().style("display", "block");
+
 if (littleCircChecked.length>0){
 	books(littleCircChecked, littleCircIndex); //FIX CODENAME
 }
@@ -1235,6 +1240,8 @@ $(function(){
 
 function hideBooks(){
 	// console.log("hidebooks")
+		d3.select("#hoverbox")
+			.transition().style("display", "none");
 	saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
