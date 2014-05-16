@@ -20,10 +20,8 @@
 <div id = "container"></div>
 
 <div class = "outerCircleText"></div>
-<div id = "hoverbox">
-</div>
+<div id = "hoverbox"></div>
 <div class = "listBooks"></div>
-
 <div id = "booksColumn">B</div>
 <div class="center">
 		<div id="skip">Skip Intro</div>
@@ -469,7 +467,7 @@ var inCircle = vis.selectAll("inCircle")
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
 		// }
 	})
-	
+
 	.on("click", function(d,i){
 		console.log("clicked little circle for books")
 		d3.select(this)
@@ -491,7 +489,7 @@ littleCircChecked.length=0;
 	}
 	if (countLittleCircle%2==1){
 		d3.select("#container").transition().style("opacity", .3);
-		
+
 		d3.select(this)
 		.transition()
 		.attr("fill","yellow");
@@ -649,9 +647,6 @@ var chckdLines = vis.selectAll("checkedLines")
 }
 
 $('#booksColumn').click(function(){
-		d3.select("#hoverbox")
-			.transition().style("display", "block");
-
 if (littleCircChecked.length>0){
 	books(littleCircChecked, littleCircIndex); //FIX CODENAME
 }
@@ -1200,6 +1195,7 @@ incomingSplit = incomingIs.split(",");
 
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
+ var itsHeight;
 var updateHoverbox = function(theseBooks, whichCode) {
 console.log(whichCode+"whichCode");
 console.log("updateHoverbox")
@@ -1220,9 +1216,18 @@ var bookList = hoverbox
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
 $(function(){
-	var itsHeight = $(".listBooks").height();
-	console.log(itsHeight);
+	itsHeight = $("#hoverbox").height();
+	console.log(itsHeight+"itsHeight");
+if (itsHeight>600){
+	d3.select("#hoverbox").style("width","50em");
+}
+else {
+	d3.select("#hoverbox").style("width","10em");
+}
 })
+
+	// d3.select("#hoverbox").transition().style("display","block");
+
 // var orHeight = document.getElementsByClassName('hoverbox').offsetHeight;
 // console.log(itsHeight);
 
@@ -1240,11 +1245,11 @@ $(function(){
 
 function hideBooks(){
 	// console.log("hidebooks")
-		d3.select("#hoverbox")
-			.transition().style("display", "none");
 	saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
+	// d3.select("#hoverbox").style("width","0em");
+
 }
 
 
