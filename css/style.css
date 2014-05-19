@@ -94,29 +94,58 @@ border: 1px yellow solid;
 top: 4px;
 right: 4px;
 cursor: pointer;
-/*border-left: 1px gray solid;
-border-right: 1px gray solid;*/
 color: lightgray;
 padding: 6px;
 opacity: .7;
-/*background-color: lightgray;*/
 border-bottom: 1px gray solid;
-
 position: absolute;
-/*width: 10px;
-height: 20px;*/
-/*top:4px;
-right: 4px; 	
-cursor: pointer;
-border-left: 1px gray solid;
-border-right: 1px gray solid;
-color: gray;
-padding: 5px;
-opacity: .7;
-background-color: rgba(0, 0, 0, 0.3);
-border-radius: 4px;
-position:absolute;*/
 }
+.textsAre{
+	font-size: 8px;
+}
+#exitGraph{
+left: 8px;
+bottom: 4px;
+cursor: pointer;
+/*color: darkgray;*/
+padding: 4px;
+opacity: .7;
+border-bottom: 1px gray solid;
+position: absolute;
+display:none;
+		background-color: lightgray;
+}
+#exitGraph:hover{
+		background-color: darkgray;
+		/*color:white;*/
+	cursor: pointer;
+border: 1px yellow solid;
+}
+#graphIcon{
+	position:absolute;
+	left:8px;
+	bottom:4px;
+	cursor:pointer;
+color: lightgray;
+padding: 6px;
+opacity: .7;
+border-bottom: 1px gray solid;
+position: absolute;
+}
+#graphIcon:hover{
+		background-color: darkgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;
+
+}
+#exitGraph:hover{
+		background-color: darkgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;	
+}
+
 #booksColumn:hover{
 		background-color: darkgray;
 		color:white;

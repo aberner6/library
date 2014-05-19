@@ -18,8 +18,12 @@
 
 
 <div id = "container"></div>
-<div id = "coverLayer"></div>
-
+<div id = "exitGraph">
+<img src="exitGraph.png" width="13" height="13">
+</div>
+<div id = "graphIcon">
+<img src="graphs.png" width="20" height="20">
+</div>
 <div class = "outerCircleText"></div>
 <div id = "hoverbox"></div>
 <div class = "listBooks"></div>
@@ -132,7 +136,8 @@ var MIN_LINE = 3.0; //length of the little ones
 var TEXT_PAD_X = 5;
 var TEXT_PAD_Y = 2;
 var LEGEND_X_MARGIN = 20;
-var LEGEND_SCALE = 0.003;
+var LEGEND_SCALE = 0.001;
+// var littleLegend_SCALE = 0.0005;
 
 //  Make an array of Subjects
 var subjects;
@@ -161,6 +166,7 @@ var boolSelected = 0;
 // 	height:100%; //- margin.top - margin.bottom;
 
 
+
 var svg = d3.select("#container")
     .append("svg")
 	.attr({
@@ -186,6 +192,11 @@ svg.call(d3.behavior.zoom()
    	.scaleExtent([0.95, 5.0])
    	.on("zoom", redraw)
    	);
+var secondVis = svg
+    .append('svg:g')
+ 	.attr("transform",
+      "translate("+ 0 + "," + 0 + ")")
+
 var vis = svg
     .append('svg:g')
  	.attr("transform",
@@ -232,7 +243,7 @@ var storeClicks = {};
 
 
 var matching = 0;
-
+var rectClicked = false;
 function runOuterCircles(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
@@ -385,6 +396,8 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 
 
 
+
+
 $('.subjectText').tipsy({ 
 		gravity: 'nw', 
 		html: true, 
@@ -396,7 +409,125 @@ $('.subjectText').tipsy({
 });
 })
 }
+var exitGraphsClicked = false;
+$('#graphIcon').click(function(){
+	if (exitGraphsClicked==false){
+	makeGraphsBig();
+}
+if (exitGraphsClicked==true){
+	justMakeGraphs();
+}
+		d3.select("#graphIcon").transition().style("display","none");	
+		d3.select("#exitGraph").transition().style("display","block")
 
+})
+
+$('#exitGraph').click(function(){
+	exitGraphsClicked = true;
+	hideGraphs();
+		d3.select("#exitGraph").transition().style("display","none");	
+		d3.select("#graphIcon").transition().style("display","block");	
+})
+
+
+
+var mapLittleRect = d3.scale.linear()
+	.domain([0, freqIs.length])
+	.range([700,500]);
+
+
+
+
+var maxFreq = d3.max(freqIs, function(d,i){return d; })
+
+var legendMap = d3.scale.linear()
+	.domain([0, maxFreq])
+	.range([20,500]);
+
+
+function hideGraphs(){
+	d3.selectAll(".rectsAre, .textsAre")
+	.transition()
+	.attr("fill","none")
+}
+
+function justMakeGraphs(){
+	d3.selectAll(".rectsAre, .textsAre")
+	.transition()
+	.attr("fill","lightgray")
+}
+
+
+
+function makeGraphsBig(){
+d3.tsv("subjects_top25.tsv", function(error, data) {
+	var mapRect = d3.scale.linear()
+	.domain([0, freqIs.length])
+	.range([670,480]);
+
+// if (freqIs.length>0){
+var graphRects = secondVis.selectAll("rectsAre")
+	.data(data)
+	.enter()
+	.append("rect")
+	.attr("class", function(d){ return "rectsAre"})
+	.attr("x", function(d){
+		return 0;
+	})
+	.attr("y", function(d,i){
+		return 0;
+		// return mapRect(i); //if i want claims on bottom
+	})
+	.attr("width", function(d){
+return 0;
+	})
+	.attr("height",5)
+	.attr("fill","lightgray");
+var graphText = secondVis.selectAll("textsAre")
+	.data(data)
+	.enter()
+	.append("text")
+	.attr("class", function(d){ return "textsAre"})
+	.attr("x", function(d){
+		0;
+	})
+	.attr("y", function(d,i){
+		console.log(mapRect(i))
+		return windowHeight+100;
+		})
+	.text(function(d){
+		return d.subject;
+	})
+	.attr("fill","lightgray");
+
+	// if (rectClicked==true){
+	d3.selectAll(".rectsAre")
+	.transition()
+	.duration(500)
+	.attr("y", function(d,i){
+		return mapRect(i); //if i want claims on bottom
+	});
+	d3.selectAll(".rectsAre")
+	.transition()
+	.duration(500)
+	.delay(1000)
+	.attr("width", function(d,i){
+		return d.freq*LEGEND_SCALE;
+	});
+
+	d3.selectAll(".textsAre")
+	.transition()
+	.delay(2000)
+	.attr("x", function(d){
+		return d.freq*LEGEND_SCALE+5;		
+	})
+	.attr("y", function(d,i){
+		return mapRect(i)+5;
+	})
+
+	// }
+})
+}
 //Move SVG elements to the end of their container,
 //so they appear "on top".
 var moveToFront = function() { 
@@ -446,6 +577,7 @@ firstLoadVar = setInterval(function(){
 function runOnce(){
 	runInnerCircles();
 	runOuterCircles();	
+// makeGraphsLittle();
 }
 var countLittleCircle = 0;
 var littleCircIndex;
