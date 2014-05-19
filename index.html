@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
 <link href="css/style.css" rel="stylesheet" type="text/css" /> 
 
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
@@ -22,8 +22,12 @@
 <div class = "outerCircleText"></div>
 <div id = "hoverbox"></div>
 <div class = "listBooks"></div>
+<div class = "subjectText"></div>
 <div id = "booksColumn">
-<img src="image.png" width="20" height="20">
+<img src="books.png" width="20" height="20">
+</div>
+<div id = "exit">
+<img src="exit.png" width="13" height="13">
 </div>
 <div class="center">
 		<div id="skip">Skip Intro</div>
@@ -35,27 +39,27 @@
 <div class="intro" id="intro2" style="display: none; opacity: 0;">
 				<p>Next thing said</p>
 </div>
-<div class="introNav" style="opacity: 1;">
-					<p>-></p>
-
-<!-- 					<p>	&gt;</p>
- --></div>
+<div id="introNav">
+<img src="forwardNav.png" width="15" height="15">
+</div>
 </div>
 <div class="intro" id="intro3" style="display: none; opacity: 0;">
 				<p>This does this</p>
 </div>
+
 <script type = "text/javascript">
 var animateOpening = true;
 	if (animateOpening) {
-		d3.select("#intro1")
+					d3.select("#container").style("pointer-events","none");
+		d3.select("#intro1, #introNav")
 			.style("display", "block")
 			.style("opacity", 1.0);
-		d3.select(".introNav")
-			.style("display","block")
-			.style("opacity",1.0);
+		// d3.select(".introNav")
+		// 	.style("display","block")
+		// 	.style("opacity",1.0);
 		$('#skip').fadeIn("slow");
 var countProgress = 0;
-	$('.introNav').on("click", function(){
+	$('#introNav').on("click", function(){
 		console.log(countProgress)
 		countProgress++;
 		if (countProgress==1){
@@ -82,12 +86,38 @@ var countProgress = 0;
 			.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
 		}
 	})
+	// $('.backNav').on("click", function(){
+	// 	console.log(countProgress)
+	// 	countProgress--;
+	// 	if (countProgress==1){
+	// 		console.log(i)
+	// 		d3.select("#intro1")
+	// 		.transition().style("opacity", 0.0).style("display", "none");
+	// 		d3.select("#intro2")
+	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
+	// 	}
+	// 	if (countProgress==2){
+	// 		console.log(i)
+	// 		d3.select("#intro2")
+	// 		.transition().style("opacity", 0.0).style("display", "none");
+	// 		d3.select("#intro3")
+	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
+	// 	}
+	// })
 	$('#skip').on("click",function(){
 		d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, .introNav").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #introNav").transition().style("opacity", 0.0).style("display", "none");
 		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");
+				d3.select("#container").style("pointer-events","auto");
 	})
+}
+else {
+		d3.select("#container").transition().style("opacity", 1.0);
+		d3.selectAll("#intro1, #intro2, #intro3, #introNav").transition().style("opacity", 0.0).style("display", "none");
+		$('#skip').fadeOut("fast");	
+				d3.select("#container").style("pointer-events","auto");
+
 }
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
 
@@ -246,10 +276,18 @@ var text = vis.selectAll('.subjectText')
 		}
 	})	
 	.attr("opacity",1)
+
 	.each(function(d) {
         d.width = this.getBBox().width;
       })
+	// .on("mouseover", function(d){
+	// 	d3.select(this).transition().style("border", "1 px solid darkgray");
+	// })
+	// .on("mouseout", function(d){ 
+	// 	d3.select(this).transition().style("border", "none");
+	// })
 	.each(moveToFront)
+
 	.on("click", function(d,i){
 		count=0;
 		var d = this.__data__;
@@ -308,7 +346,7 @@ var text = vis.selectAll('.subjectText')
 var surroundingRects = vis.selectAll("surroundingPoints")
 	.data(data)
 	.enter().append("rect")
-	.attr("class", "surroundingPoints")
+	.attr("class", function(d,i){ return "surroundingPoints"; })
 	.attr("x", function(d,i){
 		if (subjX[i]>width/2){
 				return subjX[i]-5; 	
@@ -324,7 +362,7 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 		return d.width+10;
 	})
 	.attr("height", 14)
-	.attr("opacity",.5)
+	.attr("stroke-width",".5px")
 	.attr("fill","none")
 	.attr("stroke", function(d,i){
 		if (d.loc<=6){
@@ -339,7 +377,9 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 		if (d.loc>15&&d.loc<21){
 			return "blue";
 		}
-	});
+	})
+	// .on
+
 
 
 $('.subjectText').tipsy({ 
@@ -466,10 +506,11 @@ var inCircle = vis.selectAll("inCircle")
 		allOut(d.codeName, index); //FIX WHAT THING IS NOW
 		})
 	.on("mouseout", function(d,i){
-		// if(countLittleCircle%2==0){
+		console.log(countLittleCircle%2==0)
+		if(countLittleCircle%2==0){
 		d3.select(this)
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
-		// }
+		}
 	})
 
 	.on("click", function(d,i){
@@ -487,22 +528,28 @@ littleCircChecked.length=0;
 		.transition()
 		.attr("fill","grey")
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
-		d3.select("#booksColumn.selected").classed("selected", false);	
+		// d3.select("#booksColumn.selected").classed("selected", false);
+		d3.select("#container").transition().style("opacity", 1);
+
 		d3.selectAll(".mouseoverText").remove();	
 		hideBooks();			
 	}
 	if (countLittleCircle%2==1){
 		d3.select("#container").transition().style("opacity", .3);
+		d3.select("#container").style("pointer-events","none");
 
 		d3.select(this)
 		.transition()
 		.attr("fill","yellow");
-		allOut(d.codeName, index); //FIX WHAT THING IS NOW
-		d3.select("#booksColumn").classed("selected", true);	
-		// books(d.codeName,i); //FIX CODENAME
-				// books(littleCircChecked, littleCircIndex); //FIX CODENAME
-		littleCircChecked.push(d.codeName);
+			littleCircChecked.push(d.codeName);
 		littleCircIndex = i;
+		// allOut(d.codeName, index); //FIX WHAT THING IS NOW
+		// d3.selectAll(".linesOut").each(moveToFront);
+// 
+		// d3.select("#booksColumn").classed("selected", true);	
+		books(d.codeName,i); //FIX CODENAME
+				// books(littleCircChecked, littleCircIndex); //FIX CODENAME
+
 	}
 	});
 
@@ -652,13 +699,19 @@ var chckdLines = vis.selectAll("checkedLines")
 
 $('#booksColumn').click(function(){
 if (littleCircChecked.length>0){
+		d3.select("#booksColumn.selected").transition().style("display","none");	
+		d3.select("#exit").transition().style("display","block")
 	books(littleCircChecked, littleCircIndex); //FIX CODENAME
 }
 if(matching==1 || count%allCodes.length>0){
+		d3.select("#booksColumn.selected").transition().style("display","none");	
+		d3.select("#exit").transition().style("display","block")
 	otherBooks(checkedIt,checkedIndex); 
 }
 })
-
+$('#exit').click(function(){
+hideBooks();
+})
 var linesInG;
 function runLines(passSubjNum){
 console.log(passSubjNum+"running lines");
@@ -1182,16 +1235,21 @@ updateHoverbox(whichBooks, saveId);
 
 var matchingArray = [];
 var matched = [];
+var saveClicked;
 function books(incoming, thisCircle){
+
+		d3.select("#booksColumn").style("display","none");	
+		d3.select("#exit").transition().style("display","block")
+saveClicked = thisCircle;
 clicked = 0;
 incomingIs = incoming.toString();
 incomingSplit = incomingIs.split(",");
 			for (j=0; j<manyCodes.length; j++){
 				if (manyCodes[j]==incomingSplit){ 
 					console.log(manyCodes[j]+" matching "+incomingSplit)
-					updateHoverbox(manyBooks[j], j, manyIds[j]);
 					whichBooks.push(manyBooks[j]);
 					saveId.push(manyIds[j]);
+					updateHoverbox(manyBooks[j], manyIds[j]);
 				}
 			}
 }
@@ -1201,9 +1259,11 @@ incomingSplit = incomingIs.split(",");
  hoverbox = d3.select("#hoverbox");
  var itsHeight;
 var updateHoverbox = function(theseBooks, whichCode) {
-console.log(whichCode+"whichCode");
-console.log("updateHoverbox")
-	d3.select("#hoverbox").transition().style("width","15em");
+// console.log(whichCode+"whichCode");
+// console.log("updateHoverbox")
+// console.log(whichBooks);
+
+	d3.select("#hoverbox").style("width","15em");
 	// d3.selectAll(".listBooks").transition().style("border-width","1px");
 
 var bookList = hoverbox
@@ -1240,11 +1300,29 @@ var bookList = hoverbox
 };
 
 function hideBooks(){
-	// console.log("hidebooks")
+// saveClicked = thisCircle;
+// clicked = 0;
+// incomingIs = incoming.toString();
+// incomingSplit = incomingIs.split(",");
+// 			for (j=0; j<manyCodes.length; j++){
+// 				if (manyCodes[j]==incomingSplit){ 
+removeOutwardLines(incomingIs, saveClicked);
+
+			countLittleCircle = 0;
+		d3.select("#container").transition().style("opacity", 1.0);
+		d3.select("#container").style("pointer-events","auto");
+
+	console.log("hidebooks")
+		d3.select("#booksColumn").transition().style("display","block");	
+		d3.select("#exit").transition().style("display","none")
 	saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
 	d3.select("#hoverbox").transition().style("width","0em");
+			d3.select("circle.inCircle"+saveClicked)
+			.transition()
+			.attr("opacity", ".1")
+			.attr("fill","grey");
 	// d3.selectAll(".listBooks").transition().style("border-width","0px");
 }
 
