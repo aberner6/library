@@ -18,6 +18,7 @@
 
 
 <div id = "container"></div>
+<div id = "coverLayer"></div>
 
 <div class = "outerCircleText"></div>
 <div id = "hoverbox"></div>
@@ -50,7 +51,7 @@
 <script type = "text/javascript">
 var animateOpening = true;
 	if (animateOpening) {
-					d3.select("#container").style("pointer-events","none");
+		d3.select("#container").style("pointer-events","none");
 		d3.select("#intro1, #introNav")
 			.style("display", "block")
 			.style("opacity", 1.0);
@@ -158,6 +159,8 @@ var boolSelected = 0;
 // var margin = {top: 20, right: 20, bottom: 30, left: 50},
 // 	width:100%, //- margin.left - margin.right,
 // 	height:100%; //- margin.top - margin.bottom;
+
+
 var svg = d3.select("#container")
     .append("svg")
 	.attr({
@@ -711,6 +714,8 @@ if(matching==1 || count%allCodes.length>0){
 })
 $('#exit').click(function(){
 hideBooks();
+// removeOutwardLines(incomingIs, saveClicked);
+
 })
 var linesInG;
 function runLines(passSubjNum){
@@ -1252,18 +1257,33 @@ incomingSplit = incomingIs.split(",");
 					updateHoverbox(manyBooks[j], manyIds[j]);
 				}
 			}
+
 }
 
 
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
  var itsHeight;
+ var clickOut = false;
 var updateHoverbox = function(theseBooks, whichCode) {
 // console.log(whichCode+"whichCode");
 // console.log("updateHoverbox")
 // console.log(whichBooks);
 
-	d3.select("#hoverbox").style("width","15em");
+d3.select("#hoverbox").style("width","15em");
+// var myBox = $("#hoverbox");
+// myBox.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',   
+//   function(e) {
+// clickOut = true;
+//   });
+// 	if (clickOut==true){
+// 		makeClickPossible();
+// 	}
+// if ($("#hoverbox").width()==240){
+	// console.log($("#hoverbox").width())
+			// clickOut = true;
+		// }
+
 	// d3.selectAll(".listBooks").transition().style("border-width","1px");
 
 var bookList = hoverbox
@@ -1282,7 +1302,7 @@ var bookList = hoverbox
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
 // $(function(){
-// 	itsHeight = $("#hoverbox").height();
+	itsHeight = $("#hoverbox").height();
 // 	console.log(itsHeight+"itsHeight");
 // if (itsHeight>600){
 // 	d3.select("#hoverbox").style("width","95%");
@@ -1296,8 +1316,19 @@ var bookList = hoverbox
 // d3.selectAll(".listBooks").style("border-bottom", "1px solid lightgray");
 // }
 // })
+// d3.select("#coverLayer").transition().style("display","block");
+// if (itsHeight>100){
+
+	// }
 
 };
+
+// function makeClickPossible(){
+// $("g").on("click", function(){
+// 	// .transition().delay(8000).style("opacity",.1) //try in CONSOLE
+// 			hideBooks();
+// })
+// }
 
 function hideBooks(){
 // saveClicked = thisCircle;
@@ -1306,7 +1337,7 @@ function hideBooks(){
 // incomingSplit = incomingIs.split(",");
 // 			for (j=0; j<manyCodes.length; j++){
 // 				if (manyCodes[j]==incomingSplit){ 
-removeOutwardLines(incomingIs, saveClicked);
+clickOut = false;
 
 			countLittleCircle = 0;
 		d3.select("#container").transition().style("opacity", 1.0);
