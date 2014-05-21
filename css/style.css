@@ -40,7 +40,8 @@ top: 250px;
 padding:8px;
 }
 #introNav{
-position: absolute;
+/*position: absolute;*/
+width:1em;
 z-index: 20;
 /*color: #ccc;*/
 /*font-size: 15px;*/
@@ -51,7 +52,7 @@ background-color: lightgray;
 padding:4px;
 opacity:.6;
 top: 250px;
-margin-left:23.6%;
+margin-left:93.6%;
 	cursor: pointer;
 
 }
