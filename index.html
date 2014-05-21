@@ -66,7 +66,74 @@
 		// if (d.loc>15&&d.loc<21){
 		// 	return "blue";
 		// }
-var colors = ["brown","brown","teal","teal","teal","teal","teal","lightgreen","lightgreen","lightgreen","lightgreen","lightblue","lightblue","lightblue","lightblue","lightblue","blue","blue","blue","blue","blue","blue"];
+var colors = 
+// ["CC5C5A","CC5C5A","teal","teal","teal","teal","teal","lightgreen","lightgreen","lightgreen","lightgreen","lightblue","lightblue","lightblue","lightblue","lightblue","blue","blue","blue","blue","blue","blue"];
+// "#FFCAA0","#FFCAA0","#FFCAA0","#FFCAA0"
+//dark
+// ["#5F8A2E","#5F8A2E",
+// "#3C4EB4",
+// "#2E848A",
+// "#3C4EB4",
+// "#3C4EB4",
+// "#5F8A2E",
+// "#848E2F",
+// "#2D6886",
+// "#2D6886",
+// "#2D6886",
+// "#2D4786",
+// "#2E848A",
+// "#8A5C2E",
+// "#8A5C2E",
+// "#2E848A",
+// "#2D4786",
+// "#2D4786",
+// "#2D4786",
+// "#2D6886",
+// "#2D4786"]
+//bright
+// ["#FFDAA0","#FFDAA0",
+// "#A0FFFF",
+// "#A0FFFF",
+// "#A0FFFF",
+// "#A0FFFF",
+// "#A0FFFF",
+// "#45E9E9",
+// "#45E9E9",
+// "#45E9E9",
+// "#45E9E9",
+// "#ADB3FF",
+// "#ADB3FF",
+// "#ADB3FF",
+// "#ADB3FF",
+// "#ADB3FF",
+// "#6F79F0",
+// "#6F79F0",
+// "#6F79F0",
+// "#6F79F0",
+// "#6F79F0",
+// "#6F79F0"]
+//not acqua
+["#FFDAA0","#FFDAA0",
+"#5ECBFF",
+"#5ECBFF",
+"#5ECBFF",
+"#5ECBFF",
+"#5ECBFF",
+"#45E9E9",
+"#45E9E9",
+"#45E9E9",
+"#45E9E9",
+"#ADB3FF",
+"#ADB3FF",
+"#ADB3FF",
+"#ADB3FF",
+"#ADB3FF",
+"#6F79F0",
+"#6F79F0",
+"#6F79F0",
+"#6F79F0",
+"#6F79F0",
+"#6F79F0"]
 
 var animateOpening = false;
 	if (animateOpening) {
@@ -192,7 +259,7 @@ var svg = d3.select("#container")
  var height = document.getElementById("container").offsetHeight;
 
 
-svg.attr("viewBox", "0 0 " + windowWidth + " " + 800 );
+svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
 
 // var introSVG = d3.select("#intro3").append("svg")
 // 	.attr("width",20)
@@ -215,19 +282,19 @@ var vis = svg
       "translate("+ 0 + "," + windowHeight/2 + ")")
 var zoomingDoc = [];
 
-function redraw() {
+// function redraw() {
 
-  console.log(d3.event.scale+"scale");
-  zoomingDoc.push(d3.event.scale);
-  // for (i=0; i<zoomingDoc.length; i++){
-  // if (zoomingDoc[i]<zoomingDoc[i-1] && zoomingDoc[i]<1.2){
-  vis.attr("transform",
-      "translate("+ d3.event.translate.x + "," + 0 + ")"
-      // "translate(" + d3.event.translate.x + ")"
-      + " scale(" + d3.event.scale + ")");
+//   console.log(d3.event.scale+"scale");
+//   zoomingDoc.push(d3.event.scale);
+//   // for (i=0; i<zoomingDoc.length; i++){
+//   // if (zoomingDoc[i]<zoomingDoc[i-1] && zoomingDoc[i]<1.2){
+//   vis.attr("transform",
+//       "translate("+ d3.event.translate.x + "," + 0 + ")"
+//       // "translate(" + d3.event.translate.x + ")"
+//       + " scale(" + d3.event.scale + ")");
+// // }
+// // }
 // }
-// }
-}
 
 loadBooks();
 
@@ -256,6 +323,7 @@ var storeClicks = {};
 
 var matching = 0;
 var rectClicked = false;
+var wordWidth = [];
 function runOuterCircles(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
@@ -287,9 +355,10 @@ var text = vis.selectAll('.subjectText')
 	.text(function(d,i) { 
 		return d.subject; 
 	})
-	.attr("fill",function(d,i){
-		return colors[d.loc];
-	})	
+	.attr("fill", "black")
+	// 	function(d,i){
+	// 	return colors[d.loc];
+	// })	
 	.attr("opacity",1)
 
 	.each(function(d) {
@@ -301,7 +370,7 @@ var text = vis.selectAll('.subjectText')
 	// .on("mouseout", function(d){ 
 	// 	d3.select(this).transition().style("border", "none");
 	// })
-	.each(moveToFront)
+	// .each(moveToFront)
 
 	.on("click", function(d,i){
 		count=0;
@@ -312,9 +381,9 @@ var text = vis.selectAll('.subjectText')
 		if(storeClicks[i]%2==1){ //if clicked ON
 			console.log("clicked on"+storeClicks[i]%2)
 			console.log("this is"+i)
-			d3.select(this)
-			.transition()
-			.attr("opacity",.4)
+			// d3.select(this)
+			// .transition()
+			// .attr("opacity",.4)
 			// d3.select("surroundingPoints"+d.subjCode)
 			// .transition()
 			// .attr("fill","yellow");
@@ -331,9 +400,9 @@ var text = vis.selectAll('.subjectText')
 					// hoverbox.classed("hidden",true);
 
 			console.log("clicked off"+storeClicks[i]%2)
-			d3.select(this)
-			.transition()
-			.attr("opacity",1);
+			// d3.select(this)
+			// .transition()
+			// .attr("opacity",1);
 
 		//and remove that subject number
 		for (c=0; c<checkedIt.length; c++){
@@ -375,13 +444,14 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 		}
 	})
 	.attr("y", function(d,i){  
-			return height*.5+subradius*Math.sin(jump*(d.loc-1))-10;
+			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
 	})
 	.attr("width", function(d){ 
+		wordWidth.push(d.width);
 		return d.width+10;
 	})
-	.attr("height", 14)
-	.attr("stroke-width",".5px")
+	.attr("height", .1)
+	.attr("stroke-width","2px")
 	.attr("fill","none")
 	.attr("stroke", function(d,i){
 		return colors[d.loc];
@@ -402,6 +472,9 @@ $('.subjectText').tipsy({
 		}
 });
 })
+}
+if (subjCode.length>0 && r.length>0){
+		prepLines();
 }
 var exitGraphsClicked = false;
 $('#graphIcon').click(function(){
@@ -650,10 +723,11 @@ var inCircle = vis.selectAll("inCircle")
 
 		console.log(d.codeName+"d.codeName on click of little circle")
 		countLittleCircle++;
-		console.log(countLittleCircle+"countLittleCircle")
+		console.log(countLittleCircle%2+"countLittleCircle")
 littleCircChecked.length=0;
 
 	if (countLittleCircle%2==0){
+
 		d3.select(this)
 		.transition()
 		.attr("fill","grey")
@@ -664,9 +738,11 @@ littleCircChecked.length=0;
 		d3.selectAll(".mouseoverText").remove();	
 		hideBooks();			
 	}
-	if (countLittleCircle%2==1){
-		d3.select("#container").transition().style("opacity", .3);
-		d3.select("#container").style("pointer-events","none");
+	else if (countLittleCircle%2==1){
+		d3.select("#container")
+		.style("pointer-events","none")
+		.transition()
+				.style("opacity", .3);
 
 		d3.select(this)
 		.transition()
@@ -847,12 +923,16 @@ hideBooks();
 // removeOutwardLines(incomingIs, saveClicked);
 
 })
+function prepLines(){
+	console.log("prep lines");
+	for (i=0; i<subjCode.length; i++){
+		runLines(subjCode[i]);
+	}
+}
 var linesInG;
-
 function runLines(passSubjNum){
 console.log(passSubjNum+"running lines");
 var thisNum = passSubjNum;
-		// var newThing = [];
 
 linesInG = vis.selectAll("linesIn")
 	.data(r)
@@ -862,6 +942,7 @@ linesInG = vis.selectAll("linesIn")
 		return "translate(" + (calcX[i]) + "," + (calcY[i]) + ")";
 	})
 	.attr("class", function(d,i){
+
 		var newThing = [];
 		for (j=0; j<allCodes[i].length; j++){
 			if (d[j]<5){
@@ -896,10 +977,15 @@ linesInG = vis.selectAll("linesIn")
 		// console.log(newThing+"newThing")
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				console.log(newThing[n]+" "+thisNum+"matching?")
+				// console.log(newThing[n]+" "+thisNum+"matching?")
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-				return subjX[k]-calcX[i];
+					if (subjX[k]<width/2){
+				return subjX[k]-calcX[i]+wordWidth[k]/2.8
+			}
+				else{
+				return subjX[k]-calcX[i]
+			}
 			}
 			}
 			}				
@@ -919,7 +1005,7 @@ linesInG = vis.selectAll("linesIn")
 			if (thisNum==newThing[n]){
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-				return subjY[k]-calcY[i];
+				return subjY[k]-calcY[i]+6;
 			}
 			}
 			}				
@@ -948,8 +1034,8 @@ linesInG = vis.selectAll("linesIn")
 	}
 }
 	})
-	.attr("opacity",.1)
-	.attr("stroke-width",2);
+	.attr("opacity",.7)
+	.attr("stroke-width",1);
 }
 
 //NEED TO FIGURE OUT A WAY TO TAKE OUT THAT FIRST SUBJECT LINE...
@@ -1034,7 +1120,8 @@ var newG = vis.selectAll("linesOut")
 
 		// return "lightgray";
 	})
-	.attr("stroke-width",1);
+	.attr("stroke-width",1)
+	.attr("opacity",.6);
 	d3.selectAll("line.hey"+thisCircle)
 		.transition()
 		.attr("x2",function(d,i){
@@ -1107,7 +1194,13 @@ newG = vis.selectAll("checkedLinesOut")
 		}	
 		for (k=0; k<subjCode.length; k++){
 			if (subjCode[k]==d){
-				return subjX[k]-calcX[thisCircle];
+				// return subjX[k]-calcX[thisCircle];
+				if (subjX[k]>width/2){
+				return subjX[k]-calcX[thisCircle]+wordWidth[k]/2.8
+			}
+				else{
+				return subjX[k]-calcX[thisCircle]
+			}
 			}
 		}
 	})
@@ -1120,7 +1213,7 @@ newG = vis.selectAll("checkedLinesOut")
 		}	
 		for (k=0; k<subjCode.length; k++){
 			if (subjCode[k]==d){
-				return subjY[k]-calcY[thisCircle];
+				return subjY[k]-calcY[thisCircle]+6;
 			}
 		}
 	})
@@ -1179,9 +1272,17 @@ var newG = vis.selectAll("linesOut")
 		}	
 		for (k=0; k<=subjCode.length; k++){
 			if (subjCode[k]==d){
+
+
+		if(subjX[k]>width/2){
+				return subjX[k]-calcX[thisCircle]+wordWidth[k]/2.8
+			}
+		else{
+				return subjX[k]-calcX[thisCircle]
+		}
 				// console.log(d+subjCode[k]+"matched in lines out")
 					// console.log(subjTextInside[k-1]+"subjText");
-				return subjX[k]-calcX[thisCircle];
+				// return subjX[k]-calcX[thisCircle];
 			}
 		}
 	})
@@ -1196,7 +1297,7 @@ var newG = vis.selectAll("linesOut")
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==d){
 					// console.log(d+"in all out")
-					return subjY[k]-calcY[thisCircle];
+					return subjY[k]-calcY[thisCircle]+6;
 				}
 			}
 		})
@@ -1366,7 +1467,7 @@ incomingIs = incoming.toString();
 incomingSplit = incomingIs.split(",");
 			for (j=0; j<manyCodes.length; j++){
 				if (manyCodes[j]==incomingSplit){ 
-					console.log(manyCodes[j]+" matching "+incomingSplit)
+					// console.log(manyCodes[j]+" matching "+incomingSplit)
 					whichBooks.push(manyBooks[j]);
 					saveId.push(manyIds[j]);
 					updateHoverbox(manyBooks[j], manyIds[j]);
@@ -1416,60 +1517,29 @@ var bookList = hoverbox
 		.on("click", function(d,i){
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
-// $(function(){
 	itsHeight = $("#hoverbox").height();
-// 	console.log(itsHeight+"itsHeight");
-// if (itsHeight>600){
-// 	d3.select("#hoverbox").style("width","95%");
-// d3.selectAll(".listBooks").style("border-bottom", "1px solid lightgray");
-
-// // d3.selectAll(".listBooks").style("border-right", "1px solid lightgray");
-
-// }
-// else {
-// 	d3.select("#hoverbox").style("width","15em");
-// d3.selectAll(".listBooks").style("border-bottom", "1px solid lightgray");
-// }
-// })
-// d3.select("#coverLayer").transition().style("display","block");
-// if (itsHeight>100){
-
-	// }
 
 };
 
-// function makeClickPossible(){
-// $("g").on("click", function(){
-// 	// .transition().delay(8000).style("opacity",.1) //try in CONSOLE
-// 			hideBooks();
-// })
-// }
-
 function hideBooks(){
-// saveClicked = thisCircle;
-// clicked = 0;
-// incomingIs = incoming.toString();
-// incomingSplit = incomingIs.split(",");
-// 			for (j=0; j<manyCodes.length; j++){
-// 				if (manyCodes[j]==incomingSplit){ 
+
 removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
 
 clickOut = false;
 littleCircChecked.length=0;
-			countLittleCircle = 0;
-		d3.select("#container").transition().style("opacity", 1.0);
-		d3.select("#container").style("pointer-events","auto");
+countLittleCircle = 0;
+d3.select("#container").transition().style("opacity", 1.0);
+d3.select("#container").style("pointer-events","auto");
 
 	// console.log("hidebooks")
-		d3.select("#booksColumn").transition().style("display","block");	
-		d3.select("#exit").transition().style("display","none")
-	saveId.length = 0;
+d3.select("#booksColumn").transition().style("display","block");	
+d3.select("#exit").transition().style("display","none")
+saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
 	d3.select("#hoverbox").transition().style("width","0em");
 			d3.select("circle.inCircle"+saveClicked)
 			.transition()
-			// .attr("opacity", ".1")
 			.attr("fill","grey");
 	// d3.selectAll(".listBooks").transition().style("border-width","0px");
 }
