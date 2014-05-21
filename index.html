@@ -643,7 +643,9 @@ firstLoadVar = setInterval(function(){
 
 function runOnce(){
 	runInnerCircles();
-	runOuterCircles();	
+	runOuterCircles();
+	processBigs(oneBig,indexBig);
+	
 // makeGraphsLittle();
 }
 var countLittleCircle = 0;
@@ -1476,6 +1478,39 @@ incomingSplit = incomingIs.split(",");
 
 }
 
+////////////////////////////////////////////////////
+////IF D.FREQ IS GREATER THAN 600, PREPROCESS BOOK LISTs
+//"1,1"	40719 -> no
+// "1,1,1"	18603
+// "1,1,1,1"	24833
+// "1,21"	8501
+// "1,1,1,1,1"	13625
+// "1,21,2"	4012
+// "5,20"	3346
+// "1,1,1,1,1,1"	1909
+// "5,12"	1567
+// "9,7"	1394
+// "16,7"	516
+////////////////////////////////////////////////////
+var oneBig = "1,21,2";
+var indexBig = 2;
+var bigBooks = [];
+var saveBigIds = [];
+var incomingBig;
+var splitBig;
+processBigs(oneBig,indexBig);
+function processBigs(oneBig, indexBig){
+
+incomingBig = oneBig.toString();
+splitBig = incomingBig.split(",");
+			for (j=0; j<manyCodes.length; j++){
+				if (manyCodes[j]==splitBig){ 
+					bigBooks.push(manyBooks[j]);
+					saveBigIds.push(manyIds[j]);
+				}
+			}
+
+}
 
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
