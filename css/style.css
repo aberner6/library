@@ -1,20 +1,31 @@
-	body{
-		font-family: "Open Sans",'sans-serif';
+body{
+		font-family: "Gotham-Light",'sans-serif';
 		font-weight:100;
    height: 100%;
     overflow: auto;
 	}
-
+@font-face {
+    font-family: 'Gotham-Light';
+    font-style: normal;
+    /*font-weight: 100;*/
+    src: local('Gotham-Light'), local('Gotham-Light'), url(Gotham-Light.otf) format('truetype');
+}
 svg{
 	position:fixed;
 }
 
-#coverLayer{
-	display:none;
-	opacity:.1;
-	width:100%;
-	height:100%;
+#hideContainer{
+	z-index: 1;
+	/*left: 5%;*/
+	width: 90%;
+	height: 100%;
+	/*right:5%;*/
+	opacity:.9;
+	background-color: white;
+		display:none;
+		position:absolute;
 }
+
 
 
 

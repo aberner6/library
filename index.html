@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'>
+<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
 <link href="css/style.css" rel="stylesheet" type="text/css" /> 
 
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
@@ -18,6 +18,7 @@
 
 
 <div id = "container"></div>
+
 <div id = "exitGraph">
 <img src="exitGraph.png" width="13" height="13">
 </div>
@@ -53,6 +54,7 @@
 	</div>
 	</div>
 </div>
+
 <script type = "text/javascript">
 		// if (d.loc<=6){
 		// 	return "teal";
@@ -244,6 +246,13 @@ var boolSelected = 0;
 // 	width:100%, //- margin.left - margin.right,
 // 	height:100%; //- margin.top - margin.bottom;
 
+var otherSVG = d3.select("#hideContainer")
+	.append("svg")
+	.attr({
+      "width": "90%",
+      "height": "100%"
+  		});
+// otherSVG.attr("viewBox", "0 0 " + windowWidth-100 + " " + windowHeight );
 
 
 var svg = d3.select("#container")
@@ -381,29 +390,14 @@ var text = vis.selectAll('.subjectText')
 		if(storeClicks[i]%2==1){ //if clicked ON
 			console.log("clicked on"+storeClicks[i]%2)
 			console.log("this is"+i)
-			// d3.select(this)
-			// .transition()
-			// .attr("opacity",.4)
-			// d3.select("surroundingPoints"+d.subjCode)
-			// .transition()
-			// .attr("fill","yellow");
 			runLines(d.subjCode);
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 			matching = 0;
-					// hoverbox.classed("hidden",false);
 		}
 
 		if(storeClicks[i]%2==0){ //if unselected
-		// d3.select("#booksColumn.selected").classed("selected", false);
-		// hideBooks();
-					// hoverbox.classed("hidden",true);
-
 			console.log("clicked off"+storeClicks[i]%2)
-			// d3.select(this)
-			// .transition()
-			// .attr("opacity",1);
-
 		//and remove that subject number
 		for (c=0; c<checkedIt.length; c++){
 			if (checkedIt[c]==d.subjCode){ // || 2 || 3 || 4
@@ -472,10 +466,12 @@ $('.subjectText').tipsy({
 		}
 });
 })
+// if (subjCode.length>0 && r.length>0){
+// 	console.log("prep lines?")
+// 		prepLines();
+// }
 }
-if (subjCode.length>0 && r.length>0){
-		prepLines();
-}
+
 var exitGraphsClicked = false;
 $('#graphIcon').click(function(){
 	if (exitGraphsClicked==false){
@@ -720,13 +716,15 @@ var inCircle = vis.selectAll("inCircle")
 
 	.on("click", function(d,i){
 		console.log("clicked little circle for books")
-		d3.select(this)
-			.each(moveToFront)
+		// d3.select(this)
+		// .each(moveToFront)
+//APPLY THIS DOWN LOW
+// d3.selectAll("line.hey378").transition().attr("stroke","black")
 
 		console.log(d.codeName+"d.codeName on click of little circle")
 		countLittleCircle++;
 		console.log(countLittleCircle%2+"countLittleCircle")
-littleCircChecked.length=0;
+		littleCircChecked.length=0;
 
 	if (countLittleCircle%2==0){
 
@@ -734,7 +732,6 @@ littleCircChecked.length=0;
 		.transition()
 		.attr("fill","grey")
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
-		// d3.select("#booksColumn.selected").classed("selected", false);
 		d3.select("#container").transition().style("opacity", 1);
 
 		d3.selectAll(".mouseoverText").remove();	
@@ -743,22 +740,19 @@ littleCircChecked.length=0;
 	else if (countLittleCircle%2==1){
 		d3.select("#container")
 		.style("pointer-events","none")
+		// d3.select("#hideContainer")
 		.transition()
-				.style("opacity", .3);
+		.style("opacity", ".5");
+		// d3.select()
 
 		d3.select(this)
 		.transition()
 		.attr("fill","yellow");
-			littleCircChecked.push(d.codeName);
+		// .style("z-index",1001)
+		littleCircChecked.push(d.codeName);
 		littleCircIndex = i;
 
-		// allOut(d.codeName, index); //FIX WHAT THING IS NOW
-		// d3.selectAll(".linesOut").each(moveToFront);
-// 
-		// d3.select("#booksColumn").classed("selected", true);	
-		books(d.codeName,i); //FIX CODENAME
-				// books(littleCircChecked, littleCircIndex); //FIX CODENAME
-
+		books(d.codeName,i); 
 	}
 	});
 
@@ -833,7 +827,6 @@ function newFunction(){
 		holdAngles.push(anglesAre[storeLengths[i]]);
 	}	
 }
-
 // function removeLines(){
 // svg.selectAll(".linesIn") //could be just .remove()
 	// .transition()
@@ -907,11 +900,7 @@ var chckdLines = vis.selectAll("checkedLines")
 }
 
 $('#booksColumn').click(function(){
-// if (littleCircChecked.length>0){
-// 		d3.select("#booksColumn.selected").transition().style("display","none");	
-// 		d3.select("#exit").transition().style("display","block")
-// 	books(littleCircChecked, littleCircIndex); //FIX CODENAME
-// }
+
 if(littleCircChecked.length==0 && matching==1 || count%allCodes.length>0){
 		d3.select("#booksColumn.selected").transition().style("display","none");	
 		d3.select("#exit").transition().style("display","block")
@@ -1463,6 +1452,9 @@ function books(incoming, thisCircle){
 
 		d3.select("#booksColumn").style("display","none");	
 		d3.select("#exit").transition().style("display","block")
+//APPLY THIS DOWN LOW
+// d3.selectAll("line.hey"+thisCircle).each(fadeToFront);
+// transition().attr("stroke","black")
 saveClicked = thisCircle;
 clicked = 0;
 incomingIs = incoming.toString();
@@ -1477,7 +1469,34 @@ incomingSplit = incomingIs.split(",");
 			}
 
 }
-
+var fadeToFront = function() {
+ 
+	//Select this element, that we want to move to front
+	var orig = d3.select(this);
+	var origNode = orig.node();
+	
+	//Clone it, and append the copy on "top" (meaning, at the end of
+	//the parent element, which is <svg> in this case)
+	var dupe = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true), origNode.nextSibling));
+ 
+	//Make the new element transparent immediately, then fade it in over time
+	dupe.style("opacity", 0.0)
+		.transition()
+		.duration(speed)
+		.style("opacity", 1.0)
+		.each("end", function() {
+ 
+			//When the fade-in is complete, add the click event…
+			d3.select(this).on("click", function() {
+				d3.select(this).each(fadeToFront);
+			});
+ 
+			//…and delete the original
+			orig.remove();
+ 
+		});
+ 
+}
 ////////////////////////////////////////////////////
 ////IF D.FREQ IS GREATER THAN 600, PREPROCESS BOOK LISTs
 //"1,1"	40719 -> no
@@ -1517,6 +1536,8 @@ splitBig = incomingBig.split(",");
  var itsHeight;
  var clickOut = false;
 var updateHoverbox = function(theseBooks, whichCode) {
+	 // hoverbox(moveToFront);
+
 // console.log(whichCode+"whichCode");
 // console.log("updateHoverbox")
 // console.log(whichBooks);
@@ -1549,6 +1570,7 @@ var bookList = hoverbox
 		})
 		.attr("x",0)
 		.attr("y",0)
+		// .each(moveToFront)
 		.on("click", function(d,i){
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
@@ -1559,11 +1581,16 @@ var bookList = hoverbox
 function hideBooks(){
 
 removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
-
+			d3.select("circle.inCircle"+saveClicked)
+			.transition()
+			.attr("fill","grey");
 clickOut = false;
 littleCircChecked.length=0;
 countLittleCircle = 0;
-d3.select("#container").transition().style("opacity", 1.0);
+		d3.select("#container")
+		.transition()
+		.style("opacity", "1");
+// d3.select("#container").transition().style("opacity", 1.0);
 d3.select("#container").style("pointer-events","auto");
 
 	// console.log("hidebooks")
@@ -1573,9 +1600,7 @@ saveId.length = 0;
 d3.selectAll(".listBooks").remove();
 whichBooks.length = 0;
 	d3.select("#hoverbox").transition().style("width","0em");
-			d3.select("circle.inCircle"+saveClicked)
-			.transition()
-			.attr("fill","grey");
+
 	// d3.selectAll(".listBooks").transition().style("border-width","0px");
 }
 
