@@ -7,16 +7,18 @@ body{
 @font-face {
     font-family: 'Gotham-Light';
     font-style: normal;
-    /*font-weight: 100;*/
+    font-weight: 100;
     src: local('Gotham-Light'), local('Gotham-Light'), url(Gotham-Light.otf) format('truetype');
 }
+
+
 svg{
 	position:fixed;
 }
 
 #hideContainer{
 	z-index: 1;
-	/*left: 5%;*/
+	/*left: 5%;
 	width: 90%;
 	height: 100%;
 	/*right:5%;*/
@@ -173,7 +175,7 @@ border-bottom: 1px yellow solid;
 }
 #hoverbox{
 	/*width: 20%;*/
-width: 15em;
+width: 12em;
 	/*width:50em;*/
   /*margin-bottom: 1em;*/
  
@@ -206,7 +208,7 @@ color: white;
 width: 14em;
 /*height: 5em;*/
 /*position:fixed; */
-
+font-size:12px;
 border-bottom: 1px white solid;
 
    /*column-count: 2;*/

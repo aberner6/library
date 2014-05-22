@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <head>
-<!-- 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,700' rel='stylesheet' type='text/css'> -->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+
+
+<link rel="stylesheet" id="googlefonts_heading-css" href="'http://fonts.googleapis.com/css?family=Open+Sans:300&subset=latin,latin-ext'&amp;ver=3.8.1" type="text/css" media="all">
+
+
+
+
 <link href="css/style.css" rel="stylesheet" type="text/css" /> 
 
 <link href="css/tipsy.css" rel="stylesheet" type="text/css" /> 
@@ -415,7 +423,7 @@ var text = vis.selectAll('.subjectText')
 		removeRunnedLines(d.subjCode);
 		d3.selectAll("circle.inCircle"+i)
 			.transition()
-			.attr("opacity", ".9")
+			.attr("opacity",.1)
 			.attr("fill","grey");
 		}
 	});
@@ -731,6 +739,7 @@ var inCircle = vis.selectAll("inCircle")
 		d3.select(this)
 		.transition()
 		.attr("fill","grey")
+		.attr("opacity",.1)
 		removeOutwardLines(d.codeName, i); //FIX CODENAME
 		d3.select("#container").transition().style("opacity", 1);
 
@@ -971,12 +980,13 @@ linesInG = vis.selectAll("linesIn")
 				// console.log(newThing[n]+" "+thisNum+"matching?")
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-					if (subjX[k]<width/2){
-				return subjX[k]-calcX[i]+wordWidth[k]/2.8
-			}
-				else{
-				return subjX[k]-calcX[i]
-			}
+					// if (subjX[k]<width/2){
+						//or at subjloc?
+				return subjX[k]-calcX[i];
+			// }
+				// else{
+				// return subjX[k]-calcX[i]
+			// }
 			}
 			}
 			}				
@@ -1025,7 +1035,7 @@ linesInG = vis.selectAll("linesIn")
 	}
 }
 	})
-	.attr("opacity",.7)
+	.attr("opacity",.4)
 	.attr("stroke-width",1);
 }
 
@@ -1542,7 +1552,7 @@ var updateHoverbox = function(theseBooks, whichCode) {
 // console.log("updateHoverbox")
 // console.log(whichBooks);
 
-d3.select("#hoverbox").style("width","15em");
+d3.select("#hoverbox").style("width","12em");
 // var myBox = $("#hoverbox");
 // myBox.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend',   
 //   function(e) {
@@ -1583,7 +1593,8 @@ function hideBooks(){
 removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
 			d3.select("circle.inCircle"+saveClicked)
 			.transition()
-			.attr("fill","grey");
+			.attr("fill","grey")
+			.attr("opacity",.1);
 clickOut = false;
 littleCircChecked.length=0;
 countLittleCircle = 0;
