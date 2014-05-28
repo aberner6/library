@@ -896,6 +896,7 @@ var chckdLines = vis.selectAll("checkedLines")
 	if (count%allCodes.length==0){
 		d3.select("#booksColumn.selected").classed("selected", false);	
 		d3.selectAll(".mouseoverText").remove();	
+		console.log("hide books")
 		hideBooks();			
 	}
 	else {
@@ -903,6 +904,7 @@ var chckdLines = vis.selectAll("checkedLines")
 	}
 	if (matching==0){
 		d3.select("#booksColumn.selected").classed("selected", false);
+		console.log("hide books")		
 		hideBooks();
 	}
 
@@ -919,6 +921,7 @@ if(littleCircChecked.length==0 && matching==1 || count%allCodes.length>0){
 }
 })
 $('#exit').click(function(){
+booksChecked.length = 0;
 
 hideBooks();
 
@@ -1349,27 +1352,8 @@ function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
 
 for (i=0; i<checkedIt.length; i++){
-	booksChecked.push(checkedTo[i])
+	booksChecked.push(checkedIt[i])
 }
-// for (j=0; j<booksChecked.length; j++){
-// 			for (k=0; k<=subjCode.length; k++){
-// 				if (subjCode[k]==booksChecked[j]){
-// 				whichLoc = subjLoc[k];
-// 				if (whichLoc<=6){
-// 					bookColors.push("teal")
-// 				}
-// 				if (whichLoc>6&&whichLoc<=10){
-// 					bookColors.push("lightgreen");
-// 				}
-// 				if (whichLoc>10&&whichLoc<=15){
-// 					bookColors.push("lightblue");
-// 				}
-// 				if (whichLoc>15&&whichLoc<21){
-// 					bookColors.push("blue");
-// 				}	
-// 			}
-// 			}	
-// }
 
 booksChecked.sort(function(a, b){return a-b});
 		console.log(booksChecked+"books checked sorted")
@@ -1420,6 +1404,7 @@ if (booksChecked[j]==3){
 	}
 }
 updateHoverbox(whichBooks, saveId);
+console.log(whichBooks.length)
 }
 
 var matchingArray = [];
@@ -1442,67 +1427,6 @@ incomingSplit = incomingIs.split(",");
 					whichBooks.push(manyBooks[j]);
 					saveId.push(manyIds[j]);
 					updateHoverbox(manyBooks[j], manyIds[j]);
-				}
-			}
-
-}
-var fadeToFront = function() {
- 
-	//Select this element, that we want to move to front
-	var orig = d3.select(this);
-	var origNode = orig.node();
-	
-	//Clone it, and append the copy on "top" (meaning, at the end of
-	//the parent element, which is <svg> in this case)
-	var dupe = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true), origNode.nextSibling));
- 
-	//Make the new element transparent immediately, then fade it in over time
-	dupe.style("opacity", 0.0)
-		.transition()
-		.duration(speed)
-		.style("opacity", 1.0)
-		.each("end", function() {
- 
-			//When the fade-in is complete, add the click event…
-			d3.select(this).on("click", function() {
-				d3.select(this).each(fadeToFront);
-			});
- 
-			//…and delete the original
-			orig.remove();
- 
-		});
- 
-}
-////////////////////////////////////////////////////
-////IF D.FREQ IS GREATER THAN 600, PREPROCESS BOOK LISTs
-//"1,1"	40719 -> no
-// "1,1,1"	18603
-// "1,1,1,1"	24833
-// "1,21"	8501
-// "1,1,1,1,1"	13625
-// "1,21,2"	4012
-// "5,20"	3346
-// "1,1,1,1,1,1"	1909
-// "5,12"	1567
-// "9,7"	1394
-// "16,7"	516
-////////////////////////////////////////////////////
-var oneBig = "1,21,2";
-var indexBig = 2;
-var bigBooks = [];
-var saveBigIds = [];
-var incomingBig;
-var splitBig;
-processBigs(oneBig,indexBig);
-function processBigs(oneBig, indexBig){
-
-incomingBig = oneBig.toString();
-splitBig = incomingBig.split(",");
-			for (j=0; j<manyCodes.length; j++){
-				if (manyCodes[j]==splitBig){ 
-					bigBooks.push(manyBooks[j]);
-					saveBigIds.push(manyIds[j]);
 				}
 			}
 
@@ -1565,23 +1489,96 @@ removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
 clickOut = false;
 littleCircChecked.length=0;
 countLittleCircle = 0;
-		d3.select("#container")
-		.transition()
-		.style("opacity", "1");
-// d3.select("#container").transition().style("opacity", 1.0);
+whichBooks.length = 0;
+saveId.length = 0;
+
+
+d3.select("#container")
+	.transition()
+	.style("opacity", "1");
 d3.select("#container").style("pointer-events","auto");
 
-	// console.log("hidebooks")
 d3.select("#booksColumn").transition().style("display","block");	
 d3.select("#exit").transition().style("display","none")
-saveId.length = 0;
-d3.selectAll(".listBooks").remove();
-whichBooks.length = 0;
-	d3.select("#hoverbox").transition().style("width","0em");
 
-	// d3.selectAll(".listBooks").transition().style("border-width","0px");
+d3.selectAll(".listBooks").remove();
+
+d3.select("#hoverbox").transition().style("width","0em");
+
 }
 
+
+
+
+
+
+
+
+
+
+
+
+var fadeToFront = function() {
+ 
+	//Select this element, that we want to move to front
+	var orig = d3.select(this);
+	var origNode = orig.node();
+	
+	//Clone it, and append the copy on "top" (meaning, at the end of
+	//the parent element, which is <svg> in this case)
+	var dupe = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true), origNode.nextSibling));
+ 
+	//Make the new element transparent immediately, then fade it in over time
+	dupe.style("opacity", 0.0)
+		.transition()
+		.duration(speed)
+		.style("opacity", 1.0)
+		.each("end", function() {
+ 
+			//When the fade-in is complete, add the click event…
+			d3.select(this).on("click", function() {
+				d3.select(this).each(fadeToFront);
+			});
+ 
+			//…and delete the original
+			orig.remove();
+ 
+		});
+ 
+}
+////////////////////////////////////////////////////
+////IF D.FREQ IS GREATER THAN 600, PREPROCESS BOOK LISTs
+//"1,1"	40719 -> no
+// "1,1,1"	18603
+// "1,1,1,1"	24833
+// "1,21"	8501
+// "1,1,1,1,1"	13625
+// "1,21,2"	4012
+// "5,20"	3346
+// "1,1,1,1,1,1"	1909
+// "5,12"	1567
+// "9,7"	1394
+// "16,7"	516
+////////////////////////////////////////////////////
+var oneBig = "1,21,2";
+var indexBig = 2;
+var bigBooks = [];
+var saveBigIds = [];
+var incomingBig;
+var splitBig;
+// processBigs(oneBig,indexBig);
+function processBigs(oneBig, indexBig){
+
+incomingBig = oneBig.toString();
+splitBig = incomingBig.split(",");
+			for (j=0; j<manyCodes.length; j++){
+				if (manyCodes[j]==splitBig){ 
+					bigBooks.push(manyBooks[j]);
+					saveBigIds.push(manyIds[j]);
+				}
+			}
+
+}
 
 </script>
 </body>
