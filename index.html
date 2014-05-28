@@ -976,19 +976,11 @@ linesInG = vis.selectAll("linesIn")
 				newThing.push(d[j]);
 			}
 		}
-		// console.log(newThing+"newThing")
 		for (n=0; n<newThing.length; n++){
 			if (thisNum==newThing[n]){
-				// console.log(newThing[n]+" "+thisNum+"matching?")
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-					// if (subjX[k]<width/2){
-						//or at subjloc?
 				return subjX[k]-calcX[i];
-			// }
-				// else{
-				// return subjX[k]-calcX[i]
-			// }
 			}
 			}
 			}				
@@ -1030,7 +1022,6 @@ linesInG = vis.selectAll("linesIn")
 			for (k=0; k<=subjCode.length; k++){
 				if (subjCode[k]==thisNum){
 				whichLoc = subjLoc[k];
-				// console.log(subjCode[k]+"subj code all out")
 		return colors[whichLoc];
 			}	
 		}
@@ -1041,50 +1032,18 @@ linesInG = vis.selectAll("linesIn")
 	.attr("stroke-width",1);
 }
 
-//NEED TO FIGURE OUT A WAY TO TAKE OUT THAT FIRST SUBJECT LINE...
 function removeRunnedLines(passSubjNum){
 console.log(passSubjNum+"removing runned lines");
 var thisNum = passSubjNum;
 d3.selectAll(".linesIn"+passSubjNum)
 	.transition()
+	// .duration(10)
 	// .attr("opacity",0)
-	.attr("x2",function(d,i){
-		var newThing = [];
-		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<5){
-				newThing.push(1);
-			}
-			if (d[j]>=5){
-				newThing.push(d[j]);
-			}
-		}
-		for (n=0; n<newThing.length; n++){
-			if (thisNum==newThing[n]){
-				// console.log("equal")
-				return 0;
-			}				
-		}
-	})
-	.attr("y2",function(d,i){
-		var newThing = [];
-		for (j=0; j<allCodes[i].length; j++){
-			if (d[j]<5){
-				newThing.push(1);
-			}
-			if (d[j]>=5){
-				newThing.push(d[j]);
-			}
-		}
-		// console.log(newThing+"in y")
-		for (n=0; n<newThing.length; n++){
-			if (thisNum==newThing[n]){
-				return 0;
-			}				
-		}
-	})
+	.attr("x2",0)
+	.attr("y2",0)
 }
 
-
+//for litte circles
 function runLinesOut(arrayOfSubjs, index){
 
 thisIs = arrayOfSubjs.split(",");
@@ -1156,6 +1115,8 @@ var newG = vis.selectAll("linesOut")
 }
 
 
+
+//this is for matched lines
 var newG;
 function checkedIn(arrayOfSubjs, index){
 
@@ -1182,6 +1143,10 @@ newG = vis.selectAll("checkedLinesOut")
 	.enter()
 	.append("line")
 	.attr("transform", function(d,i){
+d3.selectAll(".linesIn"+d)
+.transition()
+.attr("opacity",.2);
+
 		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
 	.attr("class","checkedLinesOut")
