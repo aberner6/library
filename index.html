@@ -655,6 +655,7 @@ function runOnce(){
 var countLittleCircle = 0;
 var littleCircIndex;
 var littleCircChecked = [];
+var circleFreq = [];
 function runInnerCircles(){
 
 d3.tsv("connectionfreqcodes_top25.txt", function(error, cData) {
@@ -662,6 +663,7 @@ for (i = 0; i < cData.length;i++) {
 	allCodes.push(cData[i].codeName);
 	angles.push(holdAngles[i]);
 	radiusIs.push(radius_levels[storeLengths[i]]);
+	circleFreq.push(cData[i].freq);
 }
 
 for (i=0; i<allCodes.length; i++){
@@ -1172,7 +1174,7 @@ var mouseText = vis.selectAll("mouseoverText")
 		return "translate(" + (calcX[thisCircle]+8) + "," + (calcY[thisCircle]-5) + ")";
 	})
 	.attr("fill","gray")
-	.text(thisIs.length);
+	.text(circleFreq[thisCircle]);
 
 
 newG = vis.selectAll("checkedLinesOut")
@@ -1252,7 +1254,7 @@ var mouseText = vis.selectAll("mouseoverText")
 		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
 	})
 	.attr("fill","black")
-	.text(thisIs.length);
+	.text(circleFreq[thisCircle]);
 
 var newG = vis.selectAll("linesOut")
 	.data(thisIs)
