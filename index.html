@@ -896,17 +896,17 @@ var chckdLines = vis.selectAll("checkedLines")
 	if (count%allCodes.length==0){
 		d3.select("#booksColumn.selected").classed("selected", false);	
 		d3.selectAll(".mouseoverText").remove();	
-		console.log("hide books")
+		// console.log("hide books")
 		hideBooks();			
 	}
 	else {
 		d3.select("#booksColumn.selected").classed("selected", true);	
 	}
-	if (matching==0){
-		d3.select("#booksColumn.selected").classed("selected", false);
-		console.log("hide books")		
-		hideBooks();
-	}
+	// if (matching==0){
+	// 	d3.select("#booksColumn.selected").classed("selected", false);
+	// 	// console.log("hide books")		
+	// 	hideBooks();
+	// }
 
 		return "checkedLines";
 	})
