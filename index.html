@@ -52,7 +52,9 @@
 <img src="exit.png" width="13" height="13">
 </div>
 
-<div id="inner"></div>
+<div id="inner">
+<div class = "thisArrow"></div>
+</div>
 <!-- <div class = "innerText" style="top:41px; left:918px;"></div> -->
 
 
@@ -355,7 +357,7 @@ var storeClicks = {};
 
 var matching = 0;
 var rectClicked = false;
-var wordWidth = [];
+var wordWidth = {};
 function runOuterCircles(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
@@ -374,11 +376,11 @@ var text = vis.selectAll('.subjectText')
 		return "subjectText"; 
 	})
 	.attr("x", function(d,i){ 
-		if (subjX[i]>width/2){
+		if (subjX[i]>windowWidth/2){
 				return subjX[i]; 	
 		}
 		else {
-			return subjX[i]-d.subject.length*3;
+			return subjX[i]-d.subject.length*3-20;
 		}
 	})
 	.attr("y", function(d,i){ 
@@ -417,10 +419,35 @@ var text = vis.selectAll('.subjectText')
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
 			matching = 0;
+
+
+	d3.select(".surroundingPoints"+d.subjCode)
+	.transition()
+	.attr("x", function(){ 
+		if (subjX[i]>width/2){
+				return subjX[i]-5; 	
+		}
+		else {
+			return subjX[i]-d.subject.length*3-25;
+		}
+	})
+	.attr("y", subjY[i]-10)
+	.attr("width", function(d){ 
+		return d.width+10; //this.getBBox().width+3)
+	})
+	.attr("height",14)
+	.attr("stroke", colors[d.loc]);
+		
+
+
 		}
 
 		if(storeClicks[i]%2==0){ //if unselected
 			console.log("clicked off"+storeClicks[i]%2)
+		d3.select(".surroundingPoints"+d.subjCode)
+		.transition()
+		.attr("y", subjY[i]+5)
+		.attr("height",.1)
 		//and remove that subject number
 		for (c=0; c<checkedIt.length; c++){
 			if (checkedIt[c]==d.subjCode){ // || 2 || 3 || 4
@@ -454,26 +481,51 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 	.enter().append("rect")
 	.attr("class", function(d,i){ return "surroundingPoints"+d.subjCode; })
 	.attr("x", function(d,i){
-		if (subjX[i]>width/2){
-				return subjX[i]-5; 	
+		if (subjX[i]>windowWidth/2){
+				return subjX[i]; 	
 		}
 		else {
-			return subjX[i]-(d.subject.length*3)-5;
+			return subjX[i]-(d.subject.length*3)-20;
 		}
 	})
 	.attr("y", function(d,i){  
 			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
 	})
-	.attr("width", function(d){ 
-		wordWidth.push(d.width);
-		return d.width+10;
+	.attr("width", function(d,i){ 
+		wordWidth[i]=(d.width);
+		return d.width;
+		// return 0;
 	})
 	.attr("height", .1)
-	.attr("stroke-width","2px")
+	.attr("stroke-width","1px")
 	.attr("fill","none")
 	.attr("stroke", function(d,i){
-		return colors[d.loc];
+		return "grey";//colors[d.loc];
 	})
+
+// var surroundingCircs = vis.selectAll("surroundingCircs")
+// 	.data(data)
+// 	.enter().append("circle")
+// 	.attr("class", function(d,i){ return "surroundingCircs"+d.subjCode; })
+// 	.attr("cx", function(d,i){
+// 		if (subjX[i]>windowWidth/2){
+// 				return subjX[i]; 	
+// 		}
+// 		else if (subjX[i]<windowWidth/2) {
+// 			return subjX[i];//+wordWidth[i];
+
+// 			// return subjX[i]-(d.subject.length*3)-20;
+// 		}
+// 	})
+// 	.attr("cy", function(d,i){  
+// 			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
+// 	})
+// 	.attr("r",2)
+// 	.attr("fill", function(d,i){
+// 		return colors[d.loc];
+// 	});
+
+
 
 
 
@@ -917,7 +969,14 @@ var chckdLines = vis.selectAll("checkedLines")
 		.append("text")
 		.attr("class","innerText")
 		////////checked index should change every time right/?????
-		.text(circleFreq[i]+" linked books")
+		.text(function(){
+			if(circleFreq[i]>1){
+				return circleFreq[i]+" linked books";
+			}
+			else {
+				return circleFreq[i]+" linked book";
+			}
+		})
 		.attr("x",0)
 		.attr("y",0);
 d3.select("#inner")
@@ -1303,6 +1362,40 @@ var newG = vis.selectAll("linesOut")
 	.append("line")
 	.attr("class", "hey"+thisCircle)//"linesOut")
 	.attr("transform", function(d,i){
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+
+		var whichLoc;
+			for (k=0; k<=subjCode.length; k++){
+				if (subjCode[k]==d){
+				whichLoc = subjLoc[k];
+	d3.selectAll(".surroundingPoints"+subjCode[k])
+	.transition()
+	// .attr("height",10)
+	.attr("stroke", colors[whichLoc]);
+			}	
+		}
+	
+		// if (d<5){
+		// 	d = 1;
+		// }
+		// else if (d>=5){
+		// 	d = d;
+		// }	
+		// for (k=0; k<=subjCode.length; k++){
+		// 	if (subjCode[k]==d){
+	// d3.selectAll(".surroundingPoints"+subjCode[k])
+	// .transition()
+	// .attr("width", wordWidth[k]/1.2)
+	// .transition()
+	// .attr("width",wordWidth[k]);
+// }
+// }
+
 		return "translate(" + (calcX[thisCircle]) + "," + (calcY[thisCircle]) + ")";
 	})
 	.attr("x1", 0)
@@ -1316,17 +1409,23 @@ var newG = vis.selectAll("linesOut")
 		}	
 		for (k=0; k<=subjCode.length; k++){
 			if (subjCode[k]==d){
+// text
+// .on("mouseover", function(){
+	// for (i=0; i<subjCode.length; i++){
+	// d3.selectAll(".surroundingPoints"+subjCode[k])
+	// .transition()
+	// .attr("width", wordWidth[k]/1.2)
+	// .transition()
+	// .attr("width",wordWidth[k]);
+// }
+// })
 
-
-		if(subjX[k]>width/2){
+		if(subjX[k]>windowWidth/2){
 				return subjX[k]-calcX[thisCircle]+wordWidth[k]/2.8
 			}
 		else{
 				return subjX[k]-calcX[thisCircle]
 		}
-				// console.log(d+subjCode[k]+"matched in lines out")
-					// console.log(subjTextInside[k-1]+"subjText");
-				// return subjX[k]-calcX[thisCircle];
 			}
 		}
 	})
