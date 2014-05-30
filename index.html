@@ -357,7 +357,7 @@ var storeClicks = {};
 
 var matching = 0;
 var rectClicked = false;
-var wordWidth = {};
+var wordWidth = [];
 function runOuterCircles(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 var jump = Math.PI*2/data.length; //    float jump = TWO_PI/(float
@@ -492,7 +492,7 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
 	})
 	.attr("width", function(d,i){ 
-		wordWidth[i]=(d.width);
+		wordWidth.push(d.width);
 		return d.width;
 		// return 0;
 	})
@@ -1098,7 +1098,42 @@ linesInG = vis.selectAll("linesIn")
 			if (thisNum==newThing[n]){
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-				return subjX[k]-calcX[i];
+
+		if (subjX[k]>width/2){
+			return (subjX[k]-5)-calcX[i]; 	
+		}
+		if (subjX[k]<width/2){
+		// wordWidth[i]=(d.width);
+		console.log(k+subjTextInside[k]+wordWidth[k]+"wordWidth"+subjTextInside[k].length+"subjTextInside")
+// var thisis=  d3.select(".surroundingPoints"+subjCode[k]).attr("width") 
+// return (subjX[k]+(wordWidth[k]+10)/2.5)-calcX[i];
+
+
+return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
+
+
+
+
+
+// +wordWidth[k]-calcX[i]; //+wordWidth[k]/2.7
+			// return (subjX[k]+subjTextInside[k].length)-calcX[i];
+		}
+		if(subjX[k]==width/2){
+			return (subjX[k]+subjTextInside[k].length/2)-calcX[i];			
+		}
+
+
+
+
+		// wordWidth[i]=(d.width);
+
+
+
+
+
+
+
+				// return subjX[k]-calcX[i];
 			}
 			}
 			}				
@@ -1118,7 +1153,21 @@ linesInG = vis.selectAll("linesIn")
 			if (thisNum==newThing[n]){
 			for (k=0; k<=subjCode.length; k++){
 				if(subjCode[k]==thisNum){
-				return subjY[k]-calcY[i]+6;
+
+		if (subjY[k]>height/2){
+			return subjY[k]-calcY[i]-12; 	
+		}
+		if (subjY[k]<height/2){
+			return subjY[k]-calcY[i]+6;
+		}
+		if(subjY[k]==height/2){
+			return subjY[k]-calcY[i]+3;			
+		}
+
+
+
+
+				// return subjY[k]-calcY[i]+6;
 			}
 			}
 			}				
