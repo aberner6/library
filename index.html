@@ -35,6 +35,7 @@
 <div id = "container"></div>
 	<div id="title">Interdisciplinary </br> Browser</div>
 
+
 <div id = "exitGraph">
 <img src="exitGraph.png" width="13" height="13">
 </div>
@@ -77,7 +78,9 @@
 	</div>
 	</div>
 </div>
-
+	<div id="subline">About
+	</div>
+	<div id="about">The interdisciplinary browser was designed and developed by Jen Lowe and Annelie Berner</div>
 <script type = "text/javascript">
 		// if (d.loc<=6){
 		// 	return "teal";
@@ -159,6 +162,8 @@ var colors =
 "#6F79F0",
 "#6F79F0",
 "#6F79F0"]
+
+
 
 var animateOpening = false;
 	if (animateOpening) {
@@ -284,7 +289,7 @@ var svg = d3.select("#container")
     .append("svg")
 	.attr({
       "width": "100%",
-      "height": "100%",
+      "height": "95%",
   		})
  	.attr("transform",
       "translate("+ 0 + "," + 0 + ")");
@@ -309,10 +314,7 @@ svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
 
 
 
-var secondVis = svg
-    .append('svg:g')
- 	.attr("transform",
-      "translate("+ 0 + "," + 0 + ")")
+
 
 var vis = svg
     .append('svg:g')
@@ -623,12 +625,15 @@ function justMakeGraphs(){
 	.attr("opacity",1)
 }
 
-
+var secondVis = svg
+    .append('svg:g')
+ 	.attr("transform",
+      "translate("+ -30 + "," + 0 + ")")
 function makeGraphsBig(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 	var mapRect = d3.scale.linear()
 	.domain([0, freqIs.length])
-	.range([670,440]); //not 480
+	.range([680,440]); //not 480
 
 // if (freqIs.length>0){
 var graphRects = secondVis.selectAll("rectsAre")
@@ -646,7 +651,7 @@ var graphRects = secondVis.selectAll("rectsAre")
 	.attr("width", function(d){
 		return 0;
 	})
-	.attr("height",8)
+	.attr("height",6)
 	// .attr("fill","lightgray");
 	.attr("fill", function(d,i){
 		return colors[d.loc];
@@ -672,21 +677,21 @@ var graphText = secondVis.selectAll("textsAre")
 	// if (rectClicked==true){
 	d3.selectAll(".rectsAre")
 	.transition()
-	.duration(500)
+	.duration(100)
 	.attr("y", function(d,i){
 		return mapRect(i); //if i want claims on bottom
 	});
 	d3.selectAll(".rectsAre")
 	.transition()
-	.duration(500)
-	.delay(1000)
+	.duration(200)
+	.delay(300)
 	.attr("width", function(d,i){
 		return d.freq*LEGEND_SCALE;
 	});
 
 	d3.selectAll(".textsAre")
 	.transition()
-	.delay(2000)
+	.delay(800)
 	.attr("x", function(d){
 		return d.freq*LEGEND_SCALE+5;		
 	})
@@ -1750,14 +1755,20 @@ $('#hoverbox').tipsy({
 		gravity: 'se', 
 		html: true, 
 		title: function() {
-	return "click for Columbia Library Listing"
+	return "Click for Columbia Library Listing"
 
 		}
 });
 	itsHeight = $("#hoverbox").height();
 
 };
-
+$('#graphIcon').tipsy({
+	gravity: 'sw',
+	html:true,
+	title: function(){
+		return "Subject Frequency"
+	}
+})
 function hideBooks(){
 
 removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
@@ -1866,6 +1877,12 @@ splitBig = incomingBig.split(",");
 			}
 
 }
+$("#subline").click(function(){
+
+$("#about").toggle("slow");	
+
+})
+
 
 </script>
 </body>
