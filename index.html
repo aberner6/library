@@ -535,7 +535,9 @@ $('.subjectText').tipsy({
 		html: true, 
 		title: function() {
 		  var d = this.__data__;
-		  return "frequency: "+d.freq;
+		var newNum = Math.round((d.freq) / 1000);
+		var niceNum = numberWithCommas(newNum)+"k";  
+		  return "frequency: "+niceNum;
 
 		}
 });
@@ -544,6 +546,9 @@ $('.subjectText').tipsy({
 // 	console.log("prep lines?")
 // 		prepLines();
 // }
+}
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 var exitGraphsClicked = false;
@@ -819,7 +824,7 @@ var inCircle = vis.selectAll("inCircle")
 		.style("pointer-events","none")
 		// d3.select("#hideContainer")
 		.transition()
-		.style("opacity", ".5");
+		.style("opacity", ".3");
 		// d3.select()
 
 		d3.select(this)
@@ -1103,37 +1108,11 @@ linesInG = vis.selectAll("linesIn")
 			return (subjX[k]-5)-calcX[i]; 	
 		}
 		if (subjX[k]<width/2){
-		// wordWidth[i]=(d.width);
-		console.log(k+subjTextInside[k]+wordWidth[k]+"wordWidth"+subjTextInside[k].length+"subjTextInside")
-// var thisis=  d3.select(".surroundingPoints"+subjCode[k]).attr("width") 
-// return (subjX[k]+(wordWidth[k]+10)/2.5)-calcX[i];
-
-
-return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
-
-
-
-
-
-// +wordWidth[k]-calcX[i]; //+wordWidth[k]/2.7
-			// return (subjX[k]+subjTextInside[k].length)-calcX[i];
+			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
 		}
 		if(subjX[k]==width/2){
-return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[i];
+			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[i];
 		}
-
-
-
-
-		// wordWidth[i]=(d.width);
-
-
-
-
-
-
-
-				// return subjX[k]-calcX[i];
 			}
 			}
 			}				
@@ -1299,10 +1278,18 @@ var mouseText = vis.selectAll("mouseoverText")
 	.append("text")
 	.attr("class","mouseoverText")
 	.attr("transform", function(d,i){
-		return "translate(" + (calcX[thisCircle]+8) + "," + (calcY[thisCircle]-5) + ")";
+		return "translate(" + (calcX[thisCircle]+1) + "," + (calcY[thisCircle]-3) + ")";
 	})
-	.attr("fill","gray")
-	.text(circleFreq[thisCircle]);
+	.attr("fill","black")
+	.text(circleFreq[thisCircle])
+// 	.text(function(){
+// 		if (circleFreq[thisCircle]>1){
+// 			return circleFreq[thisCircle]+" books"
+// 	}
+// 		else {
+// 			return circleFreq[thisCircle]+" book"
+// 	}
+// });
 
 
 
@@ -1330,13 +1317,16 @@ d3.selectAll(".linesIn"+d)
 		}	
 		for (k=0; k<subjCode.length; k++){
 			if (subjCode[k]==d){
-				// return subjX[k]-calcX[thisCircle];
-				if (subjX[k]>width/2){
-				return subjX[k]-calcX[thisCircle]+wordWidth[k]/2.8
-			}
-				else{
-				return subjX[k]-calcX[thisCircle]
-			}
+
+		if (subjX[k]>width/2){
+			return (subjX[k]-5)-calcX[thisCircle]; 	
+		}
+		if (subjX[k]<width/2){
+			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[thisCircle];
+		}
+		if(subjX[k]==width/2){
+			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[thisCircle];
+		}
 			}
 		}
 	})
@@ -1349,8 +1339,16 @@ d3.selectAll(".linesIn"+d)
 		}	
 		for (k=0; k<subjCode.length; k++){
 			if (subjCode[k]==d){
-				return subjY[k]-calcY[thisCircle]+6;
-			}
+		if (subjY[k]>height/2){
+			return subjY[k]-calcY[thisCircle]-11; 	
+		}
+		if (subjY[k]<height/2){
+			return subjY[k]-calcY[thisCircle]+5;
+		}
+		if(subjY[k]==height/2){
+			return subjY[k]-calcY[thisCircle]+3;			
+		}
+		}
 		}
 	})
 	.attr("stroke",function(d,i){
@@ -1449,50 +1447,6 @@ var newG = vis.selectAll("linesOut")
 	})
 	.attr("x1", 0)
 	.attr("y1",0)
-	.attr("x2",function(d,i){
-		if (d<5){
-			d = 1;
-		}
-		else if (d>=5){
-			d = d;
-		}	
-		for (k=0; k<=subjCode.length; k++){
-			if (subjCode[k]==d){
-// text
-// .on("mouseover", function(){
-	// for (i=0; i<subjCode.length; i++){
-	// d3.selectAll(".surroundingPoints"+subjCode[k])
-	// .transition()
-	// .attr("width", wordWidth[k]/1.2)
-	// .transition()
-	// .attr("width",wordWidth[k]);
-// }
-// })
-
-		if(subjX[k]>windowWidth/2){
-				return subjX[k]-calcX[thisCircle]+wordWidth[k]/2.8
-			}
-		else{
-				return subjX[k]-calcX[thisCircle]
-		}
-			}
-		}
-	})
-	.attr("y2",function(d,i){
-					if (d<5){
-						d = 1;
-					}
-					else if (d>=5){
-						d = d;
-					}	
-
-			for (k=0; k<=subjCode.length; k++){
-				if (subjCode[k]==d){
-					// console.log(d+"in all out")
-					return subjY[k]-calcY[thisCircle]+6;
-				}
-			}
-		})
 	.attr("stroke",function(d,i){
 					if (d<5){
 						d = 1;
@@ -1510,7 +1464,70 @@ var newG = vis.selectAll("linesOut")
 			}	
 		}
 	})
-	.attr("stroke-width",1);
+	.attr("stroke-width",1)
+	// .attr("x2",function(d,i){
+	// 	if (d<5){
+	// 		d = 1;
+	// 	}
+	// 	else if (d>=5){
+	// 		d = d;
+	// 	}	
+	// 	for (k=0; k<=subjCode.length; k++){
+	// 		if (subjCode[k]==d){
+// text
+// .on("mouseover", function(){
+	// for (i=0; i<subjCode.length; i++){
+	// d3.selectAll(".surroundingPoints"+subjCode[k])
+	// .transition()
+	// .attr("width", wordWidth[k]/1.2)
+	// .transition()
+	// .attr("width",wordWidth[k]);
+// }
+// })
+	.attr("x2",function(d,i){
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+		for (k=0; k<subjCode.length; k++){
+			if (subjCode[k]==d){
+
+		if (subjX[k]>width/2){
+			return (subjX[k])-calcX[thisCircle]; 	
+		}
+		if (subjX[k]<width/2){
+			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[thisCircle];
+		}
+		if(subjX[k]==width/2){
+			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[thisCircle];
+		}
+			}
+		}
+	})
+	.attr("y2",function(d,i){
+		if (d<5){
+			d = 1;
+		}
+		else if (d>=5){
+			d = d;
+		}	
+		for (k=0; k<subjCode.length; k++){
+			if (subjCode[k]==d){
+		if (subjY[k]>height/2){
+			return subjY[k]-calcY[thisCircle]+5; 	
+		}
+		if (subjY[k]<height/2){
+			return subjY[k]-calcY[thisCircle]+5;
+		}
+		if(subjY[k]==height/2){
+			return subjY[k]-calcY[thisCircle]+5;			
+		}
+		}
+		}
+	});
+
 }
 function removeOutwardLines(codes, thisCirc){
 var outToText = vis.selectAll("outText") //not outText
@@ -1727,6 +1744,14 @@ d3.selectAll(".listBooks").remove();
 d3.select("#hoverbox").transition().style("width","0em");
 
 }
+
+
+
+
+
+
+
+
 
 
 

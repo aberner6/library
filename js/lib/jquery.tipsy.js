@@ -47,7 +47,7 @@
                 var tp;
                 switch (gravity.charAt(0)) {
                     case 'n':
-                        tp = {top: pos.top + pos.height + this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
+                        tp = {top: pos.top + pos.height+10 + this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
                         break;
                     case 's':
                         tp = {top: pos.top - actualHeight - this.options.offset, left: pos.left + pos.width / 2 - actualWidth / 2};
