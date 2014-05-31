@@ -1713,6 +1713,15 @@ var bookList = hoverbox
 		.on("click", function(d,i){
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
+
+$('#hoverbox').tipsy({ 
+		gravity: 'se', 
+		html: true, 
+		title: function() {
+	return "click for CLIO"
+
+		}
+});
 	itsHeight = $("#hoverbox").height();
 
 };
