@@ -242,7 +242,7 @@ var conn_levels = [10, 10, 265, 210, 135, 75,10]; //how far away from the center
 // var radius_levels = [0, 0, 240, 190, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
 
 var radius_levels = [0, 0, 240, 190, 125, 70, 0, 0, 0, 0]; //how far away from the center each level is
-var subradius = 250; 
+// var subradius = 250; 
 var MIN_LINE = 3.0; //length of the little ones
 var TEXT_PAD_X = 5;
 var TEXT_PAD_Y = 2;
@@ -565,8 +565,8 @@ $('.subjectText').tipsy({
 		title: function() {
 		  var d = this.__data__;
 		var newNum = Math.round((d.freq) / 1000);
-		var niceNum = numberWithCommas(newNum)+"k";  
-		  return "frequency: "+niceNum;
+		var niceNum = numberWithCommas(newNum)+"k books";  
+		  return niceNum;
 
 		}
 });
@@ -628,12 +628,12 @@ function justMakeGraphs(){
 var secondVis = svg
     .append('svg:g')
  	.attr("transform",
-      "translate("+ -30 + "," + 0 + ")")
+      "translate("+ 0 + "," + 0 + ")")
 function makeGraphsBig(){
 d3.tsv("subjects_top25.tsv", function(error, data) {
 	var mapRect = d3.scale.linear()
 	.domain([0, freqIs.length])
-	.range([680,440]); //not 480
+	.range([710,440]); //not 480
 
 // if (freqIs.length>0){
 var graphRects = secondVis.selectAll("rectsAre")
