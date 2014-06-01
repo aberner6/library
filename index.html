@@ -18,7 +18,8 @@
 </style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
-<script type="text/javascript" src="js/lib/d3.v3.js"></script>
+<!-- <script type="text/javascript" src="js/lib/d3.v3.js"></script> -->
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <!-- <script type="text/javascript" src="js/lib/intro.js"></script> -->
 <script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <body>
@@ -272,17 +273,11 @@ var	windowWidth = window.outerWidth,
 	windowHeight = window.innerHeight;
 
 var boolSelected = 0;
-// var margin = {top: 20, right: 20, bottom: 30, left: 50},
-// 	width:100%, //- margin.left - margin.right,
-// 	height:100%; //- margin.top - margin.bottom;
 
-var otherSVG = d3.select("#hideContainer")
-	.append("svg")
-	.attr({
-      "width": "90%",
-      "height": "100%"
-  		});
-// otherSVG.attr("viewBox", "0 0 " + windowWidth-100 + " " + windowHeight );
+
+var	width = window.outerWidth,
+	height = window.innerHeight;
+
 
 
 var svg = d3.select("#container")
@@ -291,43 +286,64 @@ var svg = d3.select("#container")
       "width": "100%",
       "height": "95%",
   		})
- 	.attr("transform",
-      "translate("+ 0 + "," + 0 + ")");
- // var svg = d3.select("body").append("svg")
- //    .attr("width", width + margin.left + margin.right)
- //    .attr("height", height + margin.top + margin.bottom)
- //  .append("g")
- //    .attr("transform", "translate(" + margin.left + "," + margin.right + ")")
-    // .call(zoom);
-	// .attr("transform",
- //      "translate("+ 0 + "," + windowHeight/2 + ")")
-
- var width = document.getElementById("container").offsetWidth;
- var height = document.getElementById("container").offsetHeight;
-
-
-svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
-
-// var introSVG = d3.select("#intro3").append("svg")
-// 	.attr("width",20)
-// 	.attr("height",10);
-
-
-
-
 
 var vis = svg
     .append('svg:g')
  	.attr("transform",
-      "translate("+ 0 + "," + windowHeight/2 + ")")
-var zoomingDoc = [];
-// svg.call(d3.behavior.zoom()
-//    	.scale(1.0)
-//     .scaleExtent([0.95, 5.0])
-//   	.on("zoom", redraw)
-//  	);
+      "translate("+ 0 + "," + 0 + ")") //windowHeight/2
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  var width = document.getElementById("container").offsetWidth;
+//  var height = document.getElementById("container").offsetHeight;
+
+
+
+// // var zoom = d3.behavior.zoom()
+// //     .center([0, 0])
+// //     .scaleExtent([1, 10])
+// //     .on("zoom", redraw);
+
+// var svg = d3.select("#container")
+//     .append("svg")
+// 	.attr({
+//       "width": "100%",
+//       "height": "95%",
+//   		})
+//  	.attr("transform",
+//       "translate("+ 0 + "," + 0 + ")")
+//      .call(zoom);
+
+// svg.attr("viewBox", "0 0 " + windowWidth + " " + windowHeight );
+
+
+// var vis = svg
+//     .append('svg:g')
+//  	.attr("transform",
+//       "translate("+ 0 + "," + windowHeight/2 + ")") //windowHeight/2
+
+// var zoomingDoc = [];
+
+// var zoom = d3.behavior.zoom()
+//     // .center([0, 0])
+//  .size([windowWidth, windowHeight])
+//     .scaleExtent([1, 10])
+//     .on("zoom", redraw);
 
 // function redraw() {
 //   console.log(d3.event.translate.x+"x");
@@ -336,12 +352,12 @@ var zoomingDoc = [];
 //   zoomingDoc.push(d3.event.scale);
 //   // for (i=0; i<zoomingDoc.length; i++){
 //   // if (zoomingDoc[i]<zoomingDoc[i-1] && zoomingDoc[i]<1.2){
+
+// var trans = ([0, windowHeight/2])
+
 //   vis.attr("transform",
-//       "translate("+ d3.event.translate+ "," +windowHeight/2+d3.event.translate.y+ ")" // d3.event.translate.x
-//       // "translate(" + d3.event.translate.x + ")"
+//       "translate("+trans+ ")"
 //       + " scale(" + d3.event.scale + ")");
-// // }
-// // }
 // }
 
 
@@ -383,6 +399,9 @@ var checkedIt = [];
 var wasItSubj;
 var storeClicks = {};
 
+var scienceSubj;
+var womenSubj;
+
 
 var matching = 0;
 var rectClicked = false;
@@ -402,6 +421,13 @@ var text = vis.selectAll('.subjectText')
 		subjTextInside.push(d.subject);
 		subjX.push(width*.5+subradius*Math.cos(jump*(d.loc-1)));
 		subjY.push(height*.5+subradius*Math.sin(jump*(d.loc-1))); 
+		if (d.subject==="Science"){
+			console.log(d.subject);
+			scienceSubj = i;
+		}
+		if (d.subject==="Women"){
+			womenSubj =i;
+		}
 		return "subjectText"; 
 	})
 	.attr("x", function(d,i){ 
@@ -1877,11 +1903,44 @@ splitBig = incomingBig.split(",");
 			}
 
 }
+
+
+var p0, p1;
 $("#subline").click(function(){
 
 $("#about").toggle("slow");	
-
+d3.select("#about").on("click",function(){
+var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
+    p1 = [subjX[womenSubj], subjY[womenSubj], 100];
+	console.log("about")
+	svg.call(transition, p0, p1);
 })
+})
+
+// var p0 = [subjX[scienceSubj], 200, 300],
+//     p1 = [500, 210, 100];
+
+
+
+
+
+function transition(svg, start, end) {
+  var center = [width / 2, height / 2],
+      i = d3.interpolateZoom(start, end);
+
+  vis
+      .attr("transform", transform(start))
+    .transition()
+      .delay(250)
+      .duration(i.duration * 4)
+      .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+      .each("end", function() { d3.select(this).call(transition, end, start); });
+
+  function transform(p) {
+    var k = height / p[2]*2;
+    return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+  }
+}
 
 
 </script>
