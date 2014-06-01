@@ -1924,10 +1924,11 @@ var p0 = [width/2, height/2, windowHeight],
 
 
 
-
+  var center = [width / 2, height / 2];
+      // i = d3.interpolateZoom(start, end);
 function transition(svg, start, end) {
-  var center = [width / 2, height / 2],
-      i = d3.interpolateZoom(start, end);
+  // var center = [width / 2, height / 2],
+    var  i = d3.interpolateZoom(start, end);
 
   vis
       .attr("transform", transform(start))
@@ -1957,10 +1958,41 @@ function explainLines(){
  	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
 	//here we will do something like make 
 	//then we also want to zoom out
+	var p0 = [width/2, height/2, windowHeight],
+// var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
+    p1 = [calcX[specialCirc], calcY[specialCirc], 100];
+	svg.call(transitionTwo, p1, p0);
+	// transitionTwo();
 }
 
 
+function transitionTwo(svg, start, end) {
+ var i = d3.interpolateZoom(start, end);
 
+  vis
+      .attr("transform", transform(start))
+    .transition()
+      .delay(250)
+      .duration(i.duration * 4)
+      .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+      // .each("end", function() { d3.select(this).call(transition, end, start); });
+      // .each("end", function() { 
+      // 	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
+      // 	.transition()
+      // 	.attr("opacity",1)
+      // 	.each("end", function(){
+      // 		//make lines go out
+      // 		explainLines();
+      // 	})
+      // 	// d3.select(this).call(explainLines); 
+      // });
+
+  function transform(p) {
+    var k = height / p[2]; //*2;
+    return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+  }
+  // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
+}
 
 
 
