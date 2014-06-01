@@ -18,8 +18,8 @@
 </style>
 <script type="text/javascript" src="js/lib/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="js/lib/jquery.tipsy.js"></script>
-<!-- <script type="text/javascript" src="js/lib/d3.v3.js"></script> -->
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/lib/d3.min.js"></script>
+<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
 <!-- <script type="text/javascript" src="js/lib/intro.js"></script> -->
 <script type="text/javascript" src="js/lib/jquery.hoverIntent.js"></script>
 <body>
@@ -1904,15 +1904,16 @@ splitBig = incomingBig.split(",");
 
 }
 
-
+var specialCirc = 393;
 var p0, p1;
 $("#subline").click(function(){
 
 $("#about").toggle("slow");	
 d3.select("#about").on("click",function(){
-var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
-    p1 = [subjX[womenSubj], subjY[womenSubj], 100];
-	console.log("about")
+var p0 = [width/2, height/2, windowHeight],
+
+// var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
+    p1 = [calcX[specialCirc], calcY[specialCirc], 100];
 	svg.call(transition, p0, p1);
 })
 })
@@ -1934,13 +1935,47 @@ function transition(svg, start, end) {
       .delay(250)
       .duration(i.duration * 4)
       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-      .each("end", function() { d3.select(this).call(transition, end, start); });
+      // .each("end", function() { d3.select(this).call(transition, end, start); });
+      .each("end", function() { 
+      	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
+      	.transition()
+      	.attr("stroke-width",3)
+      	// d3.select(this).call(explainLines); 
+      });
 
   function transform(p) {
-    var k = height / p[2]*2;
+    var k = height / p[2]; //*2;
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
   }
+  d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
 }
+function explainLines(){
+	//here we will do something like make 
+}
+
+
+
+
+
+
+
+// function transition(svg, start, end) {
+//   var center = [width / 2, height / 2],
+//       i = d3.interpolateZoom(start, end);
+
+//   vis
+//       .attr("transform", transform(start))
+//     .transition()
+//       .delay(250)
+//       .duration(i.duration * 4)
+//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+//       .each("end", function() { d3.select(this).call(transition, end, start); });
+
+//   function transform(p) {
+//     var k = height / p[2]; //*2;
+//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+//   }
+// }
 
 
 </script>
