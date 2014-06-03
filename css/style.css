@@ -16,27 +16,31 @@ body{
 }
 
 #title{
+	position:fixed;
+
 	font-weight: 300;
 	font-size: 24px;
 	text-transform: uppercase;
-	position: relative;
+	/*position: relative;*/
 width: 20%;
 height: 5%;
 margin-left: .5em;
-margin-top: .5em;
+margin-top: .3em;
 line-height: 1.5em;
 	/*box-shadow: 0 1px #e2e5e4;*/
 
 }
 
 #subline{
+		position:fixed;
+
 	font-size: 10px;
 	cursor: pointer;
 /*width: 10%;
 height: 5%;*/
 margin-left: 1.5em;
 top: 9.5em;
-position:absolute;
+/*position:absolute;*/
 padding:5px;
 font-weight:300px;
 border-bottom: 1px gray solid;	
@@ -49,7 +53,9 @@ border-bottom: 1px gray solid;
 border-bottom: 1px yellow solid;	
 }
 #about{
-position:absolute;
+		position:fixed;
+
+/*position:absolute;*/
 	font-size: 10px;
 	display:none;
 	width:15%;
@@ -61,8 +67,31 @@ top: 12.5em;
 
 }
 
+#clearAll{
+		position:fixed;
+
+/*position:absolute;*/
+	font-size: 10px;
+	/*display:none;*/
+	/*width:5%;*/
+/*width: 20%;*/
+/*height: 5%;*/
+margin-left: 1.5em;
+top: 14.5em;
+	cursor: pointer;
+padding:5px;
+font-weight:300px;
+border-bottom: 1px gray solid;	
 
 
+
+}
+#clearAll:hover{
+			background-color: darkgray;
+		color:white;
+	cursor: pointer;
+border-bottom: 1px yellow solid;	
+}
 
 
 
