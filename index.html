@@ -38,6 +38,11 @@
 	<div id="clearAll">CLEAR
 	</div>
 
+<!-- <circle class="circlePlotted" cx="718.5" cy="368.5" r="450" fill="none" stroke="lightgray" stroke-width="60" style="
+    stroke-opacity: .2;
+"></circle>
+ -->
+
 
 <div id = "exitGraph">
 <img src="exitGraph.png" width="13" height="13">
@@ -246,7 +251,7 @@ var  MAX_LEVELS = 20; //number larger than number of levels of circles
 // var conn_levels = [10, 10, 265, 210, 135, 75, 25, 10, 10, 10]; //how far away from the center each level is
 var conn_levels = [10, 10, 265, 210, 135, 75,10]; //how far away from the center each level is
 // var radius_levels = [0, 0, 240, 190, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
-
+var outer_level = [0,265];
 var radius_levels = [0, 0, 240, 190, 125, 70, 0, 0, 0, 0]; //how far away from the center each level is
 // var subradius = 250; 
 var MIN_LINE = 3.0; //length of the little ones
@@ -296,9 +301,6 @@ var vis = svg
     .append('svg:g')
  	.attr("transform",
       "translate("+ 0 + "," + 0 + ")") //windowHeight/2
-
-
-
 
 
 
@@ -437,11 +439,40 @@ var text = vis.selectAll('.subjectText')
 	})
 	.attr("x", function(d,i){ 
 		if (subjX[i]>windowWidth/2){
+			$(".subjectText").animate().css('text-align','left');
+
 				return subjX[i]; 	
 		}
 		else {
-			return subjX[i]-d.subject.length*3-20;
-		}
+		// 	return subjX[i]-(d.subject.length*3)-20;
+		// }
+			if (d.subject.length > 11){
+			return subjX[i]-d.subject.length*3-55;			
+			}
+			if (d.subject.length<=11 &&d.subject.length>6){
+				return subjX[i]-d.subject.length*3-25;			
+			}
+			else {
+			return subjX[i]-d.subject.length*3-20;				
+			}
+
+
+}
+		// if (subjX[i]<windowWidth/2){
+		// 	$(".subjectText").animate().css('text-align','right');
+		// 	if (d.subject.length > 10){
+		// 	return subjX[i]-d.subject.length*3-55;			
+		// 	}
+		// 	if (d.subject.length<=10 &&d.subject.length>6){
+		// 		return subjX[i]-d.subject.length*3-25;			
+		// 	}
+		// 	else {
+		// 	return subjX[i]-d.subject.length*3-20;				
+		// 	}
+
+
+		// 				// return subjX[i]-d.subject.length*4;
+		// }
 	})
 	.attr("y", function(d,i){ 
 		return subjY[i]; 
@@ -483,18 +514,29 @@ var text = vis.selectAll('.subjectText')
 
 	d3.select(".surroundingPoints"+d.subjCode)
 	.transition()
-	.attr("x", function(){ 
-		if (subjX[i]>width/2){
-				return subjX[i]-5; 	
-		}
-		else {
-			return subjX[i]-d.subject.length*3-25;
-		}
-	})
+// 	.attr("x", function(){ 
+// 		if (subjX[i]>width/2){
+// 				return subjX[i]-5; 	
+// 		}
+// 		else {
+// 		// 	return subjX[i]-(d.subject.length*3)-20;
+// 		// }
+// 			if (d.subject.length > 11){
+// 			return subjX[i]-d.subject.length*3-58;			
+// 			}
+// 			if (d.subject.length<=11 &&d.subject.length>6){
+// 				return subjX[i]-d.subject.length*3-28;			
+// 			}
+// 			else {
+// 			return subjX[i]-d.subject.length*3-23;				
+// 			}
+// }
+
+// 	})
 	.attr("y", subjY[i]-10)
-	.attr("width", function(d){ 
-		return d.width+10; //this.getBBox().width+3)
-	})
+	// .attr("width", function(d){ 
+	// 	return d.width+8; //this.getBBox().width+3)
+	// })
 	.attr("height",14)
 	.attr("stroke", colors[d.loc]);
 		
@@ -541,21 +583,77 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 	.enter().append("rect")
 	.attr("class", function(d,i){ return "surroundingPoints"+d.subjCode; })
 	.attr("x", function(d,i){
-		if (subjX[i]>windowWidth/2){
-				return subjX[i]; 	
+
+	// .attr("x", function(){ 
+		if (subjX[i]>width/2){
+				return subjX[i]-5; 	
 		}
 		else {
-			return subjX[i]-(d.subject.length*3)-20;
-		}
-	})
-	.attr("y", function(d,i){  
-			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
+		// 	return subjX[i]-(d.subject.length*3)-20;
+		// }
+			if (d.subject.length > 11){
+			return subjX[i]-d.subject.length*3-58;			
+			}
+			if (d.subject.length<=11 &&d.subject.length>6){
+				return subjX[i]-d.subject.length*3-28;			
+			}
+			else {
+			return subjX[i]-d.subject.length*3-23;				
+			}
+}
+
 	})
 	.attr("width", function(d,i){ 
 		wordWidth.push(d.width);
-		return d.width;
-		// return 0;
+		if (subjX[i]>width/2){
+				return d.width+11;	
+		}
+		else{
+		return d.width+8; //this.getBBox().width+3)
+	}
 	})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 		if (subjX[i]>windowWidth/2){
+// 				return subjX[i]; 	
+// 		}
+// 		else {
+// 		// 	return subjX[i]-(d.subject.length*3)-20;
+// 		// }
+// 			if (d.subject.length > 11){
+// 			return subjX[i]-d.subject.length*3-55;			
+// 			}
+// 			if (d.subject.length<=11 &&d.subject.length>6){
+// 				return subjX[i]-d.subject.length*3-25;			
+// 			}
+// 			else {
+// 			return subjX[i]-d.subject.length*3-20;				
+// 			}
+// }
+
+
+
+// 	})
+	.attr("y", function(d,i){  
+			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
+	})
+	// .attr("width", function(d,i){ 
+	// 	wordWidth.push(d.width);
+	// 	return d.width;
+	// 	// return 0;
+	// })
 	.attr("height", .1)
 	.attr("stroke-width","1px")
 	.attr("fill","none")
@@ -805,6 +903,45 @@ for (i=0; i<allCodes.length; i++){
 	// if (first)
 	r.push(allCodes[i].split(","));
 }
+// var plottedCircle = vis.selectAll("circlePlotted")
+// 	.data(outer_level)
+// 	.enter()
+// 	.append("circle")
+// 	.attr("class","circlePlotted")
+// 	.attr("cx",width/2)
+// 	.attr("cy",height/2)
+// 	.attr("r", 310)
+// 	.attr("fill","none")
+// 	.attr("stroke","lightgray")
+// 	.attr("stroke-opacity",".1")
+// 	.attr("stroke-width",10);
+// var plottedCircle = vis.selectAll("circlePlotted")
+// 	.data(outer_level)
+// 	.enter()
+// 	.append("circle")
+// 	.attr("class","circlePlotted")
+// 	.attr("cx",width/2)
+// 	.attr("cy",height/2)
+// 	.attr("r", 440)
+// 	.attr("fill","none")
+// 	.attr("stroke","lightgray")
+// 	.attr("stroke-opacity",".1")
+// 	.attr("stroke-width",20);
+
+// 	plottedCircle
+// 	.transition()
+// 	.duration(2000)
+// 	.attr("stroke-width",200)
+// 	.attr("r",650);
+
+// <circle class="circlePlotted" cx="718.5" cy="368.5" r="790" fill="none" stroke="lightgray" stroke-width="500" style="
+//     stroke-opacity: .2;
+//     -webkit-box-shadow: 0px 0px 5px 1px rgba(255, 255, 255, .1);   
+// "></circle>
+
+
+
+
 
 var ringCircle = vis.selectAll("ringCircle")
 	.data(conn_levels)
@@ -1170,12 +1307,34 @@ linesInG = vis.selectAll("linesIn")
 		if (subjX[k]>width/2){
 			return (subjX[k]-5)-calcX[i]; 	
 		}
-		if (subjX[k]<width/2){
-			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
+
+////////////HERE WE ARE DEALING WITH SUBJECT PLACEMENT
+
+		if (subjX[k]<width/2) {
+		// 	return subjX[i]-(d.subject.length*3)-20;
+		// }
+			if (subjTextInside[k].length > 11){
+			return ((subjX[k]-(subjTextInside[k].length*3)-49)+wordWidth[k])-calcX[i];
+			}
+			if (subjTextInside[k].length<=11 &&subjTextInside[k].length>6){
+			return ((subjX[k]-(subjTextInside[k].length*3)-19)+wordWidth[k])-calcX[i];
+			}
+			else{
+			return ((subjX[k]-(subjTextInside[k].length*3)-14)+wordWidth[k])-calcX[i];			
+			}
 		}
+
+		// if (subjX[k]==width/2){
+		// 	return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
+		// }
+
+
+
+
 		if(subjX[k]==width/2){
-			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[i];
+			return (subjX[k]-(subjTextInside[k].length*3-14+wordWidth[k]/4))-calcX[i];
 		}
+
 			}
 			}
 			}				
@@ -1381,18 +1540,45 @@ d3.selectAll(".linesIn"+d)
 		for (k=0; k<subjCode.length; k++){
 			if (subjCode[k]==d){
 
-		if (subjX[k]>width/2){
-			return (subjX[k]-5)-calcX[thisCircle]; 	
-		}
-		if (subjX[k]<width/2){
-			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[thisCircle];
-		}
-		if(subjX[k]==width/2){
-			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[thisCircle];
-		}
+				if (subjX[k]>width/2){
+					return (subjX[k]-5)-calcX[thisCircle]; 	
+				}
+
+//////////////HERE WE ARE DEALING WITH SUBJECT PLACEMENT
+
+			if (subjTextInside[k].length > 11){
+			return ((subjX[k]-(subjTextInside[k].length*3)-49)+wordWidth[k])-calcX[thisCircle];
 			}
+			if (subjTextInside[k].length<=11 &&subjTextInside[k].length>6){
+			return ((subjX[k]-(subjTextInside[k].length*3)-19)+wordWidth[k])-calcX[thisCircle];
+			}
+			if(subjTextInside[k].length<=6) {
+			return ((subjX[k]-(subjTextInside[k].length*3)-14)+wordWidth[k])-calcX[thisCircle];
+			}
+
+		// if (subjX[k]<width/2){
+		// 	return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[i];
+		// }
+		if(subjX[k]==width/2){
+			return ((subjX[k]-(((subjTextInside[k].length*3)-14)+wordWidth[k])/4))-calcX[thisCircle];
 		}
-	})
+
+
+
+}
+}
+})
+
+
+
+		// if (subjX[k]<width/2){
+		// 	return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[thisCircle];
+		// }
+		// if(subjX[k]==width/2){
+		// 	return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[thisCircle];
+		// }
+
+
 	.attr("y2",function(d,i){
 		if (d<5){
 			d = 1;
@@ -1551,13 +1737,25 @@ var newG = vis.selectAll("linesOut")
 			if (subjCode[k]==d){
 
 		if (subjX[k]>width/2){
-			return (subjX[k])-calcX[thisCircle]; 	
+			return (subjX[k]-4)-calcX[thisCircle]; 	
 		}
-		if (subjX[k]<width/2){
+
+
+
+
+////////////another place to deal with subject placement
+
+			if (subjTextInside[k].length > 11){
+			return ((subjX[k]-(subjTextInside[k].length*3)-50)+wordWidth[k])-calcX[thisCircle];
+			}
+			if (subjTextInside[k].length<=11 &&subjTextInside[k].length>6){
 			return ((subjX[k]-(subjTextInside[k].length*3)-20)+wordWidth[k])-calcX[thisCircle];
-		}
+			}
+			else {
+			return ((subjX[k]-subjTextInside[k].length*3-15)+wordWidth[k])-calcX[thisCircle];				
+			}
 		if(subjX[k]==width/2){
-			return ((subjX[k]-(((subjTextInside[k].length*3)-20)+wordWidth[k])/4))-calcX[thisCircle];
+			return ((subjX[k]-(((subjTextInside[k].length*3)-15)+wordWidth[k])/4))-calcX[thisCircle];
 		}
 			}
 		}
