@@ -84,6 +84,29 @@
 	<div id="intro3" style="display: none; opacity: 0;">
 				<p>This does this</p>
 	</div>
+</div>
+</div>
+
+<div class="center">
+	<div class="introZoom"> 
+	<div id="intro4" style="display: none;">
+				<p>Circles are placed on tiers according to how many subjects they are connected to</p>
+	</div>
+	<div id="intro5" style="display: none;">
+				<p>The centermost has 6 subjects connected</p>
+	</div>
+	<div id="intro6" style="display: none;">
+				<p>5</p>
+	</div>
+	<div id="intro7" style="display: none;">
+				<p>4</p>
+	</div>
+	<div id="intro8" style="display: none;">
+				<p>3</p>
+	</div>
+	<div id="intro9" style="display: none;">
+				<p>2 subjects</p>
+	</div>
 	</div>
 </div>
 
@@ -239,7 +262,7 @@ var countProgress = 0;
 }
 else {
 		d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, #introNav, .intro").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");	
 				d3.select("#container").style("pointer-events","auto");
 
@@ -2108,8 +2131,8 @@ $("#subline").click(function(){
 	$("#about").toggle("fast");
 //first transition
 	d3.select("#about").on("click",function(){
-	// svg.call(transition, p0, p1);
-	svg.call(transition, p6,p6)
+	svg.call(transition, p0, p1);
+	// svg.call(transition, p6,p6)
 	})
 })
 
@@ -2120,72 +2143,79 @@ var  i = d3.interpolateZoom(start, end);
   vis
       .attr("transform", transform(start))
     .transition()
-      .delay(250)
+      // .delay(250)
+      .delay(1000)
+
       .duration(i.duration * 2)
       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
       .each("end", function() { 
-// if (end==p1){
-// 	d3.select(".ringCircle"+(p1[0]-width/2))
-// 	.transition()
-// 	.attr("opacity",1)
-// 	.attr("stroke-width",3)
-// 	.transition()
-// 	.duration(1000)
-// 	.attr("stroke-width",1)
-// // }
-//     .each("end", function(){
-//       	svg.call(transition,p1,p2);
-//      })
-//  }
-// if(end==p2){
-// 	d3.select(".ringCircle"+(p2[0]-width/2))
-// 	.transition()
-// 	.attr("opacity",1)
-// 	.attr("stroke-width",3)
-// 	.transition()
-// 	.duration(500)
-// 	.attr("stroke-width",1)
-// 	.each("end",function(){
-//       	svg.call(transition,p2,p3);
-//     })
+if (end==p1){
+$(".introZoom").animate().css("opacity",1).show("fast");
+$("#intro4").show("slow");
+	d3.select(".ringCircle"+(p1[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(1000)
+	.attr("stroke-width",1)
 // }
-// if(end==p3){
-// 	d3.select(".ringCircle"+(p3[0]-width/2))
-// 	.transition()
-// 	.attr("opacity",1)
-// 	.attr("stroke-width",3)
-// 	.transition()
-// 	.duration(500)
-// 	.attr("stroke-width",1)
-// 	.each("end",function(){
-//       	svg.call(transition,p3,p4);
-//       })
-// }
-// if(end==p4){
-// 	d3.select(".ringCircle"+(p4[0]-width/2))
-// 	.transition()
-// 	.attr("opacity",1)
-// 	.attr("stroke-width",3)
-// 	.transition()
-// 	.duration(500)
-// 	.attr("stroke-width",1)
-// 	.each("end",function(){
-//       	svg.call(transition,p4,p5);
-//       })
-// }
-// if(end==p5){
-// 	d3.select(".ringCircle"+(p5[0]-width/2))
-// 	.transition()
-// 	.attr("opacity",1)
-// 	.attr("stroke-width",3)
-// 	.transition()
-// 	.duration(500)
-// 	.attr("stroke-width",1)
-// 	.each("end",function(){
-//       	svg.call(transition,p5,p6);
-//       });
-//       	console.log("ok")
-// }
+    .each("end", function(){
+ 		// $("#intro4").hide("fast");
+      	svg.call(transition,p1,p2);
+     })
+ }
+if(end==p2){
+$("#intro5").show("fast");
+	d3.select(".ringCircle"+(p2[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+// $("#intro5").show("fast");
+      	// svg.call(transition,p2,p3);
+    })
+}
+if(end==p3){
+	d3.select(".ringCircle"+(p3[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p3,p4);
+      })
+}
+if(end==p4){
+	d3.select(".ringCircle"+(p4[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p4,p5);
+      })
+}
+if(end==p5){
+	d3.select(".ringCircle"+(p5[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p5,p6);
+      });
+      	console.log("ok")
+}
 if(end==p6){
    p7 = [calcX[specialCirc], calcY[specialCirc], 100];
 
