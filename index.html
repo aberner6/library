@@ -249,7 +249,7 @@ else {
 var freqscale = 5; //size of circles
 var  MAX_LEVELS = 20; //number larger than number of levels of circles
 // var conn_levels = [10, 10, 265, 210, 135, 75, 25, 10, 10, 10]; //how far away from the center each level is
-var conn_levels = [10, 10, 265, 210, 135, 75,10]; //how far away from the center each level is
+var conn_levels = [12, 12, 264, 209, 137, 77,12]; //how far away from the center each level is
 // var radius_levels = [0, 0, 240, 190, 125, 70, 15, 0, 0, 0]; //how far away from the center each level is
 var outer_level = [0,265];
 var radius_levels = [0, 0, 240, 190, 125, 70, 0, 0, 0, 0]; //how far away from the center each level is
@@ -947,7 +947,7 @@ var ringCircle = vis.selectAll("ringCircle")
 	.data(conn_levels)
 	.enter()
 	.append("circle")
-	.attr("class","ringCircle")
+	.attr("class",function(d,i){ return "ringCircle"+d; })
 	.attr("cx",width/2)
 	.attr("cy",height/2)
 	.attr("r", function(d){
@@ -2167,80 +2167,119 @@ splitBig = incomingBig.split(",");
 }
 
 var specialCirc = 393;
-var p0, p1;
-var clickedSubline = false;
+var p0 = [width/2, height/2, windowHeight],
+    // p1 = [width/2+conn_levels[6], height/2, 100],
+    // p2 = [width/2+conn_levels[5], height/2, 100];
+    // p3 = [width/2+conn_levels[4], height/2, 100];
+    // p4 = [width/2+conn_levels[3], height/2, 100];
+    // p5 = [width/2+conn_levels[2], height/2, 100];
+    p1 = [width/2+conn_levels[2], height/2, 100],
+    p2 = [width/2+conn_levels[3], height/2, 100];
+    p3 = [width/2+conn_levels[4], height/2, 100];
+    p4 = [width/2+conn_levels[5], height/2, 100];
+    p5 = [width/2+conn_levels[6], height/2, 100];
+    var clickedSubline = false;
 
 $("#subline").click(function(){
 	console.log(clickedSubline+"clickedSubline")
-// clickedSubline = 0;
 	clickedSubline = !clickedSubline;
-
-if (clickedSubline){
+	if (clickedSubline){
 	$("#clearAll").animate().css('margin-top', '4.5em');	
-	 // clickedSubline = false;
-
-}
-else{
+	}
+	else{
 	$("#clearAll").animate().css('margin-top', '.01em');
-}
-$("#about").toggle("fast");
-
-// $("#clearAll").animate().css('margin-top', '14.5em');
-d3.select("#about").on("click",function(){
-var p0 = [width/2, height/2, windowHeight],
-
-// var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
-    p1 = [calcX[specialCirc], calcY[specialCirc], 100];
+	}
+	$("#about").toggle("fast");
+//first transition
+	d3.select("#about").on("click",function(){
 	svg.call(transition, p0, p1);
+	})
 })
 
-})
-
-// var p0 = [subjX[scienceSubj], 200, 300],
-//     p1 = [500, 210, 100];
-
-
-
-
-  var center = [width / 2, height / 2];
-      // i = d3.interpolateZoom(start, end);
+var center = [width / 2, height / 2];
 function transition(svg, start, end) {
-  // var center = [width / 2, height / 2],
-    var  i = d3.interpolateZoom(start, end);
+var  i = d3.interpolateZoom(start, end);
 
   vis
       .attr("transform", transform(start))
     .transition()
       .delay(250)
-      .duration(i.duration * 4)
+      .duration(i.duration * 2)
       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-      // .each("end", function() { d3.select(this).call(transition, end, start); });
       .each("end", function() { 
-      	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
-      	.transition()
-      	.attr("opacity",1)
-      	.each("end", function(){
-      		//make lines go out
-      		explainLines();
-      	})
-      	// d3.select(this).call(explainLines); 
-      });
+if (end==p1){
+	d3.select(".ringCircle"+(p1[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(1000)
+	.attr("stroke-width",1)
+// }
+    .each("end", function(){
+      	svg.call(transition,p1,p2);
+     })
+ }
+if(end==p2){
+	d3.select(".ringCircle"+(p2[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p2,p3);
+    })
+}
+if(end==p3){
+	d3.select(".ringCircle"+(p3[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p3,p4);
+      })
+}
+if(end==p4){
+	d3.select(".ringCircle"+(p4[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1)
+	.each("end",function(){
+      	svg.call(transition,p4,p5);
+      })
+}
+if(end==p5){
+	d3.select(".ringCircle"+(p5[0]-width/2))
+	.transition()
+	.attr("opacity",1)
+	.attr("stroke-width",3)
+	.transition()
+	.duration(500)
+	.attr("stroke-width",1);
+}
+});
 
   function transform(p) {
     var k = height / p[2]; //*2;
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
   }
-  d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
+  // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
 }
 function explainLines(){
  	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
 	//here we will do something like make 
 	//then we also want to zoom out
 	var p0 = [width/2, height/2, windowHeight],
-// var p0 = [subjX[scienceSubj], subjY[scienceSubj], 200],
     p1 = [calcX[specialCirc], calcY[specialCirc], 100];
 	svg.call(transitionTwo, p1, p0);
-	// transitionTwo();
 }
 
 
@@ -2253,25 +2292,68 @@ function transitionTwo(svg, start, end) {
       .delay(250)
       .duration(i.duration * 4)
       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-      // .each("end", function() { d3.select(this).call(transition, end, start); });
-      // .each("end", function() { 
-      // 	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
-      // 	.transition()
-      // 	.attr("opacity",1)
-      // 	.each("end", function(){
-      // 		//make lines go out
-      // 		explainLines();
-      // 	})
-      // 	// d3.select(this).call(explainLines); 
-      // });
 
   function transform(p) {
     var k = height / p[2]; //*2;
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
   }
-  // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
 }
 
+
+
+/////////////////////////////////////////
+// var center = [width / 2, height / 2];
+// function transition(svg, start, end) {
+//     var  i = d3.interpolateZoom(start, end);
+
+//   vis
+//       .attr("transform", transform(start))
+//     .transition()
+//       .delay(250)
+//       .duration(i.duration * 4)
+//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+//       .each("end", function() { 
+//       	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
+//       	.transition()
+//       	.attr("opacity",1)
+//       	.each("end", function(){
+//       		//make lines go out
+//       		explainLines();
+//       	})
+//       });
+
+//   function transform(p) {
+//     var k = height / p[2]; //*2;
+//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+//   }
+//   d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
+// }
+// function explainLines(){
+//  	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
+// 	//here we will do something like make 
+// 	//then we also want to zoom out
+// 	var p0 = [width/2, height/2, windowHeight],
+//     p1 = [calcX[specialCirc], calcY[specialCirc], 100];
+// 	svg.call(transitionTwo, p1, p0);
+// }
+
+
+// function transitionTwo(svg, start, end) {
+//  var i = d3.interpolateZoom(start, end);
+
+//   vis
+//       .attr("transform", transform(start))
+//     .transition()
+//       .delay(250)
+//       .duration(i.duration * 4)
+//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
+
+//   function transform(p) {
+//     var k = height / p[2]; //*2;
+//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
+//   }
+// }
+///////////////////////////
 
 
 
