@@ -2178,6 +2178,12 @@ var p0 = [width/2, height/2, windowHeight],
     p3 = [width/2+conn_levels[4], height/2, 100];
     p4 = [width/2+conn_levels[5], height/2, 100];
     p5 = [width/2+conn_levels[6], height/2, 100];
+    //going to special circle
+    p6 = [width/2+conn_levels[4], height/2, 100];
+    var p7; //= [width/2+conn_levels[4], height/2, 100];
+    // p7 = [calcX[specialCirc], calcY[specialCirc], 100];
+	p8 = [width/2, height/2, windowHeight];
+
     var clickedSubline = false;
 
 $("#subline").click(function(){
@@ -2192,7 +2198,8 @@ $("#subline").click(function(){
 	$("#about").toggle("fast");
 //first transition
 	d3.select("#about").on("click",function(){
-	svg.call(transition, p0, p1);
+	// svg.call(transition, p0, p1);
+	svg.call(transition, p6,p6)
 	})
 })
 
@@ -2207,64 +2214,104 @@ var  i = d3.interpolateZoom(start, end);
       .duration(i.duration * 2)
       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
       .each("end", function() { 
-if (end==p1){
-	d3.select(".ringCircle"+(p1[0]-width/2))
-	.transition()
-	.attr("opacity",1)
-	.attr("stroke-width",3)
-	.transition()
-	.duration(1000)
-	.attr("stroke-width",1)
+// if (end==p1){
+// 	d3.select(".ringCircle"+(p1[0]-width/2))
+// 	.transition()
+// 	.attr("opacity",1)
+// 	.attr("stroke-width",3)
+// 	.transition()
+// 	.duration(1000)
+// 	.attr("stroke-width",1)
+// // }
+//     .each("end", function(){
+//       	svg.call(transition,p1,p2);
+//      })
+//  }
+// if(end==p2){
+// 	d3.select(".ringCircle"+(p2[0]-width/2))
+// 	.transition()
+// 	.attr("opacity",1)
+// 	.attr("stroke-width",3)
+// 	.transition()
+// 	.duration(500)
+// 	.attr("stroke-width",1)
+// 	.each("end",function(){
+//       	svg.call(transition,p2,p3);
+//     })
 // }
-    .each("end", function(){
-      	svg.call(transition,p1,p2);
-     })
- }
-if(end==p2){
-	d3.select(".ringCircle"+(p2[0]-width/2))
-	.transition()
-	.attr("opacity",1)
-	.attr("stroke-width",3)
-	.transition()
-	.duration(500)
-	.attr("stroke-width",1)
-	.each("end",function(){
-      	svg.call(transition,p2,p3);
-    })
+// if(end==p3){
+// 	d3.select(".ringCircle"+(p3[0]-width/2))
+// 	.transition()
+// 	.attr("opacity",1)
+// 	.attr("stroke-width",3)
+// 	.transition()
+// 	.duration(500)
+// 	.attr("stroke-width",1)
+// 	.each("end",function(){
+//       	svg.call(transition,p3,p4);
+//       })
+// }
+// if(end==p4){
+// 	d3.select(".ringCircle"+(p4[0]-width/2))
+// 	.transition()
+// 	.attr("opacity",1)
+// 	.attr("stroke-width",3)
+// 	.transition()
+// 	.duration(500)
+// 	.attr("stroke-width",1)
+// 	.each("end",function(){
+//       	svg.call(transition,p4,p5);
+//       })
+// }
+// if(end==p5){
+// 	d3.select(".ringCircle"+(p5[0]-width/2))
+// 	.transition()
+// 	.attr("opacity",1)
+// 	.attr("stroke-width",3)
+// 	.transition()
+// 	.duration(500)
+// 	.attr("stroke-width",1)
+// 	.each("end",function(){
+//       	svg.call(transition,p5,p6);
+//       });
+//       	console.log("ok")
+// }
+if(end==p6){
+   p7 = [calcX[specialCirc], calcY[specialCirc], 100];
+
+  d3.select("circle.inCircle"+specialCirc)
+  .transition()
+  .attr("opacity","1")
+  .each("end",function(){
+   d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut"
+      	.transition()
+      	.attr("opacity",1)
+  	.each("end",function(){
+      	svg.call(transition,p6,p7);
+      });  	
+  })
 }
-if(end==p3){
-	d3.select(".ringCircle"+(p3[0]-width/2))
-	.transition()
-	.attr("opacity",1)
-	.attr("stroke-width",3)
-	.transition()
-	.duration(500)
-	.attr("stroke-width",1)
-	.each("end",function(){
-      	svg.call(transition,p3,p4);
-      })
+if(end==p7){
+ 	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
+	//here we will do something like make 
+	//then we also want to zoom out
+
+	svg.call(transition,p7, p8);
+      	// console.log("ok")
+      	// .each("end", function(){
+      		//make lines go out
+      		// explainLines();
+ 			// allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
+	//here we will do something like make 
+	//then we also want to zoom out
+			// svg.call(transition, p7, p8);
+      	// })
+      	// console.log("ok")
 }
-if(end==p4){
-	d3.select(".ringCircle"+(p4[0]-width/2))
-	.transition()
-	.attr("opacity",1)
-	.attr("stroke-width",3)
-	.transition()
-	.duration(500)
-	.attr("stroke-width",1)
-	.each("end",function(){
-      	svg.call(transition,p4,p5);
-      })
-}
-if(end==p5){
-	d3.select(".ringCircle"+(p5[0]-width/2))
-	.transition()
-	.attr("opacity",1)
-	.attr("stroke-width",3)
-	.transition()
-	.duration(500)
-	.attr("stroke-width",1);
-}
+    // p6 = [width/2+conn_levels[4], height/2, 100];
+    // p7 = [calcX[specialCirc], calcY[specialCirc], 100];
+
+//by the way maybe i can just do d3.select("ringcircle+end", no ifs)
 });
 
   function transform(p) {
@@ -2273,13 +2320,17 @@ if(end==p5){
   }
   // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
 }
+
+
+
+
 function explainLines(){
  	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
 	//here we will do something like make 
 	//then we also want to zoom out
-	var p0 = [width/2, height/2, windowHeight],
-    p1 = [calcX[specialCirc], calcY[specialCirc], 100];
-	svg.call(transitionTwo, p1, p0);
+	var p9 = [width/2, height/2, windowHeight];
+    var p10 = [calcX[specialCirc], calcY[specialCirc], 100];
+	svg.call(transitionTwo, p10, p9);
 }
 
 
