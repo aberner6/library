@@ -114,9 +114,16 @@
 	<div id="intro11" style="display: none;">
 				<p>If you mouseover one circle, you will see lines spike out towards the related subjects</p>
 	</div>
-
-
-
+	<div id="intro12" style="display: none;">
+				<p>And vice versa: </p>
+				<p>If you click on subjects around the ring, you will see the collections of books that relate to those unique subjects</p>
+	</div>
+	<div id="intro13" style="display: none;">
+				<p>Finally, open up the book list to view the titles.</p>
+	</div>
+	<div id="intro14" style="display: none;">
+				<p>Click any to view its record in the Columbia Library</p>
+	</div>
 	</div>
 </div>
 
@@ -2307,7 +2314,25 @@ if(end==p7){
   		})
 	})
 }
+
+
+
+
+
 if(end==p8){
+	$("#intro9, #intro10, #intro11").hide("fast");
+//FIGURE OUT HOW TO ANIMATE THE CSSS HERE I THINK?
+$(".introZoom").animate().css("width:16%","left:98px","top:300px").show("fast");
+
+// $(".introZoom").animate().css("width:16%","left","98px";"top","300px").show("fast");
+// width: 16%;
+// left: 98px;
+// top: 300px;
+
+
+
+
+
 d3.selectAll("line.hey"+specialCirc)
 	.transition()
 	.attr("x2",0)
@@ -2317,6 +2342,7 @@ d3.select("circle.inCircle"+specialCirc)
   	.transition()
   	.attr("opacity",".1")
   	.each("end",function(){
+  	$("#intro12").show("fast"); //SUBJECTS
 
 ///////////////////first subject
 
@@ -2341,6 +2367,8 @@ for (i=0; i<subjCode.length; i++){
 			checked(checkedIt);
 		d3.select(".surroundingPoints"+specialSubj1)
 			.transition()
+			.delay(2000)
+			.duration(2000)
 			.attr("y", subjY[specialIndex1]-10)
 			.attr("height",14)
 			.attr("stroke", colors[subjLoc[specialIndex1]])
@@ -2350,6 +2378,8 @@ for (i=0; i<subjCode.length; i++){
 			checked(checkedIt);
 		d3.select(".surroundingPoints"+specialSubj2)
 			.transition()
+			.delay(2000)
+			.duration(2000)
 			.attr("y", subjY[specialIndex2]-10)
 			.attr("height",14)
 			.attr("stroke", colors[subjLoc[specialIndex2]])	
@@ -2360,11 +2390,15 @@ for (i=0; i<subjCode.length; i++){
 				checked(checkedIt);
 				d3.select(".surroundingPoints"+specialSubj3)
 					.transition()
+					.delay(1000)
+					.duration(1000)
 					.attr("y", subjY[specialIndex3]-10)
 					.attr("height",14)
 					.attr("stroke", colors[subjLoc[specialIndex3]])
 					.each("end",function(){
 						//open books column
+  	$("#intro13").show("slow"); //SUBJECTS
+
 d3.select("#inner")
 .transition()
 .delay(2000)
@@ -2380,8 +2414,11 @@ d3.select("#inner")
 		.transition()
 		.style("display","block")
 		.each("end",function(){
-		otherBooks(checkedIt,checkedIndex);		
+		otherBooks(checkedIt,checkedIndex);
+  	$("#intro14").show("fast"); //SUBJECTS		
 		})
+//then simulate clicking on a book??
+
 })
 
 
