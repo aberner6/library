@@ -2286,17 +2286,48 @@ if(end==p6){
    d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut"
       	.transition()
       	.attr("opacity",1)
+      	// .delay(2000)
   	.each("end",function(){
       	svg.call(transition,p6,p7);
       });  	
   })
 }
 if(end==p7){
- 	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
 	//here we will do something like make 
 	//then we also want to zoom out
+//ALLMOUSEOVERTEXT  d3.select("circle.inCircle"+specialCirc)
 
-	svg.call(transition,p7, p8);
+
+  d3.select("circle.inCircle"+specialCirc)
+  .transition()
+  .duration(6000)
+  .attr("stroke","white")
+  .attr("stroke-width",4)
+  .transition()
+  .duration(6000)
+  .attr("stroke-width",1)
+  .each("end",function(){
+ 	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
+
+	d3.selectAll(".mouseoverText")
+		.transition()
+		.delay(3000)
+		.duration(2000)
+		.attr("fill","yellow")
+		// .attr("stroke-width",.1)
+		// .attr("stroke","lightgray")
+		.each("end",function(){
+			svg.call(transition,p7, p8);  
+	d3.selectAll(".mouseoverText")
+		.transition()
+		.attr("fill","black")
+		.attr("stroke","none");
+
+
+  		})
+	})
+
+
       	// console.log("ok")
       	// .each("end", function(){
       		//make lines go out
