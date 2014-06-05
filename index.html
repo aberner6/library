@@ -90,26 +90,25 @@
 <div class="center">
 	<div class="introZoom"> 
 	<div id="intro4" style="display: none;">
-				<p>Circles are placed on tiers according to how many subjects they are connected to.</p>
-				<p>	This outermost tier is composed of circles connected to 2 subjects</p>
+				<p>Circles are placed on tiers according to how many subjects they are connected to - the outermost tier holds circles connected to <b>2</b> subjects</p>
 	</div>
 	<div id="intro5" style="display: none;">
-				<p>The next tier of circles are connected to 3 subjects</p>
+				<p>The next tier of circles are connected to <b>3</b> subjects</p>
 	</div>
 	<div id="intro6" style="display: none;">
-				<p>4 subjects</p>
+				<p><b>4</b> subjects</p>
 	</div>
 	<div id="intro7" style="display: none;">
-				<p>5 subjects</p>
+				<p><b>5</b> subjects</p>
 	</div>
 	<div id="intro8" style="display: none;">
-				<p>And 6 subjects</p>
+				<p>And <b>6</b> subjects</p>
 	</div>
 	<div id="intro9" style="display: none;">
 				<p>Each circle represents a collection of books related to a unique set of subjects</p>
 	</div>
 	<div id="intro10" style="display: none;">
-				<p>Its size relates to how many books it contains - 1 in this case</p>
+				<p>Its <b>size</b> relates to how many books it contains - <b>1</b> in this case</p>
 	</div>
 	<div id="intro11" style="display: none;">
 				<p>If you mouseover one circle, you will see lines spike out towards the related subjects</p>
@@ -122,7 +121,7 @@
 				<p>Finally, open up the book list to view the titles.</p>
 	</div>
 	<div id="intro14" style="display: none;">
-				<p>Click any to view its record in the Columbia Library</p>
+				<p>Click any book listed to view its record in the Columbia Library</p>
 	</div>
 	</div>
 </div>
@@ -215,6 +214,7 @@ var colors =
 "#6F79F0"]
 
 
+var animateZoom = false;
 
 var animateOpening = false;
 	if (animateOpening) {
@@ -613,40 +613,6 @@ var surroundingRects = vis.selectAll("surroundingPoints")
 		return d.width+8; //this.getBBox().width+3)
 	}
 	})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 		if (subjX[i]>windowWidth/2){
-// 				return subjX[i]; 	
-// 		}
-// 		else {
-// 		// 	return subjX[i]-(d.subject.length*3)-20;
-// 		// }
-// 			if (d.subject.length > 11){
-// 			return subjX[i]-d.subject.length*3-55;			
-// 			}
-// 			if (d.subject.length<=11 &&d.subject.length>6){
-// 				return subjX[i]-d.subject.length*3-25;			
-// 			}
-// 			else {
-// 			return subjX[i]-d.subject.length*3-20;				
-// 			}
-// }
-
-
-
-// 	})
 	.attr("y", function(d,i){  
 			return height*.5+subradius*Math.sin(jump*(d.loc-1))+5;
 	})
@@ -701,11 +667,9 @@ $('.subjectText').tipsy({
 		}
 });
 })
-// if (subjCode.length>0 && r.length>0){
-// 	console.log("prep lines?")
-// 		prepLines();
-// }
 }
+
+
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -881,7 +845,9 @@ firstLoadVar = setInterval(function(){
 function runOnce(){
 	runInnerCircles();
 	runOuterCircles();
-	processBigs(oneBig,indexBig);
+// zoomOpening = true;
+zoomOpening();
+	// processBigs(oneBig,indexBig);
 	
 // makeGraphsLittle();
 }
@@ -2148,12 +2114,18 @@ $("#subline").click(function(){
 	$("#about").toggle("fast");
 //first transition
 	d3.select("#about").on("click",function(){
-	svg.call(transition, p0, p1);
+	// svg.call(transition, p0, p1);
 	// svg.call(transition, p6,p6)
 	})
 })
 
+
 var center = [width / 2, height / 2];
+
+function zoomOpening(){
+		d3.select("#container").style("pointer-events","none");
+	svg.call(transition, p0, p1);
+}
 function transition(svg, start, end) {
 var  i = d3.interpolateZoom(start, end);
 
@@ -2180,11 +2152,10 @@ $(".introZoom").animate().css("opacity",1).show("fast", function(){
 	.attr("opacity",1)
 	.attr("stroke-width",3)
 	.transition()
+	.delay(3000) //at least!
 	.duration(1000)
 	.attr("stroke-width",1)
-// }
     .each("end", function(){
- 		// $("#intro4").hide("fast");
       	svg.call(transition,p1,p2);
      })
  }
@@ -2230,13 +2201,18 @@ if(end==p4){
       })
 }
 if(end==p5){
-	$("#intro8").show("fast");
+$(".introZoom").animate({
+top:"110px",
+});
+$("#intro8").show("fast")
+
 	d3.select(".ringCircle"+(p5[0]-width/2))
 	.transition()
 	.attr("opacity",1)
 	.attr("stroke-width",3)
 	.transition()
-	.duration(500)
+	.delay(3000)
+	.duration(1000)
 	.attr("stroke-width",1)
 	.each("end",function(){
 	$("#intro4, #intro5, #intro6, #intro7, #intro8").hide("fast");
@@ -2294,6 +2270,7 @@ if(end==p7){
 	})
   .transition()
   .duration(1000)
+   .delay(4000)
   .attr("stroke-width",1)
   .each("end",function(){
   	$("#intro11").show("fast"); //SUBJECTS
@@ -2303,14 +2280,15 @@ if(end==p7){
 	d3.selectAll(".mouseoverText")
 		.transition()
 		.delay(3000)
-		.duration(2000)
-		.attr("fill","black")
+		.duration(3000)
+		.remove()
+		// .attr("fill","black")
 		.each("end",function(){
 			svg.call(transition,p7, p8);  
-				d3.selectAll(".mouseoverText")
-				.transition()
-				.attr("fill","black")
-				.attr("stroke","none");
+				// d3.selectAll(".mouseoverText")
+				// .transition()
+				// .attr("fill","black")
+				// .attr("stroke","none");
   		})
 	})
 }
@@ -2320,46 +2298,21 @@ if(end==p7){
 
 
 if(end==p8){
-	$("#intro9, #intro10, #intro11").hide("fast");
-//FIGURE OUT HOW TO ANIMATE THE CSSS HERE I THINK?
+	$("#intro9, #intro10, #intro11").hide("fast", function(){
 $(".introZoom").animate({
-width:"16%",
-left:"0.6in",
+left:"100px",
 top:"300px",
-}).show("fast");
-	// ).css("width:16%","left:98px","top:300px").show("fast");
+}).show("slow");
 
-// $( "#go" ).click(function() {
-//   $( "#block" ).animate({
-//     width: "70%",
-//     opacity: 0.4,
-//     marginLeft: "0.6in",
-//     fontSize: "3em",
-//     borderWidth: "10px"
-//   }, 1500 );
-// });
-
-
-
-
-
-
-
-
-// $(".introZoom").animate().css("width:16%","left","98px";"top","300px").show("fast");
-// width: 16%;
-// left: 98px;
-// top: 300px;
-
-
-
+	});
+//FIGURE OUT HOW TO ANIMATE THE CSSS HERE I THINK?
 
 
 d3.selectAll("line.hey"+specialCirc)
 	.transition()
 	.attr("x2",0)
 	.attr("y2",0);
-d3.selectAll(".mouseoverText").remove();
+// d3.selectAll(".mouseoverText").remove();
 d3.select("circle.inCircle"+specialCirc)
   	.transition()
   	.attr("opacity",".1")
@@ -2383,10 +2336,6 @@ for (i=0; i<subjCode.length; i++){
 		specialIndex3 = i; 
 	}
 }
-
-			runLines(specialSubj1);
-			checkedIt.push(specialSubj1);
-			checked(checkedIt);
 		d3.select(".surroundingPoints"+specialSubj1)
 			.transition()
 			.delay(2000)
@@ -2394,22 +2343,31 @@ for (i=0; i<subjCode.length; i++){
 			.attr("y", subjY[specialIndex1]-10)
 			.attr("height",14)
 			.attr("stroke", colors[subjLoc[specialIndex1]])
-		.each("end",function(){
-			runLines(specialSubj2);
-			checkedIt.push(specialSubj2);
-			checked(checkedIt);
+			.each("end",function(){
+			runLines(specialSubj1);
+			checkedIt.push(specialSubj1);
+			checked(checkedIt);				
+		// 	})
+
+
+
+		// .each("end",function(){
 		d3.select(".surroundingPoints"+specialSubj2)
 			.transition()
 			.delay(2000)
 			.duration(2000)
 			.attr("y", subjY[specialIndex2]-10)
 			.attr("height",14)
-			.attr("stroke", colors[subjLoc[specialIndex2]])	
-			//CHECK THE ADJOINING LINES
+			.attr("stroke", colors[subjLoc[specialIndex2]])
 			.each("end",function(){
-				runLines(specialSubj3);
-				checkedIt.push(specialSubj3);
-				checked(checkedIt);
+			runLines(specialSubj2);
+			checkedIt.push(specialSubj2);
+			checked(checkedIt);				
+			// })	
+
+
+			// //CHECK THE ADJOINING LINES
+			// .each("end",function(){
 				d3.select(".surroundingPoints"+specialSubj3)
 					.transition()
 					.delay(1000)
@@ -2418,7 +2376,19 @@ for (i=0; i<subjCode.length; i++){
 					.attr("height",14)
 					.attr("stroke", colors[subjLoc[specialIndex3]])
 					.each("end",function(){
+				runLines(specialSubj3);
+				checkedIt.push(specialSubj3);
+				checked(checkedIt);
+			// })
+			// 		.each("end",function(){
 						//open books column
+  	$("#intro12").hide("fast"); //SUBJECTS
+
+$(".introZoom").animate({
+left:"1200px", 
+top:"200px",
+});
+
   	$("#intro13").show("slow"); //SUBJECTS
 
 d3.select("#inner")
@@ -2437,7 +2407,10 @@ d3.select("#inner")
 		.style("display","block")
 		.each("end",function(){
 		otherBooks(checkedIt,checkedIndex);
-  	$("#intro14").show("fast"); //SUBJECTS		
+  	$("#intro13").hide("fast", function(){
+  		$("#intro14").show("fast"); //SUBJECTS		
+  	}); //SUBJECTS
+
 		})
 //then simulate clicking on a book??
 
@@ -2447,35 +2420,6 @@ d3.select("#inner")
 					})	
 			})		
 		})
-
-// 		if(storeClicks[i]%2==0){ //if unselected
-// 			console.log("clicked off"+storeClicks[i]%2)
-// 			d3.select(".surroundingPoints"+d.subjCode)
-// 			.transition()
-// 			.attr("y", subjY[i]+5)
-// 			.attr("height",.1)
-// 		//and remove that subject number
-// 			for (c=0; c<checkedIt.length; c++){
-// 				if (checkedIt[c]==d.subjCode){ // || 2 || 3 || 4
-// 				checkedIt.splice(c,1);
-// 			}
-// 		}
-// booksChecked.length = 0;
-// bookColors.length = 0;
-
-// d3.selectAll("circle.inCircle"+checkedIndex)
-// 	.transition()
-// 	.attr("opacity",.1)
-// 	.attr("fill","grey");
-// d3.selectAll(".checkedLinesOut").remove();
-// d3.selectAll(".mouseoverText").remove();
-// d3.selectAll(".innerText").remove();
-
-// checked(checkedIt);
-
-// removeRunnedLines(d.subjCode);
-
-// 	}
 
 ///////////////////////////ready for next subject?
   	})
@@ -2487,115 +2431,9 @@ d3.select("#inner")
   function transform(p) {
     var k = height / p[2]; //*2;
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
-  }
+  	}
   // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
 }
-
-
-
-
-function explainLines(){
- 	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
-	//here we will do something like make 
-	//then we also want to zoom out
-	var p9 = [width/2, height/2, windowHeight];
-    var p10 = [calcX[specialCirc], calcY[specialCirc], 100];
-	svg.call(transitionTwo, p10, p9);
-}
-
-
-function transitionTwo(svg, start, end) {
- var i = d3.interpolateZoom(start, end);
-
-  vis
-      .attr("transform", transform(start))
-    .transition()
-      .delay(250)
-      .duration(i.duration * 4)
-      .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-
-  function transform(p) {
-    var k = height / p[2]; //*2;
-    return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
-  }
-}
-
-
-
-/////////////////////////////////////////
-// var center = [width / 2, height / 2];
-// function transition(svg, start, end) {
-//     var  i = d3.interpolateZoom(start, end);
-
-//   vis
-//       .attr("transform", transform(start))
-//     .transition()
-//       .delay(250)
-//       .duration(i.duration * 4)
-//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-//       .each("end", function() { 
-//       	d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut")
-//       	.transition()
-//       	.attr("opacity",1)
-//       	.each("end", function(){
-//       		//make lines go out
-//       		explainLines();
-//       	})
-//       });
-
-//   function transform(p) {
-//     var k = height / p[2]; //*2;
-//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
-//   }
-//   d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
-// }
-// function explainLines(){
-//  	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
-// 	//here we will do something like make 
-// 	//then we also want to zoom out
-// 	var p0 = [width/2, height/2, windowHeight],
-//     p1 = [calcX[specialCirc], calcY[specialCirc], 100];
-// 	svg.call(transitionTwo, p1, p0);
-// }
-
-
-// function transitionTwo(svg, start, end) {
-//  var i = d3.interpolateZoom(start, end);
-
-//   vis
-//       .attr("transform", transform(start))
-//     .transition()
-//       .delay(250)
-//       .duration(i.duration * 4)
-//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-
-//   function transform(p) {
-//     var k = height / p[2]; //*2;
-//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
-//   }
-// }
-///////////////////////////
-
-
-
-// function transition(svg, start, end) {
-//   var center = [width / 2, height / 2],
-//       i = d3.interpolateZoom(start, end);
-
-//   vis
-//       .attr("transform", transform(start))
-//     .transition()
-//       .delay(250)
-//       .duration(i.duration * 4)
-//       .attrTween("transform", function() { return function(t) { return transform(i(t)); }; })
-//       .each("end", function() { d3.select(this).call(transition, end, start); });
-
-//   function transform(p) {
-//     var k = height / p[2]; //*2;
-//     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
-//   }
-// }
-
 
 </script>
 </body>
