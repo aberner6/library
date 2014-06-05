@@ -107,35 +107,6 @@ svg{
 }
 
 #inner{
-/*top: 21px;
-right: 10px;
-display: none;
-opacity: 0.7;
-font-size:8pt; position: absolute; 
-padding: 5px; 
-z-index: 100000; 
-background-color: darkgray; 
-color: white; max-width: 300px; 
-padding: 5px 8px 4px 8px; 
-text-align: center; */
-
-/*padding-top: 5px;
-padding-right: 5px;
-padding-bottom: 5px;
-padding-left: 5px;
-
-top: 0;
-left: 10px;
-border-bottom-style: solid;
-border-top: none;
-border-left-color: transparent;
-border-right-color: transparent;*/
-
-
-
-
-
-
 top: 40px;
 right: 10px;
 display: none;
@@ -224,7 +195,20 @@ border-left-color: #000;
 opacity: .1;
 }
 
-
+.introZoom.selected{
+opacity: 0.7;
+border-bottom-color: #000;
+border-left-color: #000;
+position: absolute;
+padding: 5px;
+z-index: 100000;
+padding: 5px 5px 4px 3px;
+border-style: solid;
+border-left-color: transparent;
+border-right-color: transparent;
+border-bottom-style: solid;
+border-top: none;
+}
 .introZoom{
 position: absolute;
 z-index: 20;

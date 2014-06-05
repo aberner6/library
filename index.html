@@ -90,10 +90,11 @@
 <div class="center">
 	<div class="introZoom"> 
 	<div id="intro4" style="display: none;">
-				<p>Circles are placed on tiers according to how many subjects they are connected to - the outermost tier holds circles connected to <b>2</b> subjects</p>
+				<p>Circles are placed on tiers according to how many subjects they are connected to - </p>
+				<p><b>2</b> subjects at the outermost tier</p>
 	</div>
 	<div id="intro5" style="display: none;">
-				<p>The next tier of circles are connected to <b>3</b> subjects</p>
+				<p><b>3</b> subjects for the next tier</p>
 	</div>
 	<div id="intro6" style="display: none;">
 				<p><b>4</b> subjects</p>
@@ -214,7 +215,7 @@ var colors =
 "#6F79F0"]
 
 
-var animateZoom = false;
+var animateZoom = true;
 
 var animateOpening = false;
 	if (animateOpening) {
@@ -1592,6 +1593,7 @@ thisCircle = index;
 
 var justOne = thisIs[0];
 var grabIt = [];
+if(animateZoom==false){
 var mouseText = vis.selectAll("mouseoverText")
 	.data(thisIs)
 	.enter()
@@ -1602,7 +1604,7 @@ var mouseText = vis.selectAll("mouseoverText")
 	})
 	.attr("fill","black")
 	.text(circleFreq[thisCircle]);
-
+}
 // var howMany = d3.select("#inner")
 // 	.selectAll(".innerText")
 //    .data(checkedIt)
@@ -2152,7 +2154,7 @@ $(".introZoom").animate().css("opacity",1).show("fast", function(){
 	.attr("opacity",1)
 	.attr("stroke-width",3)
 	.transition()
-	.delay(3000) //at least!
+	.delay(4000) //at least!
 	.duration(1000)
 	.attr("stroke-width",1)
     .each("end", function(){
@@ -2263,34 +2265,40 @@ if(end==p7){
   d3.select("circle.inCircle"+specialCirc)
   .transition()
   .duration(1000)
-  .attr("stroke","white")
+  .attr("stroke","yellow")
   .attr("stroke-width",function(){
   		$("#intro10").show("fast"); //SIZE
-		return 4; 
+		return 3; 
 	})
-  .transition()
-  .duration(1000)
-   .delay(4000)
-  .attr("stroke-width",1)
   .each("end",function(){
+  d3.select("circle.inCircle"+specialCirc)
+  .transition()
+  .delay(3000)
+  .duration(1000)
+  .attr("stroke-width",2)
+  .each("end",function(){
+  d3.select("circle.inCircle"+specialCirc)
+  .transition()
+  // .duration(1000)
+  .attr("stroke-width",1)
+  .attr("stroke","white")
+  // })  
+
+  	.each("end",function(){
   	$("#intro11").show("fast"); //SUBJECTS
-
- 	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
-
-	d3.selectAll(".mouseoverText")
-		.transition()
-		.delay(3000)
-		.duration(3000)
-		.remove()
-		// .attr("fill","black")
+   	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
+  	d3.selectAll("line.hey"+specialCirc)
+	.transition()
+	.delay(2000)
+	.duration(2000)
+	.attr("stroke-width",2)
+	// .attr("y2",0);
 		.each("end",function(){
 			svg.call(transition,p7, p8);  
-				// d3.selectAll(".mouseoverText")
-				// .transition()
-				// .attr("fill","black")
-				// .attr("stroke","none");
   		})
 	})
+})
+})
 }
 
 
@@ -2298,13 +2306,14 @@ if(end==p7){
 
 
 if(end==p8){
-	$("#intro9, #intro10, #intro11").hide("fast", function(){
-$(".introZoom").animate({
+	$("#intro9, #intro10, #intro11").hide("fast");
+$(".introZoom").delay(4000).animate({
 left:"100px",
 top:"300px",
-}).show("slow");
+width:"17%",
 
-	});
+});
+
 //FIGURE OUT HOW TO ANIMATE THE CSSS HERE I THINK?
 
 
@@ -2384,19 +2393,21 @@ for (i=0; i<subjCode.length; i++){
 						//open books column
   	$("#intro12").hide("fast"); //SUBJECTS
 
-$(".introZoom").animate({
-left:"1200px", 
-top:"200px",
+// $(".introZoom").animate({
+// left:"70%",
+// top:"100px",
+// });
+
+$(".introZoom").delay(4000).animate({
+left:"70%",
+top:"100px",
+width:"17%",
 });
 
-  	$("#intro13").show("slow"); //SUBJECTS
+// d3.select("#inner").animate.css("display","block")
+// d3.select(".introZoom").classed("selected", true);	
 
-d3.select("#inner")
-.transition()
-.delay(2000)
-.duration(2000)
-.style("display","none")
-.each("end",function(){
+  	$("#intro13").show("slow",function(){
 	d3.selectAll(".innerText").remove();	
 	d3.select("#booksColumn.selected")
 		.transition()
@@ -2406,10 +2417,18 @@ d3.select("#inner")
 		.transition()
 		.style("display","block")
 		.each("end",function(){
+d3.select("#inner")
+.transition()
+.delay(2000)
+.duration(2000)
+.style("display","none")
+.each("end",function(){
 		otherBooks(checkedIt,checkedIndex);
   	$("#intro13").hide("fast", function(){
   		$("#intro14").show("fast"); //SUBJECTS		
   	}); //SUBJECTS
+})
+
 
 		})
 //then simulate clicking on a book??
