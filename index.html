@@ -103,13 +103,13 @@
 				<p><b>5</b> subjects</p>
 	</div>
 	<div id="intro8" style="display: none;">
-				<p>And <b>6</b> subjects</p>
+				<p>...and <b>6</b> subjects</p>
 	</div>
 	<div id="intro9" style="display: none;">
 				<p>Each circle represents a collection of books related to a unique set of subjects</p>
 	</div>
 	<div id="intro10" style="display: none;">
-				<p>Its <b>size</b> relates to how many books it contains - <b>1</b> in this case</p>
+				<p>Its <b>size</b> relates to how many books it contains. </p><p><b>1</b> in this case</p>
 	</div>
 	<div id="intro11" style="display: none;">
 				<p>If you mouseover one circle, you will see lines spike out towards the related subjects</p>
@@ -2203,10 +2203,13 @@ if(end==p4){
       })
 }
 if(end==p5){
+		$("#intro4, #intro5, #intro6, #intro7").hide("fast");
+
 $(".introZoom").animate({
-top:"110px",
-width:"20%",
+top:"265px",
+width:"10%",
 });
+
 $("#intro8").show("fast")
 
 	d3.select(".ringCircle"+(p5[0]-width/2))
@@ -2218,7 +2221,13 @@ $("#intro8").show("fast")
 	.duration(1000)
 	.attr("stroke-width",1)
 	.each("end",function(){
-	$("#intro4, #intro5, #intro6, #intro7, #intro8").hide("fast");
+
+	$("#intro8").hide("fast", function(){
+$(".introZoom").animate({
+top:"225px",
+width:"17%",
+});
+	});
 	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
 
       	svg.call(transition,p5,p6);
@@ -2311,10 +2320,10 @@ if(end==p7){
 
 if(end==p8){
 	$("#intro9, #intro10, #intro11").hide("fast");
-$(".introZoom").delay(4000).animate({
+$(".introZoom").delay(1000).animate({
 left:"100px",
 top:"300px",
-width:"17%",
+// width:"17%",
 
 });
 
@@ -2323,16 +2332,19 @@ width:"17%",
 
 d3.selectAll("line.hey"+specialCirc)
 	.transition()
+	.delay(1200)
 	.attr("x2",0)
-	.attr("y2",0);
+	.attr("y2",0)
+	.each("end",function(){
+  	$("#intro12").show("fast"); //SUBJECTS		
+	})
 // d3.selectAll(".mouseoverText").remove();
 d3.select("circle.inCircle"+specialCirc)
   	.transition()
-  	.delay(5000)
+  	// .delay(3000)
   	.duration(1000)
   	.attr("opacity",".1")
   	.each("end",function(){
-  	$("#intro12").show("fast"); //SUBJECTS
 
 ///////////////////first subject
 
@@ -2353,7 +2365,7 @@ for (i=0; i<subjCode.length; i++){
 }
 		d3.select(".surroundingPoints"+specialSubj1)
 			.transition()
-			.delay(2000)
+			.delay(1000)
 			.duration(2000)
 			.attr("y", subjY[specialIndex1]-10)
 			.attr("height",14)
@@ -2369,7 +2381,7 @@ for (i=0; i<subjCode.length; i++){
 		// .each("end",function(){
 		d3.select(".surroundingPoints"+specialSubj2)
 			.transition()
-			.delay(2000)
+			.delay(1000)
 			.duration(2000)
 			.attr("y", subjY[specialIndex2]-10)
 			.attr("height",14)
@@ -2398,40 +2410,47 @@ for (i=0; i<subjCode.length; i++){
 			// 		.each("end",function(){
 						//open books column
   	$("#intro12").hide("fast"); //SUBJECTS
-
-$("#intro13").show("slow",function(){
-$(".introZoom").delay(4000).animate({
+$(".introZoom").delay(2000).animate({
 left:"81%",
 top:"100px",
-width:"17%",
+// width:"17%",
 });
-
-	d3.selectAll(".innerText").remove();	
-	d3.select("#booksColumn.selected")
-		.transition()
-		.duration(2000)
-		.style("display","none");	
-		d3.select("#exit")
-		.transition()
-		.style("display","block")
-		.each("end",function(){
+	d3.selectAll(".innerText")
+	.transition()
+	.delay(2000)
+	.remove()
+	.each("end",function(){	
 d3.select("#inner")
 .transition()
-.delay(2000)
-.duration(2000)
 .style("display","none")
-.each("end",function(){
-		otherBooks(checkedIt,checkedIndex);
-  	$("#intro13").hide("fast", function(){
-  		$("#intro14").show("fast"); //SUBJECTS		
-  	}); //SUBJECTS
+.each("end", function(){
+		$("#intro13").show();
 })
+	})
 
 
+// .each("end",function(){
+	d3.select("#booksColumn.selected")
+		.transition()
+		.delay(4000)
+		// .duration(2000)
+		.style("display","none")
+		.each("end",function(){
+			d3.select("#exit")
+			.transition()
+			.style("display","block")
+			.each("end",function(){
+
+			otherBooks(checkedIt,checkedIndex);
+  				$("#intro13").hide("fast", function(){
+  				$("#intro14").show("fast"); //SUBJECTS		
+  				}); //SUBJECTS
+			})
 		})
-//then simulate clicking on a book??
+	// })			
+// })	
 
-})
+//then simulate clicking on a book??
 
 
 					})	
