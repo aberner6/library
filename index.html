@@ -2205,6 +2205,7 @@ if(end==p4){
 if(end==p5){
 $(".introZoom").animate({
 top:"110px",
+width:"20%",
 });
 $("#intro8").show("fast")
 
@@ -2285,7 +2286,10 @@ if(end==p7){
   // })  
 
   	.each("end",function(){
-  	$("#intro11").show("fast"); //SUBJECTS
+  	// .each("end",function(){
+	$("#intro9").hide("fast");
+	// $("#intro9").show("slow");
+  	$("#intro11").show("slow"); //SUBJECTS
    	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
   	d3.selectAll("line.hey"+specialCirc)
 	.transition()
@@ -2324,6 +2328,8 @@ d3.selectAll("line.hey"+specialCirc)
 // d3.selectAll(".mouseoverText").remove();
 d3.select("circle.inCircle"+specialCirc)
   	.transition()
+  	.delay(5000)
+  	.duration(1000)
   	.attr("opacity",".1")
   	.each("end",function(){
   	$("#intro12").show("fast"); //SUBJECTS
@@ -2393,21 +2399,13 @@ for (i=0; i<subjCode.length; i++){
 						//open books column
   	$("#intro12").hide("fast"); //SUBJECTS
 
-// $(".introZoom").animate({
-// left:"70%",
-// top:"100px",
-// });
-
+$("#intro13").show("slow",function(){
 $(".introZoom").delay(4000).animate({
-left:"70%",
+left:"81%",
 top:"100px",
 width:"17%",
 });
 
-// d3.select("#inner").animate.css("display","block")
-// d3.select(".introZoom").classed("selected", true);	
-
-  	$("#intro13").show("slow",function(){
 	d3.selectAll(".innerText").remove();	
 	d3.select("#booksColumn.selected")
 		.transition()
