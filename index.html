@@ -84,13 +84,15 @@
 	<div id="intro3" style="display: none; opacity: 0;">
 				<!-- <p>This does this</p> -->
 	</div>
-</div>
+	</div>
 </div>
 
 <div class="center">
 	<div class="introZoom"> 
 	<div id="intro4" style="display: none;">
-				<p>Circles are placed on tiers according to how many subjects they are connected to - </p>
+				<p>Circles are placed on tiers according to how many subjects they are connected to </p>
+	</div>
+	<div id="intro4half" style="display: none;">
 				<p><b>2</b> subjects at the outermost tier</p>
 	</div>
 	<div id="intro5" style="display: none;">
@@ -106,7 +108,7 @@
 				<p>...and <b>6</b> subjects</p>
 	</div>
 	<div id="intro8half" style="display: none;">
-				<p>Hover over a circle and mousewheel in to zoom in and out of the area</p>
+				<p>Hover over a circle and mousewheel to zoom in and out of the area</p>
 	</div>
 	<div id="intro9" style="display: none;">
 				<p>Each circle represents a collection of books related to a unique set of subjects</p>
@@ -119,7 +121,7 @@
 	</div>
 	<div id="intro12" style="display: none;">
 				<p>And vice versa: </p>
-				<p>If you click on subjects around the ring, you will see the collections of books that relate to those unique subjects</p>
+				<p>Click on subjects around the ring to see which collections of books relate to those unique subjects</p>
 	</div>
 	<div id="intro13" style="display: none;">
 				<p>Open up the book list to view the titles.</p>
@@ -129,7 +131,7 @@
 	</div>
 	</div>
 </div>
-
+<!-- </div> -->
 
 
 	<div id="subline">About
@@ -249,31 +251,41 @@ var countProgress = 0;
 		}
 		if (countProgress==2){
 			console.log(i)
-			d3.select("#intro2")
-			.transition()
-			.style("opacity", 0)
-			.style("display", "none")
-			.each("end",function(){
-		d3.selectAll("#intro1, #intro2, #introNav, .intro")
+			// d3.select("#intro2")
+			// .transition()
+			// .style("opacity", 0)
+			// .style("display", "none")
+			// .each("end",function(){
+		d3.selectAll(".intro, #introNav, #intro1, #intro2")
 		.transition()
 		.style("opacity", 0.0)
 		.style("display", "none")
 		.each("end",function(){
-		d3.select("#container")
-		.transition()
-		.delay(1000)
-		.duration(2000)
-		.style("opacity", .8)
-				.each("end",function(){
 				$("#skip").animate({
 				right:"4px",
 				bottom:"4px",
 				});	
-				 animateZoom = true;
+		d3.select("#container")
+		.transition()
+		// .delay(1000)
+		.duration(1000)
+		.style("opacity", .8)
+				.each("end",function(){
+					// $( ".introZoom" ).animate({
+  			// 		opacity: "show"
+					// }, "slow", "easein" );
+
+$(".introZoom").animate().css("opacity",1).show("fast", function(){
+					$("#intro4").show("fast", function(){
+					$(".introZoom").animate().css("height","inherit");		
+					});
+});
+
+				animateZoom = true;
  				zoomOpening();	
 				})
 			})
-		})
+		// })
 		}
 	})
 	// $('.backNav').on("click", function(){
@@ -301,7 +313,7 @@ var countProgress = 0;
 else {
 		d3.select("#container").transition().style("opacity", 1.0);
 
-		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");	
 				d3.select("#container").style("pointer-events","auto");
 
@@ -309,7 +321,7 @@ else {
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
 function skipIntro(){
 			d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro5, #intro6, #intro7, #intro8, #intro8half,#intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half,#intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
 		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");
 				d3.select("#container").style("pointer-events","auto");
@@ -2173,10 +2185,6 @@ var center = [width / 2, height / 2];
 
 function zoomOpening(){
 if (animateZoom){
-
-$( ".introZoom" ).animate({
-  opacity: "show"
-}, "slow", "easein" );
 		d3.select("#container").style("pointer-events","none");
 	svg.call(transition, p0, p1);
 }
@@ -2205,11 +2213,11 @@ var  i = d3.interpolateZoom(start, end);
       .each("end", function() { 
 if (end==p1){
 
-$(".introZoom").animate().css("opacity",1).show("fast", function(){
-	$("#intro4").show("fast", function(){
-		$(".introZoom").animate().css("height","inherit");		
+// $(".introZoom").animate().css("opacity",1).show("fast", function(){
+	$("#intro4half").show("fast", function(){
+		// $(".introZoom").animate().css("height","inherit");		
 	});
-});
+// });
 // height: inherit;
 
 	d3.select(".ringCircle"+(p1[0]-width/2))
@@ -2221,6 +2229,7 @@ $(".introZoom").animate().css("opacity",1).show("fast", function(){
 	.duration(1000)
 	.attr("stroke-width",1)
     .each("end", function(){
+   	
       	svg.call(transition,p1,p2);
      })
  }
@@ -2266,7 +2275,7 @@ if(end==p4){
       })
 }
 if(end==p5){
-		$("#intro4, #intro5, #intro6, #intro7").hide("fast");
+		$("#intro4, #intro4half, #intro5, #intro6, #intro7").hide("fast");
 
 $(".introZoom").animate({
 top:"265px",
@@ -2293,24 +2302,25 @@ $("#intro8").show("fast")
 		});
 	});
 
-	$("#intro8half").show("slow");
 
 	svg.call(transition, p5half,p6half);
 })
 }
 
 if (end==p6half){
-	$("#intro8half").hide("fast", function(){
+	$("#intro8half").show("slow");
 
-	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
 
       	svg.call(transition,p6half,p6);
-      });
+     
       	console.log("ok")
 }
 
 if(end==p6){
+	$("#intro8half").hide("fast", function(){
 
+	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
+ });
    p7 = [calcX[specialCirc], calcY[specialCirc], 100];
 
   d3.select("circle.inCircle"+specialCirc)
