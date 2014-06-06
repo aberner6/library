@@ -170,15 +170,36 @@ border-left-color: transparent;
 border-right-color: transparent;
 border-bottom-style: solid;
 border-top: none;*/
+
+
+
+
+/*    background-position: center top;
+
 top: 30px;
 right: 10px;
 display: none;
-/*position: absolute;*/
 z-index: 100000;
 padding: 5px 5px 4px 3px;
 border-bottom-color: rgba(65, 63, 63, 1);
 position: absolute; border: 5px dashed rgba(65, 63, 63,1);
-margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;
+margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;*/
+top: 30px;
+right: 10px;
+display: none;
+/* position: absolute; */
+z-index: 100000;
+padding: 5px 1px 0px 0px;
+border-bottom-color: rgba(65, 63, 63, 1);
+position: absolute;
+border: 5px dashed rgba(65, 63, 63,1);
+margin-left: -5px;
+border-bottom-style: solid;
+border-top: none;
+border-left-color: transparent;
+border-right-color: transparent;
+height: 9px;
+background-position: center top;
 }
 .innerText{
 /*font-size:8pt; position: absolute; padding: 5px; z-index: 100000; 
@@ -207,7 +228,8 @@ max-width: 300px;
 padding: 5px 8px 4px 8px;
 text-align: center;
 margin-left: -3.8em;
-margin-top: 0.8907em;
+margin-top: 0.89em;
+
 }
 .thisArrow { 
 /*	top: 0; 
