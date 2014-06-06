@@ -1999,6 +1999,12 @@ $("#clearAll").on("click", function(){
 clearEverything();
 })
 function clearEverything(){
+	
+d3.select("#inner")
+.transition()
+.style("display","none");
+		d3.selectAll(".innerText").remove();	
+
 	hideBooks();
 for (i=0; i<calcX.length; i++){
 	d3.selectAll("text.mouseoverText"+i).remove();
