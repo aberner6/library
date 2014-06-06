@@ -1,6 +1,6 @@
-.tipsy { font-family:'Open Sans'; font-size:8pt; position: absolute; padding: 5px; z-index: 100000; }
+.tipsy { font-family:'Gotham-Light'; font-size:8pt; position: absolute; padding: 5px; z-index: 100000; }
   .tipsy-inner { 
-background-color:rgba(65, 63, 63, 0.7);
+background-color:rgba(65, 63, 63, 1);
 
 /*    background-color: #000; 
 */    color: white; max-width: 300px; padding: 5px 8px 4px 8px; text-align: center; }
@@ -11,13 +11,13 @@ background-color:rgba(65, 63, 63, 0.7);
   /* Uncomment for shadow */
   /*.tipsy-inner { box-shadow: 0 0 5px #000000; -webkit-box-shadow: 0 0 5px #000000; -moz-box-shadow: 0 0 5px #000000; }*/
   
-  .tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed rgba(65, 63, 63, 0.7); }
+  .tipsy-arrow { position: absolute; width: 0; height: 0; line-height: 0; border: 5px dashed rgba(65, 63, 63, 1); }
   
   /* Rules to colour arrows */
-  .tipsy-arrow-n { border-bottom-color: rgba(65, 63, 63, 0.7); }
-  .tipsy-arrow-s { border-top-color: rgba(65, 63, 63, 0.7); }
-  .tipsy-arrow-e { border-left-color: rgba(65, 63, 63, 0.7); }
-  .tipsy-arrow-w { border-right-color: rgba(65, 63, 63, 0.7); }
+  .tipsy-arrow-n { border-bottom-color: rgba(65, 63, 63, 1); }
+  .tipsy-arrow-s { border-top-color: rgba(65, 63, 63,1); }
+  .tipsy-arrow-e { border-left-color: rgba(65, 63, 63,1); }
+  .tipsy-arrow-w { border-right-color: rgba(65, 63, 63, 1); }
 
         .tipsy-n .tipsy-arrow { top: 0px; left: 50%; margin-left: -5px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent; }
     .tipsy-nw .tipsy-arrow { top: 0; left: 10px; border-bottom-style: solid; border-top: none; border-left-color: transparent; border-right-color: transparent;}

@@ -233,7 +233,7 @@
         html: false,
         live: false,
         offset: 0,
-        opacity: 0.7,
+        opacity: 1,
         title: 'title',
         trigger: 'hover',
         hoverlock: false
