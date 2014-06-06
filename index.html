@@ -76,13 +76,13 @@
 	</div>
 	<div id="intro1" style="display: none; opacity: 0;">
 				<p>The Multidisciplinary Browser</p>
-				<p>All libraries, top 25 subjects referenced, returning 400 entries</p>
+				<p>All libraries, thousands of books, only some overlap in disciplines</p>
 	</div>
 	<div id="intro2" style="display: none; opacity: 0;">
-				<p>These ahhhhh</p>
+				<p>Subjects are culled from those overlapping disciplines. Only top 25 are shown. </p><p>Claims etc. represents five subjects condensed: Legislative Amendments, Blah, Blah, Blah. </p>
 	</div>
 	<div id="intro3" style="display: none; opacity: 0;">
-				<p>This does this</p>
+				<!-- <p>This does this</p> -->
 	</div>
 </div>
 </div>
@@ -105,6 +105,9 @@
 	<div id="intro8" style="display: none;">
 				<p>...and <b>6</b> subjects</p>
 	</div>
+	<div id="intro8half" style="display: none;">
+				<p>Hover over a circle and mousewheel in to zoom in and out of the area</p>
+	</div>
 	<div id="intro9" style="display: none;">
 				<p>Each circle represents a collection of books related to a unique set of subjects</p>
 	</div>
@@ -112,14 +115,14 @@
 				<p>Its <b>size</b> relates to how many books it contains. </p><p><b>1</b> in this case</p>
 	</div>
 	<div id="intro11" style="display: none;">
-				<p>If you mouseover one circle, you will see lines spike out towards the related subjects</p>
+				<p>Mouseover and lines spike towards the related subjects</p>
 	</div>
 	<div id="intro12" style="display: none;">
 				<p>And vice versa: </p>
 				<p>If you click on subjects around the ring, you will see the collections of books that relate to those unique subjects</p>
 	</div>
 	<div id="intro13" style="display: none;">
-				<p>Finally, open up the book list to view the titles.</p>
+				<p>Open up the book list to view the titles.</p>
 	</div>
 	<div id="intro14" style="display: none;">
 				<p>Click any book listed to view its record in the Columbia Library</p>
@@ -148,51 +151,6 @@
 		// 	return "blue";
 		// }
 var colors = 
-// ["CC5C5A","CC5C5A","teal","teal","teal","teal","teal","lightgreen","lightgreen","lightgreen","lightgreen","lightblue","lightblue","lightblue","lightblue","lightblue","blue","blue","blue","blue","blue","blue"];
-// "#FFCAA0","#FFCAA0","#FFCAA0","#FFCAA0"
-//dark
-// ["#5F8A2E","#5F8A2E",
-// "#3C4EB4",
-// "#2E848A",
-// "#3C4EB4",
-// "#3C4EB4",
-// "#5F8A2E",
-// "#848E2F",
-// "#2D6886",
-// "#2D6886",
-// "#2D6886",
-// "#2D4786",
-// "#2E848A",
-// "#8A5C2E",
-// "#8A5C2E",
-// "#2E848A",
-// "#2D4786",
-// "#2D4786",
-// "#2D4786",
-// "#2D6886",
-// "#2D4786"]
-//bright
-// ["#FFDAA0","#FFDAA0",
-// "#A0FFFF",
-// "#A0FFFF",
-// "#A0FFFF",
-// "#A0FFFF",
-// "#A0FFFF",
-// "#45E9E9",
-// "#45E9E9",
-// "#45E9E9",
-// "#45E9E9",
-// "#ADB3FF",
-// "#ADB3FF",
-// "#ADB3FF",
-// "#ADB3FF",
-// "#ADB3FF",
-// "#6F79F0",
-// "#6F79F0",
-// "#6F79F0",
-// "#6F79F0",
-// "#6F79F0",
-// "#6F79F0"]
 //not acqua
 ["#FFDAA0","#FFDAA0",
 "#5ECBFF",
@@ -216,78 +174,6 @@ var colors =
 "#6F79F0",
 "#6F79F0"]
 
-
-var animateZoom = false;
-
-var animateOpening = false;
-	if (animateOpening) {
-		d3.select("#container").style("pointer-events","none");
-		d3.select("#intro1")
-			.style("display", "block")
-			.style("opacity", 1.0);
-		$('#skip').fadeIn("slow");
-var countProgress = 0;
-	$('#introNav').on("click", function(){
-		console.log(countProgress)
-		countProgress++;
-		if (countProgress==1){
-			console.log(i)
-			d3.select("#intro1")
-			.transition().style("opacity", 0.0).style("display", "none");
-			d3.select("#intro2")
-			.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-			// portGroups.append("circle")
-			// .attr("class", "point")
-			// .attr("cx", 0)
-			// .attr("cy", 0)
-			// .attr("r", 0.01)
-			// .transition()
-			// .duration(5000)
-			// .attr("r", radiusSmall)
-			// .attr("opacity", portOnOpacity);
-		}
-		if (countProgress==2){
-			console.log(i)
-			d3.select("#intro2")
-			.transition().style("opacity", 0.0).style("display", "none");
-			d3.select("#intro3")
-			.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
-		}
-	})
-	// $('.backNav').on("click", function(){
-	// 	console.log(countProgress)
-	// 	countProgress--;
-	// 	if (countProgress==1){
-	// 		console.log(i)
-	// 		d3.select("#intro1")
-	// 		.transition().style("opacity", 0.0).style("display", "none");
-	// 		d3.select("#intro2")
-	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-	// 	}
-	// 	if (countProgress==2){
-	// 		console.log(i)
-	// 		d3.select("#intro2")
-	// 		.transition().style("opacity", 0.0).style("display", "none");
-	// 		d3.select("#intro3")
-	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
-	// 	}
-	// })
-	$('#skip').on("click",function(){
-		d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, #introNav, .intro").transition().style("opacity", 0.0).style("display", "none");
-		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
-		$('#skip').fadeOut("fast");
-				d3.select("#container").style("pointer-events","auto");
-	})
-}
-else {
-		d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
-		$('#skip').fadeOut("fast");	
-				d3.select("#container").style("pointer-events","auto");
-
-}
-//NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
 
 var freqscale = 5; //size of circles
 var  MAX_LEVELS = 20; //number larger than number of levels of circles
@@ -332,6 +218,107 @@ var showReset = false;
 
 var	width = window.outerWidth,
 	height = window.innerHeight;
+var animateZoom = false;
+
+var animateOpening = true;
+	if (animateOpening) {
+		d3.select("#container").style("pointer-events","none");
+		d3.select("#intro1")
+			.style("display", "block")
+			.style("opacity", 1.0);
+		$('#skip').fadeIn("slow");
+var countProgress = 0;
+	$('#introNav').on("click", function(){
+		console.log(countProgress)
+		countProgress++;
+		if (countProgress==1){
+			console.log(i)
+			d3.select("#intro1")
+			.transition().style("opacity", 0.0).style("display", "none");
+			d3.select("#intro2")
+			.style("display", "block").transition().duration(1000).style("opacity", 1.0);
+			// portGroups.append("circle")
+			// .attr("class", "point")
+			// .attr("cx", 0)
+			// .attr("cy", 0)
+			// .attr("r", 0.01)
+			// .transition()
+			// .duration(5000)
+			// .attr("r", radiusSmall)
+			// .attr("opacity", portOnOpacity);
+		}
+		if (countProgress==2){
+			console.log(i)
+			d3.select("#intro2")
+			.transition()
+			.style("opacity", 0)
+			.style("display", "none")
+			.each("end",function(){
+		d3.selectAll("#intro1, #intro2, #introNav, .intro")
+		.transition()
+		.style("opacity", 0.0)
+		.style("display", "none")
+		.each("end",function(){
+		d3.select("#container")
+		.transition()
+		.delay(1000)
+		.duration(2000)
+		.style("opacity", .8)
+				.each("end",function(){
+				$("#skip").animate({
+				right:"4px",
+				bottom:"4px",
+				});	
+				 animateZoom = true;
+ 				zoomOpening();	
+				})
+			})
+		})
+		}
+	})
+	// $('.backNav').on("click", function(){
+	// 	console.log(countProgress)
+	// 	countProgress--;
+	// 	if (countProgress==1){
+	// 		console.log(i)
+	// 		d3.select("#intro1")
+	// 		.transition().style("opacity", 0.0).style("display", "none");
+	// 		d3.select("#intro2")
+	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
+	// 	}
+	// 	if (countProgress==2){
+	// 		console.log(i)
+	// 		d3.select("#intro2")
+	// 		.transition().style("opacity", 0.0).style("display", "none");
+	// 		d3.select("#intro3")
+	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
+	// 	}
+	// })
+	$('#skip').on("click",function(){
+		skipIntro();
+	})
+}
+else {
+		d3.select("#container").transition().style("opacity", 1.0);
+
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		$('#skip').fadeOut("fast");	
+				d3.select("#container").style("pointer-events","auto");
+
+}
+//NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
+function skipIntro(){
+			d3.select("#container").transition().style("opacity", 1.0);
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro5, #intro6, #intro7, #intro8, #intro8half,#intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
+		$('#skip').fadeOut("fast");
+				d3.select("#container").style("pointer-events","auto");
+		animateZoom = false;
+		
+for (i=0; i<conn_levels; i++){
+d3.selectAll(".ringCircle"+conn_levels[i]).transition().attr("stroke-width",1)
+}
+}
 
 
 
@@ -2148,6 +2135,8 @@ var p0 = [width/2, height/2, windowHeight],
     p3 = [width/2+conn_levels[4], height/2, 100];
     p4 = [width/2+conn_levels[5], height/2, 100];
     p5 = [width/2+conn_levels[6], height/2, 100];
+	p5half =  [width/2+conn_levels[6], height/2, 200];
+var p6half;
     //going to special circle
     p6 = [width/2+conn_levels[4], height/2, 100];
     var p7; //= [width/2+conn_levels[4], height/2, 100];
@@ -2183,10 +2172,26 @@ $("#subline").click(function(){
 var center = [width / 2, height / 2];
 
 function zoomOpening(){
+if (animateZoom){
+
+$( ".introZoom" ).animate({
+  opacity: "show"
+}, "slow", "easein" );
 		d3.select("#container").style("pointer-events","none");
 	svg.call(transition, p0, p1);
 }
+if (animateZoom==false){
+skipIntro();
+	resetZoom();
+}
+}
 function transition(svg, start, end) {
+if (animateZoom==false){
+skipIntro();
+resetZoom();
+}
+if (animateZoom){
+
 var  i = d3.interpolateZoom(start, end);
 
   vis
@@ -2269,6 +2274,7 @@ width:"10%",
 });
 
 $("#intro8").show("fast")
+   	p6half = [calcX[specialCirc-200], calcY[specialCirc-200], 50];
 
 	d3.select(".ringCircle"+(p5[0]-width/2))
 	.transition()
@@ -2281,32 +2287,27 @@ $("#intro8").show("fast")
 	.each("end",function(){
 
 	$("#intro8").hide("fast", function(){
-$(".introZoom").animate({
-top:"225px",
-width:"17%",
-});
+		$(".introZoom").animate({
+			top:"225px",
+			width:"17%",
+		});
 	});
+
+	$("#intro8half").show("slow");
+
+	svg.call(transition, p5half,p6half);
+})
+}
+
+if (end==p6half){
+	$("#intro8half").hide("fast", function(){
+
 	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
 
-      	svg.call(transition,p5,p6);
+      	svg.call(transition,p6half,p6);
       });
       	console.log("ok")
 }
-
-
-
-	// <div id="intro9" style="display: none;">
-	// 			<p>Each circle represents a collection of books related to a unique set of subjects</p>
-	// </div>
-	// <div id="intro10" style="display: none;">
-	// 			<p>Its size relates to how many books it contains</p>
-	// </div>
-	// <div id="intro11" style="display: none;">
-	// 			<p>If you mouseover one circle, you will see lines spike out towards the related subjects</p>
-	// </div>
-
-
-
 
 if(end==p6){
 
@@ -2500,10 +2501,10 @@ d3.select("#inner")
 			.each("end",function(){
 
 			otherBooks(checkedIt,checkedIndex);
-  				$("#intro13").hide("fast", function(){
-  				$("#intro14").show("fast"); //SUBJECTS		
+  				// $("#intro13").hide("fast", function(){
+  				$("#intro14").delay(3000).show("slow"); //SUBJECTS		
   				}); //SUBJECTS
-			})
+			// })
 		})
 	// })			
 // })	
@@ -2527,6 +2528,7 @@ d3.select("#inner")
     return "translate(" + (center[0] - p[0] * k) + "," + (center[1] - p[1] * k) + ")scale(" + k + ")";
   	}
   // d3.select("circle.inCircle"+specialCirc).transition().attr("opacity","1")
+}
 }
 
 </script>

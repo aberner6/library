@@ -271,6 +271,9 @@ height: 0px;
 top: 250px;
 padding-left: 8px;
 padding-right: 8px;
+opacity:0;
+/*background-color: rgba(0, 0, 0, 0.8);*/
+border: 1px solid white;
 }
 
 
@@ -279,15 +282,15 @@ padding-right: 8px;
 
 .intro{
 position: absolute;
-z-index: 20;
+z-index: 2000;
 color:darkgray;
 /*color: #ccc;*/
-font-size: 15px;
+font-size: 14px;
 line-height: 18px;
 /*background-color: rgba(0, 0, 0, 0.8);*/
 border: 1px solid lightgray;
 width: 24%;
-height: 114px;
+/*height: 114px;*/
 top: 250px;
 padding:8px;
 }
@@ -520,7 +523,7 @@ border-bottom: 1px gray solid;
 color: darkgray;
 /*background-color: lightgray;*/
   padding: 5px;
-margin-top: 25em;
+margin-top: 37em;
 	margin-left: 10%;
 	display:none;
 	opacity: 1;
