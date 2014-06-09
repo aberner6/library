@@ -1975,10 +1975,11 @@ var updateHoverbox = function(theseBooks, whichCode) {
 d3.select("#hoverbox")
 .transition()
 // .delay(500)
-.duration(1000)
-.style("opacity",.8)
+// .duration(1000)
+.style("width","186px")
 .each("end", function(){
-d3.select("#hoverbox").transition().style("width","12em");
+d3.select("#hoverbox").transition().style("opacity",.8)
+
 
 })
 
@@ -2029,7 +2030,12 @@ countLittleCircle = 0;
 whichBooks.length = 0;
 saveId.length = 0;
 
-d3.select("#hoverbox").transition().style("opacity",0)
+d3.select("#hoverbox")
+.transition()
+.style("opacity",0)
+.each("end",function(){
+	d3.select("#hoverbox").transition().style("width","0px");
+})
 d3.select("#container")
 	.transition()
 	.style("opacity", "1");
@@ -2040,7 +2046,6 @@ d3.select("#exit").transition().style("display","none")
 
 d3.selectAll(".listBooks").remove();
 
-d3.select("#hoverbox").transition().style("width","0em");
 
 }
 
@@ -2049,9 +2054,9 @@ clearEverything();
 })
 function clearEverything(){
 
-// d3.select("#inner")
-// .transition()
-// .style("display","none");
+d3.select("#inner")
+.transition()
+.style("display","none");
 // 		d3.selectAll(".innerText").remove();	
 			matching = 0;
 
@@ -2100,8 +2105,9 @@ whichBooks.length = 0;
 checkedIndex = 0;
 d3.select("#booksColumn").transition().style("display","block");
 d3.select("#booksColumn.selected").classed("selected", false);		
-d3.select("#exit, .introZoom").transition().style("display","none")
+d3.select("#exit").transition().style("display","none")
   				$("#intro14").hide();
+  				$(".introZoom").hide();
 
 				$("#skip").hide();
 	//clear checked lines
@@ -2573,11 +2579,8 @@ top:"100px",
   				$("#intro14").delay(3000).show("slow", function(){
 
 
-				$("#skip").animate({
-				right:"66px",
-				top:"-400px",
-				});	
-
+				$("#skip").hide();
+//DISPLAY A BIG X
   				// }); 	
   				// }); 
 			// })
