@@ -348,8 +348,9 @@ width: 12em;
 	/*overflow:auto;*/
 top:40px;
 right: 4px; 	
-background-color:rgba(80, 80, 80, 0.8);
+background-color:rgba(80, 80, 80, .8);
 position:absolute;
+opacity:0;
 }
 
 #hoverbox.hidden {

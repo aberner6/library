@@ -67,7 +67,7 @@
 
 
 <div class="center">
-		<div id="skip">Skip Intro</div>
+		<div id="skip">Exit Intro</div>
 
 	<div class="intro"> 
 	<div id="introNav">
@@ -92,7 +92,7 @@
 				<p>Circles are placed on tiers according to how many subjects they are connected to </p>
 	</div>
 	<div id="intro4half" style="display: none;">
-				<p><b>2</b> subjects at the outermost tier</p>
+				<p><b>2</b> subjects at the outermost tier - many books are related to different pairs of subjects</p>
 	</div>
 	<div id="intro5" style="display: none;">
 				<p><b>3</b> subjects for the next tier</p>
@@ -104,10 +104,10 @@
 				<p><b>5</b> subjects</p>
 	</div>
 	<div id="intro8" style="display: none;">
-				<p>...and <b>6</b> subjects</p>
+				<p>...and <b>6</b> subjects - there is only one collection of books related to 6 subjects</p>
 	</div>
 	<div id="intro8half" style="display: none;">
-				<p>Hover over a circle and mousewheel to zoom in and out of the area</p>
+				<p>Use your mousewheel to zoom in and out of the area</p>
 	</div>
 	<div id="intro9" style="display: none;">
 				<p>Each circle represents a collection of books related to a unique set of subjects</p>
@@ -123,10 +123,10 @@
 				<p>Click on subjects around the ring to see which collections of books relate to those unique subjects</p>
 	</div>
 	<div id="intro13" style="display: none;">
-				<p>Open up the book list to view the titles.</p>
+				<p>The book list displays the books titles</p>
 	</div>
 	<div id="intro14" style="display: none;">
-				<p>Click any book listed to view its record in the Columbia Library</p>
+				<p>Click any book title to view its record in the Columbia Library</p>
 	</div>
 	</div>
 </div>
@@ -221,7 +221,7 @@ var	width = window.outerWidth,
 	height = window.innerHeight;
 var animateZoom = false;
 
-var animateOpening =false;
+var animateOpening =true;
 	if (animateOpening) {
 		d3.select("#container").style("pointer-events","none");
 		d3.select("#intro1")
@@ -378,7 +378,7 @@ var vis = svg
 //       "translate("+ 0 + "," + windowHeight/2 + ")") //windowHeight/2
 
 // var zoomingDoc = [];
-vis.call(d3.behavior.zoom()
+svg.call(d3.behavior.zoom()
    	.scale(1.0)
    	.scaleExtent([initialZoom, maxZoom])
    .on("zoom", function(){
@@ -388,7 +388,7 @@ vis.call(d3.behavior.zoom()
 		zoomInOut(t, s);
 	})
    );
-vis
+svg
 .on("mousedown.zoom", null)
     .on("touchstart.zoom", null)
     .on("touchmove.zoom", null)
@@ -432,10 +432,10 @@ if (showReset==false){
 	$('#reset').slideUp( "slow", function() {
 })	
 }
-if (s>=initialZoom+2){
+if (s>initialZoom){
 showReset = true;
 }
-if (s<initialZoom+2){
+if (s<=initialZoom){
 	showReset = false;
 }
   vis.attr("transform",
@@ -583,23 +583,30 @@ var text = vis.selectAll('.subjectText')
 		console.log(d);
 		wasItSubj = d.subjCode;
 		storeClicks[i] = storeClicks[i] ? storeClicks[i]+1 : 1; //now this is counters
-
+whichBooks.length = 0;
+booksChecked.length = 0;
+hideBooks();
 		if(storeClicks[i]%2==1){ //if clicked ON
+
 			console.log("clicked on"+storeClicks[i]%2)
 			console.log("this is"+i)
 			runLines(d.subjCode);
 			checkedIt.push(d.subjCode);
 			checked(checkedIt);
-			matching = 0;
-
+			// matching = 0;
+//OH NO WILL THIS MESS THINGS UP NOW
 		d3.select(".surroundingPoints"+d.subjCode)
 			.transition()
 			.attr("y", subjY[i]-10)
 			.attr("height",14);
 			// .attr("stroke", colors[d.loc]);
+
 		}
 
 		if(storeClicks[i]%2==0){ //if unselected
+// 			whichBooks.length = 0;
+// 		booksChecked.length = 0;
+// hideBooks();
 			console.log("clicked off"+storeClicks[i]%2)
 			d3.select(".surroundingPoints"+d.subjCode)
 			.transition()
@@ -611,7 +618,7 @@ var text = vis.selectAll('.subjectText')
 				checkedIt.splice(c,1);
 			}
 		}
-booksChecked.length = 0;
+// booksChecked.length = 0;
 bookColors.length = 0;
 
 d3.selectAll("circle.inCircle"+checkedIndex)
@@ -1179,35 +1186,51 @@ var chckdLines = vis.selectAll("checkedLines")
 				checkedIndex = i;
 				matching = 1;
 				d3.select("#booksColumn").classed("selected", true);
-// $('#booksColumn').tipsy({ 
-// 		gravity: 'ne', 
-// 		html: true, 
-// 		title: function() {
-// 		  // var d = this.__data__;
-// 		  return circleFreq[checkedIndex]+" linked books";
+// $('#booksColumn').click(function(){
+// d3.select("#inner")
+// .transition()
+// .style("display","none");
+// d3.selectAll(".innerText").remove();	
 
-// 		}
-// });
+// d3.selectAll(".innerText")
+// .transition()
+// .style("display","none");
+
+// if(littleCircChecked.length==0 && matching==1 || count%allCodes.length>0){
+		d3.select("#booksColumn.selected").transition().style("display","none");	
+		d3.select("#exit").transition().style("display","block")
+	otherBooks(checkedIt,checkedIndex); 
+// }
+// })
+$('#exit').click(function(){
+booksChecked.length = 0;
+			matching = 0;
+
+hideBooks();
+
+// removeOutwardLines(incomingIs, saveClicked);
+
+})
 
 
 
-	var howMany = d3.select("#inner")
-	.selectAll(".innerText")
-   .data(thisIs)
-		.enter()
-		.append("text")
-		.attr("class","innerText")
-		////////checked index should change every time right/?????
-		.text(function(){
-			if(circleFreq[i]>1){
-				return circleFreq[i]+" linked books";
-			}
-			else {
-				return circleFreq[i]+" linked book";
-			}
-		})
-		.attr("x",0)
-		.attr("y",0);
+	// var howMany = d3.select("#inner")
+	// .selectAll(".innerText")
+ //   .data(thisIs)
+	// 	.enter()
+	// 	.append("text")
+	// 	.attr("class","innerText")
+	// 	////////checked index should change every time right/?????
+	// 	.text(function(){
+	// 		if(circleFreq[i]>1){
+	// 			return circleFreq[i]+" linked books";
+	// 		}
+	// 		else {
+	// 			return circleFreq[i]+" linked book";
+	// 		}
+	// 	})
+	// 	.attr("x",0)
+	// 	.attr("y",0);
 d3.select("#inner")
 .transition()
 .style("display","block");
@@ -1227,6 +1250,7 @@ d3.select("#inner")
 .transition()
 .style("display","none");
 		d3.selectAll(".innerText").remove();	
+			matching = 0;
 
 // d3.selectAll(".innerText")
 // .transition()
@@ -1268,10 +1292,16 @@ $('#exit').click(function(){
 booksChecked.length = 0;
 
 hideBooks();
+			matching = 0;
 
 // removeOutwardLines(incomingIs, saveClicked);
 
 })
+if (matching==1){
+booksChecked.length = 0;
+
+hideBooks();	
+}
 function prepLines(){
 	console.log("prep lines");
 	for (i=0; i<subjCode.length; i++){
@@ -1511,6 +1541,9 @@ var newG = vis.selectAll("linesOut")
 //this is for matched lines
 var newG;
 function checkedIn(arrayOfSubjs, index){
+		d3.select("#booksColumn.selected").transition().style("display","none");	
+		d3.select("#exit").transition().style("display","block")
+	otherBooks(arrayOfSubjs,index); 
 
 thisIs = arrayOfSubjs;
 
@@ -1843,10 +1876,18 @@ var manyBookColors = {};
 
 function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
+whichBooks.length = 0;
 
-for (i=0; i<checkedIt.length; i++){
+		// d3.select("#booksColumn").style("display","none");	
+		// d3.select("#exit").transition().style("display","block")
+
+// for (i=0; i<checkedIt.length; i++){
+// 	booksChecked.push(checkedIt[i])
+// }
+for (i=0; i<checkedTo.length; i++){
 	booksChecked.push(checkedIt[i])
 }
+// booksChecked = checkedIt;
 
 booksChecked.sort(function(a, b){return a-b});
 		console.log(booksChecked+"books checked sorted")
@@ -1896,6 +1937,7 @@ if (booksChecked[j]==3){
 	}		
 	}
 }
+booksChecked.length = 0;
 updateHoverbox(whichBooks, saveId);
 console.log(whichBooks.length)
 }
@@ -1930,8 +1972,15 @@ incomingSplit = incomingIs.split(",");
  var itsHeight;
  var clickOut = false;
 var updateHoverbox = function(theseBooks, whichCode) {
+d3.select("#hoverbox")
+.transition()
+// .delay(500)
+.duration(1000)
+.style("opacity",.8)
+.each("end", function(){
+d3.select("#hoverbox").transition().style("width","12em");
 
-d3.select("#hoverbox").style("width","12em");
+})
 
 var bookList = hoverbox
    .selectAll(".listBooks")
@@ -1980,7 +2029,7 @@ countLittleCircle = 0;
 whichBooks.length = 0;
 saveId.length = 0;
 
-
+d3.select("#hoverbox").transition().style("opacity",0)
 d3.select("#container")
 	.transition()
 	.style("opacity", "1");
@@ -1999,11 +2048,12 @@ $("#clearAll").on("click", function(){
 clearEverything();
 })
 function clearEverything(){
-	
-d3.select("#inner")
-.transition()
-.style("display","none");
-		d3.selectAll(".innerText").remove();	
+
+// d3.select("#inner")
+// .transition()
+// .style("display","none");
+// 		d3.selectAll(".innerText").remove();	
+			matching = 0;
 
 	hideBooks();
 for (i=0; i<calcX.length; i++){
@@ -2050,8 +2100,10 @@ whichBooks.length = 0;
 checkedIndex = 0;
 d3.select("#booksColumn").transition().style("display","block");
 d3.select("#booksColumn.selected").classed("selected", false);		
-d3.select("#exit").transition().style("display","none")
+d3.select("#exit, .introZoom").transition().style("display","none")
+  				$("#intro14").hide();
 
+				$("#skip").hide();
 	//clear checked lines
 	//clear runned lines
 	//clear selected circles
@@ -2343,6 +2395,9 @@ if(end==p6){
   })
 }
 if(end==p7){
+		$(".introZoom").animate({
+			top:"215px",
+		});
 	//here we will do something like make 
 	//then we also want to zoom out
 //ALLMOUSEOVERTEXT  d3.select("circle.inCircle"+specialCirc)
@@ -2489,36 +2544,42 @@ left:"81%",
 top:"100px",
 // width:"17%",
 });
-	d3.selectAll(".innerText")
-	.transition()
-	.delay(2000)
-	.remove()
-	.each("end",function(){	
-d3.select("#inner")
-.transition()
-.style("display","none")
-.each("end", function(){
+	// d3.selectAll(".innerText")
+	// .transition()
+	// .delay(2000)
+	// .remove()
+	// .each("end",function(){	
+// d3.select("#inner")
+// .transition()
+// .style("display","none")
+// .each("end", function(){
 		$("#intro13").show();
-})
-	})
+// })
+	// })
 
 
 // .each("end",function(){
-	d3.select("#booksColumn.selected")
-		.transition()
-		.delay(4000)
-		// .duration(2000)
-		.style("display","none")
-		.each("end",function(){
-			d3.select("#exit")
-			.transition()
-			.style("display","block")
-			.each("end",function(){
+	// d3.select("#booksColumn.selected")
+	// 	.transition()
+	// 	.style("display","none")
+	// 	.each("end",function(){
+	// 		d3.select("#exit")
+	// 		.transition()
+	// 		.style("display","block")
+	// 		.each("end",function(){
 
-			otherBooks(checkedIt,checkedIndex);
+			// otherBooks(checkedIt,checkedIndex);
   				// $("#intro13").hide("fast", function(){
-  				$("#intro14").delay(3000).show("slow"); //SUBJECTS		
-  				}); //SUBJECTS
+  				$("#intro14").delay(3000).show("slow", function(){
+
+
+				$("#skip").animate({
+				right:"66px",
+				top:"-400px",
+				});	
+
+  				// }); 	
+  				// }); 
 			// })
 		})
 	// })			
