@@ -123,21 +123,22 @@ top: 12.5em;
 }
 
 #clearAll{
+		position:fixed;
 
-position: fixed;
-/* position: absolute; */
-font-size: 14px;
-/* display: none; */
-/* width: 5%; */
-/* width: 20%; */
-/* height: 5%; */
+/*position:absolute;*/
+	font-size: 10px;
+	/*display:none;*/
+	/*width:5%;*/
+/*width: 20%;*/
+/*height: 5%;*/
 margin-left: 1.5em;
-top: 1em;
-cursor: pointer;
-padding: 5px;
-font-weight: 300px;
-border-bottom: 1px gray solid;
-left:90%;
+top: 14.5em;
+	cursor: pointer;
+padding:5px;
+font-weight:300px;
+border-bottom: 1px gray solid;	
+
+
 
 }
 #clearAll:hover{
@@ -228,32 +229,78 @@ width: 24%;
 position: absolute;
 z-index: 2000;
 color:rgba(65, 63, 63, 1);
-
-/*color: #ccc;*/
 font-size: 14px;
 line-height: 18px;
-/*background-color: rgba(0, 0, 0, 0.8);*/
 border: 1px solid rgba(65, 63, 63, 1);
-width: 24%;
-/*height: 114px;*/
+width: 26%;
 top: 250px;
 padding:8px;
+
+
+
+
+
+
+
+
+}
+#introNav2{
+/*width:1em;
+z-index: 20;
+background-color: lightgray;
+padding:4px;
+opacity:.6;
+margin-left:95.3%;
+cursor: pointer;
+*/
+
+position: absolute;
+width: 1em;
+z-index: 20;
+/* color: #ccc; */
+/* font-size: 15px; */
+/* line-height: 18px; */
+background-color: darkgray;
+/* border-bottom: 1px solid gray; */
+/* height: 114px; */
+padding: 4px;
+opacity: .6;
+top: 47%;
+left: 62.7%;
+/*margin-left: 25.2%;*/
+cursor: pointer;
+display: none;
+}
+#introNav2:hover{
+    background-color: rgba(65, 63, 63, 1);
+border-bottom: 1px yellow solid;
+  cursor: pointer;
+
 }
 #introNav{
-/*position: absolute;*/
-width:1em;
+/*width:1em;
 z-index: 20;
-/*color: #ccc;*/
-/*font-size: 15px;*/
-/*line-height: 18px;*/
 background-color: lightgray;
-/*border-bottom: 1px solid gray;*/
-/*height: 114px;*/
 padding:4px;
 opacity:.6;
 top: 250px;
 margin-left:93.6%;
 	cursor: pointer;
+*/
+width: 1em;
+z-index: 20;
+/* color: #ccc; */
+/* font-size: 15px; */
+/* line-height: 18px; */
+background-color: lightgray;
+/* border-bottom: 1px solid gray; */
+/* height: 114px; */
+padding: 10px;
+opacity: .6;
+/* top: 240px; */
+margin-left: 102.4%;
+cursor: pointer;
+margin-top: -10%;
 
 }
 #introNav:hover{
@@ -494,7 +541,7 @@ margin-top: 37em;
   display:none;
   opacity: 1;
 right:69px;
-bottom:503px;
+bottom:49.4%;
     background-color: lightgray;
     color:white;
   cursor: pointer;

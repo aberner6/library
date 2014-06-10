@@ -72,24 +72,24 @@
 		<div id="skip">Skip Intro</div>
 
 	<div class="intro"> 
-	<div id="introNav">
-		<img src="forwardNav.png" width="15" height="15">
-	</div>
+
+
 	<div id="intro1" style="display: none; opacity: 0;">
 				<p>The Multidisciplinary Browser</p>
-				<p>All libraries, thousands of books, only some overlap in disciplines</p>
+				<p>Like many public libraries across the United States, University libraries are undergoing massive changes as their catalogues and parts of their collections have been digitized, and their physical collections have outgrown their physical space. Browsing the collection, now often happens online. What are the possible ways we can browse the collection and learn about how networks of knowledge are created across the Columbia community?</p>
 	</div>
 	<div id="intro2" style="display: none; opacity: 0;">
-				<p>Subjects are culled from those overlapping disciplines. Only top 25 are shown. </p><p>Claims etc. represents five subjects condensed: Legislative Amendments, Blah, Blah, Blah. </p>
+				<p>The multidisciplinary browser allows you to explore the books that have more than one subject associated with them in the MARC record heading.</p><p>Users can browse the collections of multidisciplinary books by level of connections – viewed by rings around the center – or by selecting different subjects from the edges and skimming the list of books in the sidebar that reference these subjects. </p>
 	</div>
-	<div id="intro3" style="display: none; opacity: 0;">
-				<!-- <p>This does this</p> -->
+	<div id="introNav">
+		<img src="forwardNav.png" width="15" height="15">
 	</div>
 	</div>
 </div>
 
 <div class="center">
 	<div class="introZoom"> 
+
 	<div id="intro4" style="display: none;">
 				<p>Circles are placed on tiers according to how many subjects they are connected to </p>
 	</div>
@@ -128,8 +128,11 @@
 				<p>The book list displays the books titles</p>
 	</div>
 	<div id="intro14" style="display: none;">
-				<p>Click any book title to view its record in the Columbia Library</p>
+				<p>Click any book title to view its record in the Columbia Library.</p><p>The search might incite new discoveries amidst the 125,000 entries which include multiple disciplines in their catalogue description.</p>
 	</div>
+	</div>
+		<div id="introNav2">
+		<img src="forwardNav.png" width="10" height="10">
 	</div>
 </div>
 <!-- </div> -->
@@ -137,7 +140,22 @@
 
 	<div id="subline">About
 	</div>
-	<div id="about">The interdisciplinary browser was designed and developed by Jen Lowe and Annelie Berner</div>
+	<div id="about">
+	Project Team:
+
+<p>Spatial Information Design Lab</p>
+
+<p>Laura Kurgan, Project Director</p>
+
+<p>Jen Lowe, Data Visualization and Data Analysis</p>
+
+<p>Annelie Berner, Application and Design Development, D3 Progamming.</p>
+
+<p>Columbia Library</p>
+
+<p>Alex Gil, Jeffrey Lancaster, Barbara Rochenbach</p>
+
+</div>
 <div id="reset">RESET</div>
 
 <script type = "text/javascript">
@@ -224,97 +242,59 @@ var	width = window.outerWidth,
 var animateZoom = false;
 
 var animateOpening =true;
-	if (animateOpening) {
-		d3.select("#container").style("pointer-events","none");
-		d3.select("#intro1")
-			.style("display", "block")
-			.style("opacity", 1.0);
-		$('#skip').fadeIn("slow");
+if (animateOpening) {
+d3.select("#container").style("pointer-events","none");
+d3.select("#intro1")
+	.style("display", "block")
+	.style("opacity", 1.0);
+$('#skip').fadeIn("slow");
 var countProgress = 0;
-	$('#introNav').on("click", function(){
-		console.log(countProgress)
-		countProgress++;
-		if (countProgress==1){
-			console.log(i)
-			d3.select("#intro1")
+$('#introNav').on("click", function(){
+console.log(countProgress)
+countProgress++;
+	if (countProgress==1){
+		console.log(i)
+		d3.select("#intro1")
 			.transition().style("opacity", 0.0).style("display", "none");
-			d3.select("#intro2")
+		d3.select("#intro2")
 			.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-			// portGroups.append("circle")
-			// .attr("class", "point")
-			// .attr("cx", 0)
-			// .attr("cy", 0)
-			// .attr("r", 0.01)
-			// .transition()
-			// .duration(5000)
-			// .attr("r", radiusSmall)
-			// .attr("opacity", portOnOpacity);
-		}
-		if (countProgress==2){
-			console.log(i)
-			// d3.select("#intro2")
-			// .transition()
-			// .style("opacity", 0)
-			// .style("display", "none")
-			// .each("end",function(){
-		d3.selectAll(".intro, #introNav, #intro1, #intro2")
+	}
+	if (countProgress==2){
+		console.log(i)
+		d3.selectAll(".intro, #intro1, #intro2")
 		.transition()
 		.style("opacity", 0.0)
 		.style("display", "none")
-		.each("end",function(){
-				$("#skip").animate({
-				right:"4px",
-				bottom:"4px",
-				});	
-		d3.select("#container")
+	// }
+	// if (countProgress==3){
+		$("#skip").animate({
+			right:"4px",
+			bottom:"4px",
+		});	
+	d3.select("#container")
 		.transition()
-		// .delay(1000)
 		.duration(1000)
 		.style("opacity", .8)
-				.each("end",function(){
-					// $( ".introZoom" ).animate({
-  			// 		opacity: "show"
-					// }, "slow", "easein" );
-
-$(".introZoom").animate().css("opacity",1).show("fast", function(){
+		.each("end",function(){
+		$(".introZoom")
+		.animate().css("opacity",1).show("fast", function(){
 					$("#intro4").fadeIn("fast", function(){
 					$(".introZoom").animate().css("height","inherit");		
 					});
-});
-
-				animateZoom = true;
- 				zoomOpening();	
-				})
+			animateZoom = true;
+ 			zoomOpening();	
 			})
-		// })
+		})
 		}
-	})
-	// $('.backNav').on("click", function(){
-	// 	console.log(countProgress)
-	// 	countProgress--;
-	// 	if (countProgress==1){
-	// 		console.log(i)
-	// 		d3.select("#intro1")
-	// 		.transition().style("opacity", 0.0).style("display", "none");
-	// 		d3.select("#intro2")
-	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-	// 	}
-	// 	if (countProgress==2){
-	// 		console.log(i)
-	// 		d3.select("#intro2")
-	// 		.transition().style("opacity", 0.0).style("display", "none");
-	// 		d3.select("#intro3")
-	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);			
-	// 	}
-	// })
 	$('#skip').on("click",function(){
 		skipIntro();
 	})
+})
 }
 else {
 		d3.select("#container").transition().style("opacity", 1.0);
 
-		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, #introNav2, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
 		$('#skip').fadeOut("fast");	
 				d3.select("#container").style("pointer-events","auto");
 
@@ -325,7 +305,7 @@ function skipIntro(){
 		animateZoom = false;
 
 			d3.select("#container").transition().style("opacity", 1.0);
-		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half,#intro9, #intro10, #intro11, #intro12, #intro13, #introNav, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
+		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half,#intro9, #intro10, #intro11, #intro12, #intro13, #introNav, #introNav2, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
 		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 				// $('#endIntro').fadeOut("slow");
 
@@ -2267,12 +2247,25 @@ skipIntro();
 	resetZoom();
 }
 }
+
+
+
 function transition(svg, start, end) {
 if (animateZoom==false){
 skipIntro();
 resetZoom();
 }
+
+var countZoom = 0;
+
 if (animateZoom){
+// $('#introNav').on("click", function(){
+// console.log(countProgress)
+// countProgress++;
+// $('#introNav2').on("click", function(){
+				// console.log(countZoom)
+		// countZoom++;
+				// console.log(countZoom)
 
 var  i = d3.interpolateZoom(start, end);
 
@@ -2287,13 +2280,8 @@ var  i = d3.interpolateZoom(start, end);
       .each("end", function() { 
 if (end==p1){
 
-// $(".introZoom").animate().css("opacity",1).show("fast", function(){
 	$("#intro4half").show("fast", function(){
-		// $(".introZoom").animate().css("height","inherit");		
 	});
-// });
-// height: inherit;
-
 	d3.select(".ringCircle"+(p1[0]-width/2))
 	.transition()
 	.attr("opacity",1)
@@ -2303,12 +2291,15 @@ if (end==p1){
 	.duration(1000)
 	.attr("stroke-width",1)
     .each("end", function(){
-   	
+$('#introNav2').show().on("click", function(){
       	svg.call(transition,p1,p2);
+      	$('#introNav2').hide();
+      })
      })
  }
 if(end==p2){
 $("#intro5").show("fast");
+
 	d3.select(".ringCircle"+(p2[0]-width/2))
 	.transition()
 	.attr("opacity",1)
@@ -2317,7 +2308,10 @@ $("#intro5").show("fast");
 	.duration(500)
 	.attr("stroke-width",1)
 	.each("end",function(){
-      	svg.call(transition,p2,p3);
+		$('#introNav2').show().on("click", function(){
+	      	svg.call(transition,p2,p3);
+	      	$('#introNav2').hide();
+      })
     })
 }
 if(end==p3){
@@ -2331,7 +2325,11 @@ if(end==p3){
 	.duration(500)
 	.attr("stroke-width",1)
 	.each("end",function(){
-      	svg.call(transition,p3,p4);
+		$('#introNav2').show().on("click", function(){
+			svg.call(transition,p3,p4);	      	
+			$('#introNav2').hide();
+      })      	
+      // }
       })
 }
 if(end==p4){
@@ -2345,7 +2343,10 @@ if(end==p4){
 	.duration(500)
 	.attr("stroke-width",1)
 	.each("end",function(){
+		$('#introNav2').show().on("click", function(){
       	svg.call(transition,p4,p5);
+      				$('#introNav2').hide();
+      })
       })
 }
 if(end==p5){
@@ -2354,9 +2355,11 @@ if(end==p5){
 $(".introZoom").animate({
 top: "160px",
 width: "188px",
-
 });
 
+$("#introNav2").animate({
+top: "160px",
+});
 $("#intro8").show("fast")
    	p6half = [calcX[specialCirc-200], calcY[specialCirc-200], 50];
 
@@ -2371,21 +2374,26 @@ $("#intro8").show("fast")
 	.each("end",function(){
 
 	$("#intro8").hide("fast", function(){
-		$(".introZoom").animate({
-			top:"165px",
-		});
 	});
 
-
+		// $('#introNav2').show().on("click", function(){
 	svg.call(transition, p5half,p6half);
+      				// $('#introNav2').hide();
+      // })
 })
 }
 
 if (end==p6half){
+		$("#introNav2").animate({
+			top:"201px",
+			left: "51.7%",
+		});
 	$("#intro8half").show("slow");
 
-
+		$('#introNav2').show().on("click", function(){
       	svg.call(transition,p6half,p6);
+      				$('#introNav2').hide();
+      })
      
       	console.log("ok")
 }
@@ -2407,13 +2415,19 @@ if(end==p6){
       	.attr("opacity",1)
       	// .delay(2000)
   	.each("end",function(){
+  		$('#introNav2').show().on("click", function(){
+
       	svg.call(transition,p6,p7);
+      })
       });  	
   })
 }
 if(end==p7){
 		$(".introZoom").animate({
 			top:"145px",
+		});
+		$("#introNav2").animate({
+			top:"155px",
 		});
 	//here we will do something like make 
 	//then we also want to zoom out
@@ -2452,8 +2466,12 @@ if(end==p7){
 	.duration(2000)
 	.attr("stroke-width",2)
 	// .attr("y2",0);
+
 		.each("end",function(){
+		  $('#introNav2').show().on("click", function(){
 			svg.call(transition,p7, p8);  
+$('#introNav2').hide()			
+		})
   		})
 	})
 })
@@ -2473,6 +2491,12 @@ top:"300px",
 
 });
 
+$('#introNav2').delay(1000).animate({
+	left:"296px",
+	top:"350px",
+})
+
+
 //FIGURE OUT HOW TO ANIMATE THE CSSS HERE I THINK?
 
 
@@ -2487,7 +2511,6 @@ d3.selectAll("line.hey"+specialCirc)
 // d3.selectAll(".mouseoverText").remove();
 d3.select("circle.inCircle"+specialCirc)
   	.transition()
-  	// .delay(3000)
   	.duration(1000)
   	.attr("opacity",".1")
   	.each("end",function(){
@@ -2552,27 +2575,15 @@ for (i=0; i<subjCode.length; i++){
 				runLines(specialSubj3);
 				checkedIt.push(specialSubj3);
 				checked(checkedIt);
-			// })
-			// 		.each("end",function(){
 						//open books column
   	$("#intro12").hide("fast"); //SUBJECTS
+
 $(".introZoom").delay(2000).animate({
 left:"81%",
 top:"100px",
-// width:"17%",
 });
-	// d3.selectAll(".innerText")
-	// .transition()
-	// .delay(2000)
-	// .remove()
-	// .each("end",function(){	
-// d3.select("#inner")
-// .transition()
-// .style("display","none")
-// .each("end", function(){
 		$("#intro13").show();
-// })
-	// })
+		
 
 
 // .each("end",function(){
@@ -2614,7 +2625,7 @@ top:"100px",
 ///////////////////////////ready for next subject?
   	})
 }
-
+      // })
 //by the way maybe i can just do d3.select("ringcircle+end", no ifs)
 });
 
