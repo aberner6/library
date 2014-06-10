@@ -17,23 +17,34 @@ body{
 
 #reset{
 
-      position:fixed;
+/*      position:fixed;
 display:none;
   font-size: 14px;
   cursor: pointer;
-/*width: 10%;
-height: 5%;*/
-/*margin-left: 1.5em;*/
 top: 1em;
-/*position:absolute;*/
 padding:5px;
 left:50%;
-/*font-weight:300px;*/
 border-bottom: 1px gray solid; 
     background-color: lightgray;
     color:white; 
+z-index: 1000;*/
+position: fixed;
+display: none;
+font-size: 18px;
+cursor: pointer;
+/* margin-left: 1.5em; */
+top: 6px;
+/* position: absolute; */
+padding: 5px;
+left: 50%;
+/* font-weight: 300px; */
+border-bottom: 1px gray solid;
+background-color: white;
+color: black;
 z-index: 1000;
-
+border-left: 1px gray solid;
+border-right: 1px gray solid;
+opacity: .7;
 }
 #reset:hover{
       background-color: rgba(65, 63, 63, 1);
@@ -80,7 +91,7 @@ text-align: left;
 width: 20%;
 height: 5%;
 margin-left: .5em;
-margin-top: .3em;
+/*margin-top: .3em;*/
 line-height: 1.5em;
 	/*box-shadow: 0 1px #e2e5e4;*/
 
@@ -123,23 +134,39 @@ top: 12.5em;
 }
 
 #clearAll{
-		position:fixed;
-
-/*position:absolute;*/
+/*		position:fixed;
 	font-size: 10px;
-	/*display:none;*/
-	/*width:5%;*/
-/*width: 20%;*/
-/*height: 5%;*/
 margin-left: 1.5em;
 top: 14.5em;
 	cursor: pointer;
 padding:5px;
 font-weight:300px;
-border-bottom: 1px gray solid;	
+border-bottom: 1px gray solid;	*/
 
-
-
+position: fixed;
+/* position: absolute; */
+font-size: 12px;
+/* display: none; */
+/* width: 5%; */
+/* width: 20%; */
+/* height: 5%; */
+/* margin-left: -2.5em; */
+top: 14.5em;
+cursor: pointer;
+padding: 5px;
+font-weight: 300px;
+border-bottom: 1px gray solid;
+top: 6px;
+right: 123px;
+cursor: pointer;
+color: darkgray;
+padding: 6px;
+/* opacity: .7; */
+border-bottom: 1px gray solid;
+position: absolute;
+font-size: 10pt;
+border-right: 1px gray solid;
+border-left: 1px gray solid;
 }
 #clearAll:hover{
 			background-color: rgba(65, 63, 63, 1);
@@ -219,10 +246,10 @@ padding-right: 8px;
 opacity:0;
 /*background-color: rgba(0, 0, 0, 0.8);*/
 border: 1px solid white;
-
+opacity:.8;
 font-size: 14px;
 line-height: 18px;
-width: 24%;
+width: 240px;
 }
 
 .intro{
@@ -266,7 +293,7 @@ background-color: darkgray;
 padding: 4px;
 opacity: .6;
 top: 47%;
-left: 62.7%;
+left: 796px;
 /*margin-left: 25.2%;*/
 cursor: pointer;
 display: none;
@@ -339,14 +366,29 @@ border: 1px yellow solid;
 /* Hoverbox */
 
 #booksColumn{
-top: 4px;
+/*top: 4px;
 right: 4px;
 cursor: pointer;
 color: lightgray;
 padding: 6px;
 opacity: .7;
 border-bottom: 1px gray solid;
+position: absolute;*/
+
+
+
+
+
+top: 4px;
+right: 12px;
+cursor: pointer;
+color: lightgray;
+padding: 3px;
+opacity: .7;
+border-left: 1px gray solid;
 position: absolute;
+border-right: 1px gray solid;
+border-bottom: 1px gray solid;
 }
 .textsAre{
 	font-size: 8px;
@@ -530,22 +572,21 @@ border-bottom: 1px yellow solid;
 }
 
 #endIntro{
-  letter-spacing: 2px;
-  position: absolute;
-  cursor: pointer;
-border-bottom: 1px gray solid;
-
-  padding: 5px;
-margin-top: 37em;
-  margin-left: 10%;
-  display:none;
-  opacity: 1;
-right:69px;
-bottom:49.4%;
-    background-color: lightgray;
-    color:white;
-  cursor: pointer;
-/*border: 1px yellow solid;  */
+letter-spacing: 2px;
+position: absolute;
+cursor: pointer;
+border: 1px gray solid;
+padding: 5px;
+/* margin-top: 37em; */
+margin-left: 10%;
+display: none;
+opacity: 1;
+right: 69px;
+bottom: 45.4%;
+/* background-color: darkgray; */
+color: darkgray;
+cursor: pointer;
+/* border: 1px yellow solid; */
 z-index: 1000;
 }
 #endIntro:hover{
@@ -553,7 +594,7 @@ z-index: 1000;
     color:lightgray;
   cursor: pointer;
 border-bottom: 1px yellow solid;  */
-    background-color: rgba(65, 63, 63, 1);
+    background-color: rgba(65, 63, 63, .5);
     color:white;
   cursor: pointer;
 border: 1px yellow solid;

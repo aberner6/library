@@ -55,13 +55,14 @@
 <div class = "listBooks"></div>
 <div class = "subjectText"></div>
 <div id = "booksColumn">
-<img src="books.png" width="20" height="20">
+<img src="books.png" width="30" height="20">
 </div>
 <div id = "exit">
 <img src="exit.png" width="13" height="13">
 </div>
 <div id = "endIntro">
-<img src="exit.png" width="13" height="13">
+	END INTRO
+<!-- <img src="exit.png" width="13" height="13"> -->
 </div>
 <div id="inner">
 </div>
@@ -131,6 +132,7 @@
 				<p>Click any book title to view its record in the Columbia Library.</p><p>The search might incite new discoveries amidst the 125,000 entries which include multiple disciplines in their catalogue description.</p>
 	</div>
 	</div>
+
 		<div id="introNav2">
 		<img src="forwardNav.png" width="10" height="10">
 	</div>
@@ -242,6 +244,9 @@ var	width = window.outerWidth,
 var animateZoom = false;
 
 var animateOpening =true;
+	$('#skip').on("click",function(){
+		skipIntro();
+	})
 if (animateOpening) {
 d3.select("#container").style("pointer-events","none");
 d3.select("#intro1")
@@ -277,18 +282,20 @@ countProgress++;
 		.style("opacity", .8)
 		.each("end",function(){
 		$(".introZoom")
-		.animate().css("opacity",1).show("fast", function(){
+		.animate().css("opacity",.8).show("fast", function(){
 					$("#intro4").fadeIn("fast", function(){
-					$(".introZoom").animate().css("height","inherit");		
+					$(".introZoom").animate().css("height","inherit", "left","539px");		
 					});
+$(".introZoom").animate({
+	height:"inherit", 
+	left:"539px"
+});
 			animateZoom = true;
  			zoomOpening();	
 			})
 		})
 		}
-	$('#skip').on("click",function(){
-		skipIntro();
-	})
+
 })
 }
 else {
@@ -893,6 +900,8 @@ firstLoadVar = setInterval(function(){
 function runOnce(){
 	runInnerCircles();
 	runOuterCircles();
+	processBigs(oneBig,indexBig);
+
 // zoomOpening = true;
 if(animateZoom){
 zoomOpening();
@@ -1217,9 +1226,9 @@ hideBooks();
 	// 	})
 	// 	.attr("x",0)
 	// 	.attr("y",0);
-d3.select("#inner")
-.transition()
-.style("display","block");
+// d3.select("#inner")
+// .transition()
+// .style("display","block");
 			}
 
 			else {
@@ -1232,9 +1241,9 @@ d3.select("#inner")
 	if (count%allCodes.length==0){
 		console.log("hiding, removing")
 		d3.select("#booksColumn.selected").classed("selected", false);	
-d3.select("#inner")
-.transition()
-.style("display","none");
+// d3.select("#inner")
+// .transition()
+// .style("display","none");
 		d3.selectAll(".innerText").remove();	
 			matching = 0;
 
@@ -1259,9 +1268,9 @@ d3.select("#inner")
 }
 
 $('#booksColumn').click(function(){
-d3.select("#inner")
-.transition()
-.style("display","none");
+// d3.select("#inner")
+// .transition()
+// .style("display","none");
 		d3.selectAll(".innerText").remove();	
 
 // d3.selectAll(".innerText")
@@ -1931,6 +1940,7 @@ console.log(whichBooks.length)
 var matchingArray = [];
 var matched = [];
 var saveClicked;
+var bigBooksTrue = false;
 function books(incoming, thisCircle){
 
 		d3.select("#booksColumn").style("display","none");	
@@ -1938,6 +1948,22 @@ function books(incoming, thisCircle){
 //APPLY THIS DOWN LOW
 // d3.selectAll("line.hey"+thisCircle).each(fadeToFront);
 // transition().attr("stroke","black")
+
+
+
+
+if (thisCircle==indexBig){
+	console.log("indexbig")
+	bigBooksTrue = true;
+updateHoverbox(bigBooks, saveBigIds);
+}
+
+
+
+
+
+else{
+	bigBooksTrue=false;
 saveClicked = thisCircle;
 clicked = 0;
 incomingIs = incoming.toString();
@@ -1947,10 +1973,11 @@ incomingSplit = incomingIs.split(",");
 					// console.log(manyCodes[j]+" matching "+incomingSplit)
 					whichBooks.push(manyBooks[j]);
 					saveId.push(manyIds[j]);
-					updateHoverbox(manyBooks[j], manyIds[j]);
+					updateHoverbox(whichBooks, manyIds[j]);
 				}
 			}
 
+}
 }
 
 //Setup hover box
@@ -1968,10 +1995,10 @@ d3.select("#hoverbox").transition().style("opacity",.8)
 
 
 })
-
+if(bigBooksTrue){
 var bookList = hoverbox
    .selectAll(".listBooks")
-   .data(whichBooks)
+   .data(theseBooks) //not whichbooks?
 		.enter()
 		.append("text")
 		// .append("p")
@@ -1984,7 +2011,24 @@ var bookList = hoverbox
 		.on("click", function(d,i){
 			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
 		});
-
+	}
+else{
+var bookList = hoverbox
+   .selectAll(".listBooks")
+   .data(whichBooks) //not whichbooks?
+		.enter()
+		.append("text")
+		// .append("p")
+		.attr("class","listBooks")
+		.text(function(d){
+			return d;
+		})
+		.attr("x",0)
+		.attr("y",0)
+		.on("click", function(d,i){
+			 window.open('http://clio.columbia.edu/catalog/'+saveId[i]+'.html');
+		});
+	}
 $('#hoverbox').tipsy({ 
 		gravity: 'se', 
 		html: true, 
@@ -2039,10 +2083,15 @@ $("#clearAll").on("click", function(){
 clearEverything();
 })
 function clearEverything(){
-
-d3.select("#inner")
-.transition()
-.style("display","none");
+	console.log("reset map")
+   vis.attr("transform",
+      "translate("+ 0 + "," + 0 + ")"
+      + " scale(" + initialZoom + ")");
+	showReset = false;
+	console.log(showReset)
+// d3.select("#inner")
+// .transition()
+// .style("display","none");
 // 		d3.selectAll(".innerText").remove();	
 			matching = 0;
 
@@ -2175,7 +2224,6 @@ var bigBooks = [];
 var saveBigIds = [];
 var incomingBig;
 var splitBig;
-// processBigs(oneBig,indexBig);
 function processBigs(oneBig, indexBig){
 
 incomingBig = oneBig.toString();
@@ -2293,7 +2341,7 @@ if (end==p1){
     .each("end", function(){
 $('#introNav2').show().on("click", function(){
       	svg.call(transition,p1,p2);
-      	$('#introNav2').hide();
+      	$('#introNav2').slideUp();
       })
      })
  }
@@ -2310,7 +2358,7 @@ $("#intro5").show("fast");
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
 	      	svg.call(transition,p2,p3);
-	      	$('#introNav2').hide();
+	      	$('#introNav2').slideUp();
       })
     })
 }
@@ -2327,9 +2375,8 @@ if(end==p3){
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
 			svg.call(transition,p3,p4);	      	
-			$('#introNav2').hide();
+			$('#introNav2').slideUp();
       })      	
-      // }
       })
 }
 if(end==p4){
@@ -2345,7 +2392,7 @@ if(end==p4){
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
       	svg.call(transition,p4,p5);
-      				$('#introNav2').hide();
+      				$('#introNav2').slideUp();
       })
       })
 }
@@ -2355,10 +2402,12 @@ if(end==p5){
 $(".introZoom").animate({
 top: "160px",
 width: "188px",
+left: "392px",
 });
 
 $("#introNav2").animate({
 top: "160px",
+left: "448px",
 });
 $("#intro8").show("fast")
    	p6half = [calcX[specialCirc-200], calcY[specialCirc-200], 50];
@@ -2386,19 +2435,31 @@ $("#intro8").show("fast")
 if (end==p6half){
 		$("#introNav2").animate({
 			top:"201px",
-			left: "51.7%",
+			left: "497px",
 		});
 	$("#intro8half").show("slow");
 
 		$('#introNav2').show().on("click", function(){
       	svg.call(transition,p6half,p6);
-      				$('#introNav2').hide();
+      				$('#introNav2').slideUp();
+		$(".introZoom").animate({
+			left: "539px",
+		});
       })
      
       	console.log("ok")
 }
 
 if(end==p6){
+
+		$("#introNav2").animate({
+			top:"201px",
+			left: "744px",
+		});
+		// $("#introZoom").animate({
+		// 	left: "539px",
+		// });
+		
 	$("#intro8half").hide("fast", function(){
 
 	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
@@ -2425,9 +2486,11 @@ if(end==p6){
 if(end==p7){
 		$(".introZoom").animate({
 			top:"145px",
+			left:"460px",
 		});
 		$("#introNav2").animate({
 			top:"155px",
+			left: "665px",
 		});
 	//here we will do something like make 
 	//then we also want to zoom out
@@ -2456,7 +2519,7 @@ if(end==p7){
 
   	.each("end",function(){
   	// .each("end",function(){
-	$("#intro9").hide("fast");
+	$("#intro9, #intro10").hide("fast");
 	// $("#intro9").show("slow");
   	$("#intro11").show("slow"); //SUBJECTS
    	allOut(allCodes[specialCirc], specialCirc); //FIX WHAT THING IS NOW
@@ -2470,7 +2533,7 @@ if(end==p7){
 		.each("end",function(){
 		  $('#introNav2').show().on("click", function(){
 			svg.call(transition,p7, p8);  
-$('#introNav2').hide()			
+$('#introNav2').slideUp()			
 		})
   		})
 	})
@@ -2483,7 +2546,7 @@ $('#introNav2').hide()
 
 
 if(end==p8){
-	$("#intro9, #intro10, #intro11").hide("fast");
+	$("#intro11").hide("fast");
 $(".introZoom").delay(1000).animate({
 left:"90px",
 top:"300px",
@@ -2582,7 +2645,9 @@ $(".introZoom").delay(2000).animate({
 left:"81%",
 top:"100px",
 });
-		$("#intro13").show();
+
+
+		$("#intro13").delay(3000).show();
 		
 
 
@@ -2598,12 +2663,19 @@ top:"100px",
 
 			// otherBooks(checkedIt,checkedIndex);
   				// $("#intro13").hide("fast", function(){
-  				$("#intro14").delay(3000).show("slow", function(){
-  		$("#endIntro").show();
+  				$("#intro14").delay(4000).show("slow", function(){
+  d3.select("#container")
+.transition()
+	.style("opacity", .5)
+	.each("end",function(){
+	  		$("#endIntro").show();
 			$('#endIntro').on("click",function(){
 				  		$("#endIntro").hide();
 		skipIntro();
+	})	
 	})
+
+
 		// d3.select("#endIntro").classed("selected",true);
 
 				// $("#skip").hide();
