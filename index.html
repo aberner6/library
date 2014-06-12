@@ -34,7 +34,7 @@
 
 
 <div id = "container"></div>
-	<div id="title">Interdisciplinary </br> Browser</div>
+	<div id="title">Cross Disciplines</div>
 	<div id="clearAll">CLEAR
 	</div>
 
@@ -76,11 +76,12 @@
 
 
 	<div id="intro1" style="display: none; opacity: 0;">
-				<p>The Multidisciplinary Browser</p>
-				<p>Like many public libraries across the United States, University libraries are undergoing massive changes as their catalogues and parts of their collections have been digitized, and their physical collections have outgrown their physical space. Browsing the collection, now often happens online. What are the possible ways we can browse the collection and learn about how networks of knowledge are created across the Columbia community?</p>
+<!-- 				<p>Cross Disciplines</p>
+ -->				
+ <!-- <p>A digital library tool for multidisciplinary exploration.</p> -->
 	</div>
 	<div id="intro2" style="display: none; opacity: 0;">
-				<p>The multidisciplinary browser allows you to explore the books that have more than one subject associated with them in the MARC record heading.</p><p>Users can browse the collections of multidisciplinary books by level of connections – viewed by rings around the center – or by selecting different subjects from the edges and skimming the list of books in the sidebar that reference these subjects. </p>
+				<p><b>Cross Disciplines</b> is a tool to explore the Columbia Library's books that are at the intersection of two or more disciplines.</p><p>Browse material by selecting from the top 25 most interdisciplinary subjects along the outside of the circle to reveal relevant books.</p><p>Or explore the books by mousing over the circles that represent collections of books related to 2 or more subjects.</p>
 	</div>
 	<div id="introNav">
 		<img src="forwardNav.png" width="15" height="15">
@@ -139,8 +140,11 @@
 </div>
 <!-- </div> -->
 
-
-	<div id="subline">About
+	<div id="byline">
+ <p>A digital library tool for multidisciplinary exploration.</p>
+</div>
+	<div id="subline">
+		About
 	</div>
 	<div id="about">
 	Project Team:
@@ -249,7 +253,7 @@ var animateOpening =true;
 	})
 if (animateOpening) {
 d3.select("#container").style("pointer-events","none");
-d3.select("#intro1")
+d3.select("#intro2")
 	.style("display", "block")
 	.style("opacity", 1.0);
 $('#skip').fadeIn("slow");
@@ -257,14 +261,14 @@ var countProgress = 0;
 $('#introNav').on("click", function(){
 console.log(countProgress)
 countProgress++;
+	// if (countProgress==1){
+	// 	console.log(i)
+	// 	d3.select("#intro1")
+	// 		.transition().style("opacity", 0.0).style("display", "none");
+	// 	d3.select("#intro2")
+	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
+	// }
 	if (countProgress==1){
-		console.log(i)
-		d3.select("#intro1")
-			.transition().style("opacity", 0.0).style("display", "none");
-		d3.select("#intro2")
-			.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-	}
-	if (countProgress==2){
 		console.log(i)
 		d3.selectAll(".intro, #intro1, #intro2")
 		.transition()
@@ -385,6 +389,7 @@ svg
 .on("mousedown.zoom", null)
     .on("touchstart.zoom", null)
     .on("touchmove.zoom", null)
+    .on("dblclick.zoom", null)
     .on("touchend.zoom", null);
 // svg.call(d3.behavior.zoom()
 //    	.scale(1.0)
@@ -2268,12 +2273,12 @@ var p6half;
 $("#subline").click(function(){
 	console.log(clickedSubline+"clickedSubline")
 	clickedSubline = !clickedSubline;
-	if (clickedSubline){
-	$("#clearAll").animate().css('margin-top', '4.5em');	
-	}
-	else{
-	$("#clearAll").animate().css('margin-top', '.01em');
-	}
+	// if (clickedSubline){
+	// $("#clearAll").animate().css('margin-top', '4.5em');	
+	// }
+	// else{
+	// $("#clearAll").animate().css('margin-top', '.01em');
+	// }
 	$("#about").toggle("fast");
 //first transition
 	d3.select("#about").on("click",function(){
@@ -2340,8 +2345,8 @@ if (end==p1){
 	.attr("stroke-width",1)
     .each("end", function(){
 $('#introNav2').show().on("click", function(){
-      	svg.call(transition,p1,p2);
       	$('#introNav2').slideUp();
+      	svg.call(transition,p1,p2);
       })
      })
  }
@@ -2357,8 +2362,8 @@ $("#intro5").show("fast");
 	.attr("stroke-width",1)
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
-	      	svg.call(transition,p2,p3);
 	      	$('#introNav2').slideUp();
+	      	svg.call(transition,p2,p3);
       })
     })
 }
@@ -2374,8 +2379,8 @@ if(end==p3){
 	.attr("stroke-width",1)
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
-			svg.call(transition,p3,p4);	      	
 			$('#introNav2').slideUp();
+			svg.call(transition,p3,p4);	      	
       })      	
       })
 }
@@ -2391,8 +2396,8 @@ if(end==p4){
 	.attr("stroke-width",1)
 	.each("end",function(){
 		$('#introNav2').show().on("click", function(){
-      	svg.call(transition,p4,p5);
       				$('#introNav2').slideUp();
+      	svg.call(transition,p4,p5);
       })
       })
 }
@@ -2440,8 +2445,8 @@ if (end==p6half){
 	$("#intro8half").show("slow");
 
 		$('#introNav2').show().on("click", function(){
-      	svg.call(transition,p6half,p6);
       				$('#introNav2').slideUp();
+      	svg.call(transition,p6half,p6);
 		$(".introZoom").animate({
 			left: "539px",
 		});
@@ -2532,8 +2537,8 @@ if(end==p7){
 
 		.each("end",function(){
 		  $('#introNav2').show().on("click", function(){
+		  $('#introNav2').slideUp();			
 			svg.call(transition,p7, p8);  
-$('#introNav2').slideUp()			
 		})
   		})
 	})

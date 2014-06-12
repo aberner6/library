@@ -96,8 +96,7 @@ line-height: 1.5em;
 	/*box-shadow: 0 1px #e2e5e4;*/
 
 }
-
-#subline{
+#byline{
 		position:fixed;
 
 	font-size: 10px;
@@ -105,7 +104,22 @@ line-height: 1.5em;
 /*width: 10%;
 height: 5%;*/
 margin-left: 1.5em;
-top: 9.5em;
+top: 3.5em;
+/*position:absolute;*/
+padding:5px;
+font-weight:300px;
+/*border-bottom: 1px gray solid;	*/
+
+}
+#subline{
+		position:fixed;
+
+	font-size: 10px;
+	/*cursor: pointer;*/
+/*width: 10%;
+height: 5%;*/
+margin-left: 1.5em;
+top: 8em;
 /*position:absolute;*/
 padding:5px;
 font-weight:300px;
