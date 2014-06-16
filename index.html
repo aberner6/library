@@ -34,7 +34,7 @@
 
 
 <div id = "container"></div>
-	<div id="title">Cross Disciplines</div>
+	<div id="title">Crossing Disciplines</div>
 	<div id="clearAll">CLEAR
 	</div>
 
@@ -42,7 +42,9 @@
     stroke-opacity: .2;
 "></circle>
  -->
-
+    <div id="backNav">
+    <a href="javascript:history.back()"><img src="../backNav.png" width="15" height="15"></a>
+  </div>
 
 <div id = "exitGraph">
 <img src="exitGraph.png" width="13" height="13">
@@ -81,7 +83,7 @@
  <!-- <p>A digital library tool for multidisciplinary exploration.</p> -->
 	</div>
 	<div id="intro2" style="display: none; opacity: 0;">
-				<p><b>Cross Disciplines</b> is a tool to explore the Columbia Library's books that are at the intersection of two or more disciplines.</p><p>Browse material by selecting from the top 25 most interdisciplinary subjects along the outside of the circle to reveal relevant books.</p><p>Or explore the books by mousing over the circles that represent collections of books related to 2 or more subjects.</p>
+				<p><b>Crossing Disciplines</b> is a tool to explore the Columbia Library's books that are at the intersection of two or more disciplines.</p><p>Browse material by selecting from the top 25 most interdisciplinary subjects along the outside of the circle to reveal relevant books.</p><p>Or explore the books by mousing over the circles that represent collections of books related to 2 or more subjects.</p>
 	</div>
 	<div id="introNav">
 		<img src="forwardNav.png" width="15" height="15">
@@ -146,8 +148,27 @@
 	<div id="subline">
 		About
 	</div>
+	<div id="subline2">
+		Usage Notes
+	</div>
 	<div id="about">
 	Project Team:
+
+<p>Spatial Information Design Lab</p>
+
+<p>Laura Kurgan, Project Director</p>
+
+<p>Jen Lowe, Data Visualization and Data Analysis</p>
+
+<p>Annelie Berner, Application and Design Development, D3 Progamming.</p>
+
+<p>Columbia Library</p>
+
+<p>Alex Gil, Jeffrey Lancaster, Barbara Rochenbach</p>
+
+</div>
+<div id="about2">
+	Using this visualization blahblahblahlashdlashdasdads
 
 <p>Spatial Information Design Lab</p>
 
@@ -2271,14 +2292,7 @@ var p6half;
     var clickedSubline = false;
 
 $("#subline").click(function(){
-	console.log(clickedSubline+"clickedSubline")
-	clickedSubline = !clickedSubline;
-	// if (clickedSubline){
-	// $("#clearAll").animate().css('margin-top', '4.5em');	
-	// }
-	// else{
-	// $("#clearAll").animate().css('margin-top', '.01em');
-	// }
+	$("#about2").hide("fast");
 	$("#about").toggle("fast");
 //first transition
 	d3.select("#about").on("click",function(){
@@ -2286,7 +2300,12 @@ $("#subline").click(function(){
 	// svg.call(transition, p6,p6)
 	})
 })
+$("#subline2").click(function(){
+	$("#about").hide("fast");
 
+	$("#about2").toggle("fast");
+
+})
 
 var center = [width / 2, height / 2];
 
