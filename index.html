@@ -63,7 +63,7 @@
 <img src="exit.png" width="13" height="13">
 </div>
 <div id = "endIntro">
-	END INTRO
+	EXIT GUIDE
 <!-- <img src="exit.png" width="13" height="13"> -->
 </div>
 <div id="inner">
@@ -72,7 +72,8 @@
 
 
 <div class="center">
-		<div id="skip">Skip Intro</div>
+		<div id="skip">Enter</div>
+		<div id="skip2">Skip Intro</div>
 
 	<div class="intro"> 
 
@@ -174,13 +175,7 @@
 
 <p>Laura Kurgan, Project Director</p>
 
-<p>Jen Lowe, Data Visualization and Data Analysis</p>
-
-<p>Annelie Berner, Application and Design Development, D3 Progamming.</p>
-
-<p>Columbia Library</p>
-
-<p>Alex Gil, Jeffrey Lancaster, Barbara Rochenbach</p>
+<div class="clickZoom">Click for a guided explanation of the graphic</div>
 
 </div>
 <div id="reset">RESET</div>
@@ -269,35 +264,49 @@ var	width = window.outerWidth,
 var animateZoom = false;
 
 var animateOpening =true;
-	$('#skip').on("click",function(){
-		skipIntro();
-	})
-if (animateOpening) {
+
+
+
 d3.select("#container").style("pointer-events","none");
 d3.select("#intro2")
 	.style("display", "block")
 	.style("opacity", 1.0);
 $('#skip').fadeIn("slow");
 var countProgress = 0;
-$('#introNav').on("click", function(){
-console.log(countProgress)
-countProgress++;
+
+$('#skip').on("click",function(){
+		d3.selectAll("#intro1, #intro2,.intro").transition().style("opacity", 0.0).style("display", "none");
+		$('#skip').fadeOut("fast");	
+d3.select("#container").transition().style("opacity", 1.0).style("pointer-events","auto");
+
+	})
+	$('#skip2').on("click",function(){
+		skipIntro2();
+	})
+
+$('.clickZoom').on("click",function(){
+d3.select("#container").style("pointer-events","none");
+
+$('#about2').fadeOut("slow");
+// if (animateOpening) {
+// d3.select("#container").style("pointer-events","none");
+// d3.select("#intro2")
+	// .style("display", "block")
+	// .style("opacity", 1.0);
+// $('#skip').fadeIn("slow");
+// var countProgress = 0;
+// $('#introNav').on("click", function(){
+// console.log(countProgress)
+// countProgress++;
+
 	// if (countProgress==1){
-	// 	console.log(i)
-	// 	d3.select("#intro1")
-	// 		.transition().style("opacity", 0.0).style("display", "none");
-	// 	d3.select("#intro2")
-	// 		.style("display", "block").transition().duration(1000).style("opacity", 1.0);
-	// }
-	if (countProgress==1){
-		console.log(i)
-		d3.selectAll(".intro, #intro1, #intro2")
-		.transition()
-		.style("opacity", 0.0)
-		.style("display", "none")
-	// }
-	// if (countProgress==3){
-		$("#skip").animate({
+		// console.log(i)
+		// d3.selectAll(".intro, #intro1, #intro2")
+		// .transition()
+		// .style("opacity", 0.0)
+		// .style("display", "none")
+
+		$("#skip2").animate({
 			right:"4px",
 			bottom:"4px",
 		});	
@@ -319,20 +328,78 @@ $(".introZoom").animate({
  			zoomOpening();	
 			})
 		})
-		}
+		
 
-})
-}
-else {
-		d3.select("#container").transition().style("opacity", 1.0);
 
-		d3.selectAll("#intro1, #intro2, #intro3, #intro4, #intro4half, #intro5, #intro6, #intro7, #intro8, #intro8half, #intro9, #intro10, #intro11, #intro12, #intro13, #introNav, #introNav2, .intro, .introZoom").transition().style("opacity", 0.0).style("display", "none");
-		$('#skip').fadeOut("fast");	
-				d3.select("#container").style("pointer-events","auto");
 
-}
+		})
+
+// })
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	  				// $(".introZoom").show();
+
+	// $("#about2").hide();
+// 		$("#skip2").animate({
+// 			right:"4px",
+// 			bottom:"4px",
+// 		});	
+// 		$("#skip2").fadeIn("fast");
+// 	d3.select("#container")
+// 		.transition()
+// 		.duration(1000)
+// 		.style("opacity", .7)
+// 		.each("end",function(){
+
+// 		$(".introZoom")
+// 		.animate().css("opacity",.8).show("fast", function(){
+// $("#intro4").show("fast", function(){
+// $(".introZoom").animate({
+// 	height:"inherit", 
+// 	left:"539px"
+// });
+// 			animateZoom = true;
+//  			zoomOpening();	
+// })
+// 		})
+// })
+// 	})
 //NEXT THING IS CLICKING TO GET TO THE BOOKS HTML LINK
 function skipIntro(){
+	clearEverything();
+		animateZoom = false;
+
+			d3.select("#container").transition().style("opacity", 1.0);
+		d3.selectAll("#intro1, #intro2, #introNav, .intro").transition().style("opacity", 0.0).style("display", "none");
+		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
+				// $('#endIntro').fadeOut("slow");
+
+		$('#skip').fadeOut("slow");
+				d3.select("#container").style("pointer-events","auto");
+		
+// for (i=0; i<conn_levels; i++){
+// d3.selectAll(".ringCircle"+conn_levels[i]).transition().attr("stroke-width",1)
+// }
+}
+function skipIntro2(){
 	clearEverything();
 		animateZoom = false;
 
@@ -341,7 +408,7 @@ function skipIntro(){
 		// d3.select(".introNav").transition().style("opacity", 0.0).style("display", "none");
 				// $('#endIntro').fadeOut("slow");
 
-		$('#skip').fadeOut("slow");
+		$('#skip2').fadeOut("slow");
 				d3.select("#container").style("pointer-events","auto");
 		
 for (i=0; i<conn_levels; i++){
@@ -451,10 +518,10 @@ if (showReset==false){
 	$('#reset').slideUp( "slow", function() {
 })	
 }
-if (s>initialZoom){
+if (s>=initialZoom){
 showReset = true;
 }
-if (s<=initialZoom){
+if (s<initialZoom){
 	showReset = false;
 }
   vis.attr("transform",
@@ -929,9 +996,9 @@ function runOnce(){
 	processBigs(oneBig,indexBig);
 
 // zoomOpening = true;
-if(animateZoom){
-zoomOpening();
-}
+// if(animateZoom){
+// zoomOpening();
+// }
 	// processBigs(oneBig,indexBig);
 	
 // makeGraphsLittle();
@@ -1581,15 +1648,15 @@ var mouseText = vis.selectAll("mouseoverText")
 		return "translate(" + (calcX[thisCircle]+1) + "," + (calcY[thisCircle]-3) + ")";
 	})
 	.attr("fill","black")
-	.text(circleFreq[thisCircle])
-// 	.text(function(){
-// 		if (circleFreq[thisCircle]>1){
-// 			return circleFreq[thisCircle]+" books"
-// 	}
-// 		else {
-// 			return circleFreq[thisCircle]+" book"
-// 	}
-// });
+	// .text(circleFreq[thisCircle]+" books")
+	.text(function(){
+		if (circleFreq[thisCircle]>1){
+			return circleFreq[thisCircle]+" books"
+	}
+		else {
+			return circleFreq[thisCircle]+" book"
+	}
+});
 
 
 
@@ -1713,7 +1780,15 @@ var mouseText = vis.selectAll("mouseoverText")
 		return "translate(" + (calcX[thisCircle]+6) + "," + (calcY[thisCircle]-5) + ")";
 	})
 	.attr("fill","black")
-	.text(circleFreq[thisCircle]);
+	.text(function(){
+		if (circleFreq[thisCircle]>1){
+			return circleFreq[thisCircle]+" books"
+	}
+		if (circleFreq[thisCircle]==1){
+			return circleFreq[thisCircle]+" book"
+	}
+	})
+	// .text(circleFreq[thisCircle]+" books");
 }
 // var howMany = d3.select("#inner")
 // 	.selectAll(".innerText")
@@ -1894,11 +1969,11 @@ var booksChecked = [];
 var overFour = 0;
 var bookColors = [];
 var manyBookColors = {};
-
+var checkAgainst;
 function otherBooks(checkedTo, thisCircle){
 console.log("otherBooks"+checkedTo+"i"+thisCircle);
 whichBooks.length = 0;
-
+checkAgainst = thisCircle;
 		// d3.select("#booksColumn").style("display","none");	
 		// d3.select("#exit").transition().style("display","block")
 
@@ -1968,7 +2043,10 @@ var matched = [];
 var saveClicked;
 var bigBooksTrue = false;
 function books(incoming, thisCircle){
+if (thisCircle==checkAgainst){
 
+}
+else{
 		d3.select("#booksColumn").style("display","none");	
 		d3.select("#exit").transition().style("display","block")
 //APPLY THIS DOWN LOW
@@ -2005,7 +2083,7 @@ incomingSplit = incomingIs.split(",");
 
 }
 }
-
+}
 //Setup hover box
  hoverbox = d3.select("#hoverbox");
  var itsHeight;
@@ -2076,7 +2154,16 @@ $('#graphIcon').tipsy({
 function hideBooks(){
 
 removeOutwardLines(littleCircChecked, littleCircIndex); //FIX CODENAME
-			d3.select("circle.inCircle"+saveClicked)
+// for (i=0; i<calcX.length; i++){
+// 	d3.selectAll("text.mouseoverText"+i).remove();
+// 	d3.selectAll("circle.inCircle"+i)
+// 		.transition()
+// 		.attr("fill", "gray")
+// 		.attr("opacity",.1);
+
+// 	//.remove();
+// }
+			d3.select("circle.inCircle"+littleCircIndex)
 			.transition()
 			.attr("fill","grey")
 			.attr("opacity",.1);
@@ -2129,7 +2216,7 @@ for (i=0; i<calcX.length; i++){
 		.attr("fill", "gray")
 		.attr("opacity",.1);
 
-	//.remove();
+// 	//.remove();
 }
 	for (z=0; z<subjCode.length; z++){
 		d3.selectAll(".linesIn"+subjCode[z]).remove();
@@ -2459,7 +2546,7 @@ $("#intro8").show("fast")
 if (end==p6half){
 		$("#introNav2").animate({
 			top:"201px",
-			left: "497px",
+			left: "597px",
 		});
 	$("#intro8half").show("slow");
 
@@ -2484,17 +2571,14 @@ if(end==p6){
 		// 	left: "539px",
 		// });
 		
-	$("#intro8half").hide("fast", function(){
-
-	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
- });
+	$("#intro8half").hide("fast");
    p7 = [calcX[specialCirc], calcY[specialCirc], 100];
 
   d3.select("circle.inCircle"+specialCirc)
   .transition()
   .attr("opacity","1")
   .each("end",function(){
-
+	$("#intro9").show("slow"); //each circle represents a collection of books related to a unique set of subjects
    d3.selectAll("line.hey"+specialCirc) //	.attr("class", "hey"+thisCircle)//"linesOut"
       	.transition()
       	.attr("opacity",1)
@@ -2673,6 +2757,7 @@ top:"100px",
 
 		$("#intro13").delay(3000).show();
 		
+d3.select("#container").style("pointer-events","none");
 
 
 // .each("end",function(){
