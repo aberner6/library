@@ -2085,15 +2085,53 @@ function books(incoming, thisCircle){
 if (thisCircle==checkAgainst){
 
 }
+
 else{
-		d3.select("#booksColumn").style("display","none");	
-		d3.select("#exit").transition().style("display","block")
+	whichBooks.length=0;
+	d3.selectAll(".listBooks").remove();
+// if(whichBooks.length>0){
+
+// for (i=0; i<calcX.length; i++){
+// 	d3.selectAll("text.mouseoverText"+i).remove();
+// 	d3.selectAll("circle.inCircle"+i)
+// 		.transition()
+// 		.attr("fill", "gray")
+// 		.attr("opacity",.1);
+// }
+// 	for (z=0; z<subjCode.length; z++){
+// 		d3.selectAll(".linesIn"+subjCode[z]).remove();
+
+
+// storeClicks[z] = 0;
+
+// 	d3.selectAll(".surroundingPoints"+subjCode[z])
+// 		.transition()
+// 		.attr("y", subjY[z]+5)
+// 		.attr("height",.1)
+// }
+// d3.selectAll("line.checkedLinesOut")
+// 	.transition()
+// 	.attr("x2",0)
+// 	.attr("y2",0)
+
+
+// checkedIt.length=0;
+// booksChecked.length = 0;
+// whichBooks.length = 0;
+// checkedIndex = 0;
+// // d3.select("#booksColumn").transition().style("display","none");
+// d3.select("#booksColumn.selected").classed("selected", false);	
+
+// 		d3.select("#booksColumn").style("display","none");	
+// 		d3.select("#exit").transition().style("display","block")
+// 	}
 //APPLY THIS DOWN LOW
 // d3.selectAll("line.hey"+thisCircle).each(fadeToFront);
 // transition().attr("stroke","black")
 
 
-
+		d3.select("#booksColumn").style("display","none");	
+		d3.select("#exit").transition().style("display","block")
 
 // if (thisCircle==indexBig){
 // 	console.log("indexbig")
@@ -2257,6 +2295,41 @@ d3.selectAll(".listBooks").remove();
 
 }
 
+
+function noSubjEtc(){
+	for (i=0; i<calcX.length; i++){
+	d3.selectAll("text.mouseoverText"+i).remove();
+	d3.selectAll("circle.inCircle"+i)
+		.transition()
+		.attr("fill", "gray")
+		.attr("opacity",.1);
+}
+	for (z=0; z<subjCode.length; z++){
+		d3.selectAll(".linesIn"+subjCode[z]).remove();
+
+
+storeClicks[z] = 0;
+
+	d3.selectAll(".surroundingPoints"+subjCode[z])
+		.transition()
+		.attr("y", subjY[z]+5)
+		.attr("height",.1)
+}
+d3.selectAll("line.checkedLinesOut")
+	.transition()
+	.attr("x2",0)
+	.attr("y2",0)
+
+
+checkedIt.length=0;
+booksChecked.length = 0;
+whichBooks.length = 0;
+checkedIndex = 0;
+d3.select("#booksColumn").transition().style("display","block");
+d3.select("#booksColumn.selected").classed("selected", false);	
+}
+
+
 $("#clearAll").on("click", function(){
 clearEverything();
 })
@@ -2280,26 +2353,12 @@ for (i=0; i<calcX.length; i++){
 		.transition()
 		.attr("fill", "gray")
 		.attr("opacity",.1);
-
-// 	//.remove();
 }
 	for (z=0; z<subjCode.length; z++){
 		d3.selectAll(".linesIn"+subjCode[z]).remove();
-// 	.transition()
-// 	.attr("x2",0)
-// 	.attr("y2",0)
+
 
 storeClicks[z] = 0;
-		// .transition()
-		// .attr("opacity",0)
-
-
-// for (i=0; i<checkedIt.length; i++){
-// d3.selectAll(".linesIn"+checkedIt[i])
-// 	.transition()
-// 	.attr("x2",0)
-// 	.attr("y2",0)
-// }
 
 	d3.selectAll(".surroundingPoints"+subjCode[z])
 		.transition()
@@ -2322,12 +2381,6 @@ d3.select("#exit").transition().style("display","none")
   				$("#intro14").hide();
   				$(".introZoom").hide();
 
-				// $("#skip").animate({
-				// // right:"4px",
-				// bottom:"604px",
-				// });	
-
-				// $("#skip").hide();
 	//clear checked lines
 	//clear runned lines
 	//clear selected circles
