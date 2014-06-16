@@ -950,6 +950,13 @@ var moveToFront = function() {
 	this.parentNode.appendChild(this); 
 }
 
+
+var bigBooks = [];
+var saveBigIds = [];
+var incomingBig;
+var splitBig;
+
+
 var angles = [];
 var first = [];
 var r = [];
@@ -993,7 +1000,39 @@ firstLoadVar = setInterval(function(){
 function runOnce(){
 	runInnerCircles();
 	runOuterCircles();
-	processBigs(oneBig,indexBig);
+	// for (i=0; i<8; i++){
+		processBigs1("1,1",0);
+		processBigs1("1,21",1);
+		processBigs1("1,21,2",2);
+		processBigs1("5,20",3);
+		processBigs1("5,12",4);
+			processBigs1("9,7",5);
+		// processBigs1("16,7",6);
+		// processBigs1("24,19",7);
+
+// var Big = "1,1";
+// var 1Big = "1,21";
+// var 2Big = "1,21,2";
+// var 3Big = "5,20";
+// var 4Big = "5,12";
+// var 5Big = "9,7";
+// var 6Big = "16,7";
+// var 7Big = "24,19";
+
+// var 0index= 0;
+// var 1index= 1;
+// var 2index= 2;
+// var 3index= 3;
+// var 4index= 4;
+// var 5index= 5;
+// var 6index= 6;
+// var 7index= 7;
+
+// } 
+
+
+
+	}
 
 // zoomOpening = true;
 // if(animateZoom){
@@ -1002,7 +1041,7 @@ function runOnce(){
 	// processBigs(oneBig,indexBig);
 	
 // makeGraphsLittle();
-}
+// }
 var countLittleCircle = 0;
 var littleCircIndex;
 var littleCircChecked = [];
@@ -2056,14 +2095,40 @@ else{
 
 
 
-if (thisCircle==indexBig){
-	console.log("indexbig")
+// if (thisCircle==indexBig){
+// 	console.log("indexbig")
+// 	bigBooksTrue = true;
+// updateHoverbox(bigBooks, saveBigIds);
+// }
+if (thisCircle<6){
+		console.log("indexbig")
+
+if (thisCircle==1){
 	bigBooksTrue = true;
-updateHoverbox(bigBooks, saveBigIds);
+updateHoverbox(bigBooksOne, bigBooksOne);
+}
+if (thisCircle==2){
+	// console.log("indexbig")
+	bigBooksTrue = true;
+updateHoverbox(bigBooksTwo, bigBooksTwo);
+}
+if (thisCircle==3){
+	// console.log("indexbig")
+	bigBooksTrue = true;
+updateHoverbox(bigBooksThree, bigIdsThree);
+}
+if (thisCircle==4){
+	// console.log("indexbig")
+	bigBooksTrue = true;
+updateHoverbox(bigBooksFour, bigIdsFour);
 }
 
-
-
+if (thisCircle==5){
+	// console.log("indexbig")
+	bigBooksTrue = true;
+updateHoverbox(bigBooksFive, bigIdsFive);
+}
+}
 
 
 else{
@@ -2319,9 +2384,7 @@ var fadeToFront = function() {
 }
 ////////////////////////////////////////////////////
 ////IF D.FREQ IS GREATER THAN 600, PREPROCESS BOOK LISTs
-//"1,1"	40719 -> no
-// "1,1,1"	18603
-// "1,1,1,1"	24833
+
 // "1,21"	8501
 // "1,1,1,1,1"	13625
 // "1,21,2"	4012
@@ -2331,13 +2394,8 @@ var fadeToFront = function() {
 // "9,7"	1394
 // "16,7"	516
 ////////////////////////////////////////////////////
-var oneBig = "1,21,2";
-var indexBig = 2;
-var bigBooks = [];
-var saveBigIds = [];
-var incomingBig;
-var splitBig;
-function processBigs(oneBig, indexBig){
+
+function processBigs(codeBig, indexBig){
 
 incomingBig = oneBig.toString();
 splitBig = incomingBig.split(",");
@@ -2349,7 +2407,53 @@ splitBig = incomingBig.split(",");
 			}
 
 }
+var bigBooksZero = [];
+var bigIdsZero= [];
+var bigBooksOne= [];
+var bigIdsOne= [];
+var bigBooksTwo= [];
+var bigIdsTwo= [];
+var bigBooksThree= [];
+var bigIdsThree= [];
+var bigBooksFour= [];
+var bigIdsFour= [];
+var bigBooksFive= [];
+var bigIdsFive= [];
+function processBigs1(codeBig, indexBig){
 
+incomingBig = codeBig.toString();
+splitBig = incomingBig.split(",");
+			for (j=0; j<manyCodes.length; j++){
+				if (manyCodes[j]==splitBig){ 
+					if(indexBig==0){
+					bigBooksZero.push(manyBooks[j]);
+					bigIdsZero.push(manyIds[j]);
+					}
+					if(indexBig==1){
+					bigBooksOne.push(manyBooks[j]);
+					bigIdsOne.push(manyIds[j]);
+					}
+					if(indexBig==2){
+					bigBooksTwo.push(manyBooks[j]);
+					bigIdsTwo.push(manyIds[j]);
+					}
+					if(indexBig==3){
+					bigBooksThree.push(manyBooks[j]);
+					bigIdsThree.push(manyIds[j]);
+					}
+					if(indexBig==4){
+					bigBooksFour.push(manyBooks[j]);
+					bigIdsFour.push(manyIds[j]);
+					}
+					if(indexBig==5){
+					bigBooksFive.push(manyBooks[j]);
+					bigIdsFive.push(manyIds[j]);
+					}																				
+				}
+
+			}
+
+}
 var specialCirc = 393;
 var p0 = [width/2, height/2, windowHeight],
     // p1 = [width/2+conn_levels[6], height/2, 100],
